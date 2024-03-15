@@ -1,0 +1,955 @@
+<htmlform
+    formUuid="9819ecd1-bf3e-4258-80c7-881feb1cb638"
+    formName="CFL Medicine Refill Visit Note"
+    formEncounterType="bce100cf-db7f-496a-968f-e0f686397912"
+    formVersion="1.0"
+>
+    <script
+        src="/openmrs/moduleResources/htmlformentry/orderWidget.js?v=2.4.0"
+        type="text/javascript"
+    ></script>
+    <uiInclude provider="cfl" css="htmlForm.css"/>
+
+    <macros>
+        <macro key="currentRegimenName" expression="treatmentFunctions.getCurrentRegimenName()"/>
+        <macro key="currentRegimenDrugDetailsArray"
+               expression="treatmentFunctions.getCurrentRegimenDrugDetailsFormRepeatArray()"/>
+        <macro key="isModificationAllowed" expression="treatmentFunctions.isModificationAllowed()"/>
+        <macro key="isEncounterDateModificationAllowed" expression="treatmentFunctions.isEncounterDateModificationAllowed()"/>
+    </macros>
+
+    <script>
+        window.isModificationAllowed = $isModificationAllowed;
+        window.isEncounterDateModificationAllowed = $isEncounterDateModificationAllowed;
+    </script>
+
+    <repeat with="$currentRegimenDrugDetailsArray">
+        <obsgroup groupingConceptId="6db838eb-55a6-44d6-8554-60dcafd0a620">
+            <obs id="{0}" conceptId="977e3982-fe6b-4abf-aaa1-8c1fbfb5f058" class="pillsMissedObs display-none"/>
+            <obs id="{0}-pillsLeftObs" conceptId="7f1693a5-4223-4a75-9eb7-8d547e6ec677" class="pillsLeftObs display-none"/>
+            <obs id="{0}-adherenceScore" conceptId="ff16180b-db7e-4423-a925-b29c1b1f2c0f" class="adherenceScoreObs display-none" />
+        </obsgroup>
+    </repeat>
+
+    <span id="available-regimens" class="display-none">
+        <lookup complexExpression = "
+      &lt;script type=&quot;text/javascript&quot;>
+          try {
+              const regimens = JSON.parse('$regimens');
+              window.regimens = regimens;
+          } catch (e) {
+              window.regimens = [];
+          }
+      &lt;/script>
+  "/>
+    </span>
+
+
+    <style type="text/css">
+        #body-wrapper .refill-visit-note-title {
+        padding-bottom: 1em;
+        font-weight: normal;
+        }
+
+        .regimen-name h3 {
+        padding: .5em 0 .2em;
+        }
+
+        .orderwidget-drug-section {
+        padding: 10px;
+        border: 1px dotted black;
+        }
+
+        .encounter-date,
+        .order-field,
+        .last-refill-date,
+        .last-visit-quantity,
+        .route-of-administration {
+        position: relative;
+        }
+
+        .order-field,
+        .last-visit-quantity,
+        .route-of-administration {
+        padding: 0px;
+        width: 20%;
+        }
+
+        .order-field.action {
+        display: block;
+        }
+
+        .order-field.dateActivated {
+        padding-right: 20px;
+        }
+
+        .encounter-date label,
+        .order-field-label,
+        .last-refill-date-label,
+        .last-visit-quantity label,
+        .route-of-administration label {
+        display: block;
+        position: absolute;
+        font-size: 10px !important;
+        text-transform: uppercase;
+        top: .3em;
+        left: 1em;
+        opacity: .65;
+        font-family: CircularStd;
+        }
+
+        .order-field-label:after {
+        content: "";
+        white-space: pre;
+        }
+
+        .order-field-widget,
+        .last-visit-quantity {
+        display: block;
+        margin: 0;
+        padding: 0 .5em 0 0;
+        }
+
+        .encounter-date input,
+        .order-field-widget select,
+        .order-field-widget input,
+        .last-refill-date-input,
+        .last-visit-quantity input,
+        .route-of-administration input {
+        padding: 1.5em 1em .5em;
+        margin: 0;
+        text-align: center;
+        text-align:-moz-center;
+        text-align:-webkit-center;
+        width: 100%;
+        min-width: unset;
+        display: inline-block;
+        line-height: normal;
+        }
+
+        .last-refill-date-input {
+        border: 1px solid #AEC2D5;
+        background-color: #EEEEEE;
+        }
+
+        .orderwidget-orderable-section {
+        border-bottom: 0px !important;
+        }
+
+        .medication-row {
+        display: flex;
+        padding: 0 0 1em 0;
+        align-items: baseline;
+        }
+
+        .orderwidget-orderable-section {
+        margin: 1em 0;
+        background-color: #fafafa;
+        }
+
+        .orderwidget-order-form {
+        display: block;
+        margin: 0;
+        }
+
+        .drug-order-form {
+        margin-bottom: 1em;
+        }
+
+        .history-info label {
+        display:inline-block;
+        }
+
+        .medication-headline {
+        font-size: 18px;
+        padding: 1em;
+        border: none;
+        text-align: left;
+        outline: none;
+        position: relative;
+        }
+
+        .medication-headline-details {
+        width: 80%;
+        }
+
+        .medication-headline span {
+        text-transform: lowercase;
+        }
+
+        .medication-headline .dname {
+        padding-right: 10px;
+        text-transform: initial;
+        }
+
+        .medication-headline .adherence {
+        position: absolute;
+        right: 1em;
+        top: 1em;
+        background-color: #00455c;
+        color: #fff;
+        padding: 0.5rem 1.25rem;
+        font-weight: normal;
+        margin: 0;
+        justify-content: space-between;
+        display: flex;
+        }
+
+        .medication-headline .adherenceDiv {
+        position: absolute;
+        right: 1em;
+        top: 1em;
+        background-color: #00455c;
+        color: #fff;
+        padding: 0.5rem 1.25rem;
+        font-weight: normal;
+        margin: 0;
+        justify-content: sp
+        }
+
+        .medication-headline .adherence label {
+        color: #fff;
+        font-size: 13px !important;
+        padding-right: 5px;
+        font-weight: normal;
+        }
+
+        .medication-headline .adherence label.adherence-value {
+        padding-right: 0;
+        }
+
+        .medication-headline,
+        .medication-content {
+        background-color: #FAFAFA;
+        }
+
+        .medication-content {
+        padding: 0 1em 1em;
+        }
+
+        #htmlform htmlform input:disabled,
+        #htmlform htmlform select:disabled {
+        background-color: #E3EBF2;
+        opacity: 1;
+        }
+
+        .order-field-widget select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        }
+
+        .order-field-widget select::-ms-expand {
+        display: none;
+        }
+
+        .order-field-widget.order-durationUnits:after,
+        .order-field-widget.order-route:after,
+        .route-of-administration:after {
+        content: '\f078';
+        font: normal normal normal 11px/1 FontAwesome;
+        right: 2em;
+        top: 2em;
+        position: absolute;
+        pointer-events: none;
+        }
+
+        #htmlform .visible-data .administration h4,
+        #htmlform .visible-data .quantity h4 {
+        color: #2B3640 !important;
+        opacity: 1 !important;
+        }
+
+        .field-error {
+        color: red;
+        font-size: 13px;
+        }
+
+        .modal-footer {
+        justify-content: space-between;
+        border-top: unset;
+        }
+
+        button.confirm {
+        display: flex;
+        }
+
+        .modal-footer .dismiss {
+        background: none !important;
+        border: 1px solid #00455c !important;
+        color: #00455c !important;
+        }
+
+        #body-wrapper #content.container-fluid input.error,
+        #body-wrapper #content.container-fluid select.error {
+        border: 1px solid red !important;
+        box-shadow: none !important;
+        outline: none !important;
+        }
+
+        #noRegimen {
+        padding-bottom: 1em;
+        }
+    </style>
+    <div id="refillVisitNote">
+        <h2 class="refill-visit-note-title">
+            <uimessage code="cfldistributionShip.medicineRefill.title"/>
+        </h2>
+        <span class="modeSelector display-none">
+            <ifMode mode="ENTER">enter</ifMode>
+            <ifMode mode="EDIT">edit</ifMode>
+        </span>
+        <div id="metadata" class="row">
+            <div class="col-sm-3">
+                <p class="encounter-date">
+                    <encounterDate id="encounterDate" default="now"/>
+                    <label>Encounter Date</label>
+                </p>
+                <p class="display-none">
+                    <label>
+                        <uimessage code="coreapps.patientDashBoard.provider"/>
+                    </label>
+                    <span>
+                        <encounterProvider default="currentUser" required="true"/>
+                    </span>
+                </p>
+                <p class="display-none">
+                    <label>
+                        <uimessage code="coreapps.patientDashBoard.location"/>
+                    </label>
+                    <span>
+                        <encounterLocation default="SessionAttribute:emrContext.sessionLocationId"/>
+                    </span>
+                </p>
+            </div>
+            <div class="col-sm-3">
+                <p class="last-refill-date" style="display:block;">
+                    <label class="last-refill-date-label">Date of last visit</label>
+                    <input class="last-refill-date-input" type="text" disabled="true" value="-/-/-"/>
+                </p>
+            </div>
+        </div>
+        <div class="regimen-name">
+            <h3>
+                <uimessage code="cfldistributionShip.medicineRefill.regimenName"/>:
+                <span id="patientsRegimenSpanId"/>
+            </h3>
+            <span class="display-none">
+                <lookup complexExpression = "
+                    &lt;script type=&quot;text/javascript&quot;>
+                        try {
+                            const regimens = JSON.parse('$regimens');
+                            window.regimens = regimens;
+                        } catch (e) {
+                            window.regimens = [];
+                        }
+                    &lt;/script>
+                "/>
+            </span>
+        </div>
+        <div class="drug-order-form">
+            <div class="display-none">
+                <!-- ART interruption reason -->
+                <obs id="pillLeftJson" conceptId="30d09891-6bae-492c-b45b-ebe142837497"/>
+            </div>
+            <order orderType="Drug Order">
+                <!-- <uimessage/> doesn't work inside <orderTemplate/> -->
+                <orderTemplate>
+                    <div class="visible-data">
+                        <div class="medication-headline">
+                            <div class="medication-headline-details">
+                                <span class="dname">
+                                    <uimessage code="cfldistributionShip.programForm.drugName" />
+                                </span>
+                                <span class="dunit">
+                                    <uimessage code="cfldistributionShip.programForm.numberOfUnits" />
+                                </span>
+                                <span class="ddose">
+                                    <uimessage code="cfldistributionShip.programForm.doseUnit" />
+                                </span>
+                                <span class="dfrequency">
+                                    <uimessage code="cfldistributionShip.programForm.frequency" />
+                                </span>
+                            </div>
+                            <div class="adherence">
+                                <label>Adherence</label>
+                                <label class="adherence-value"/>
+                            </div>
+
+                        </div>
+                        <div class="medication-content" style="display:block;">
+                            <div class="administration">
+                                <h4>Administration:</h4>
+                                <div class="medication-row">
+                                    <orderProperty name="dateActivated" label="Start Date"/>
+                                    <orderProperty name="durationUnits" label="Time Unit"/>
+                                    <orderProperty name="duration" label="For (number of time units)"/>
+                                    <orderProperty name="route" label="Route of administration"/>
+                                    <div class="route-of-administration display-none">
+                                        <label>Route of administration</label>
+                                        <input type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quantity">
+                                <h4>Drug Quantity:</h4>
+                                <div class="medication-row">
+                                    <div class="last-visit-quantity">
+                                        <label>Quantity last visit</label>
+                                        <input class="pill-count-input" type="text" disabled="true" value="-"/>
+                                    </div>
+                                    <div class="order-field order-pillleft">
+                                        <div class="order-field-label order-pillleft">Pills left</div>
+                                        <div class="order-field-widget order-pillleft">
+                                            <input class="pillsLeftInput adherenceTriggerField" type="text"/>
+                                            <span class="error field-error display-none"/>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="order-field order-pillsmissed">
+                                        <div class="order-field-label order-pillsmissed">Pills missed</div>
+                                        <div class="order-field-widget order-pillsmissed">
+                                            <input class="pillsMissedInput adherenceTriggerField" type="number"/>
+                                            <span class="error field-error display-none"/>
+                                        </div>
+                                        <br />
+                                    </div>
+
+
+                                    <orderProperty name="quantity" label="Quantity today"/>
+                                    <orderProperty name="numRefills" label="Refills"/>
+                                    <orderProperty name="orderReasonNonCoded"/>
+                                </div>
+                            </div>
+                            <div class="display-none">
+                                <orderProperty name="urgency" value="ROUTINE"/>
+                                <orderProperty name="dosingType" value="org.openmrs.SimpleDosingInstructions"/>
+                                <orderProperty name="careSetting" value="OUTPATIENT"/>
+                            </div>
+                        </div>
+                        <span class="drugNameSpan display-none" ></span>
+                        <span class="pillLeftJsonInputValueSpan display-none"></span>
+                        <span class="oldPillsCount display-none"></span>
+                        <span class="blockIndex display-none"></span>
+                    </div>
+                </orderTemplate>
+            </order>
+        </div>
+        <postSubmissionAction class="org.openmrs.module.cflcore.api.htmlformentry.action.VisitStatusUpdateActionAdapter"/>
+    </div>
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title">
+                        <uimessage code="cfldistributionShip.medicineRefill.saveProgramConfirmation"/>
+                    </h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dismiss" data-dismiss="modal">
+                        <uimessage code="general.cancel"/>
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confirmModalHandler()">
+                        <uimessage code="coreapps.confirm"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="noRegimen" class="display-none">
+        <uimessage code="cfldistributionShip.medicineRefill.noActiveTreatment"/>
+    </div>
+    <div id="buttons">
+        <button type="button" class="cancel">
+            <uimessage code="coreapps.return"/>
+        </button>
+        <button type="button" class="btn btn-primary confirm right" data-toggle="modal" data-target="#confirmationModal">
+            <uimessage code="general.save"/>
+            <div id="save-program-spinner" class="ml-2 display-none">
+                <i class="icon-spinner icon-spin icon-2x"/>
+            </div>
+        </button>
+    </div>
+    <script type="text/javascript">
+        const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
+        const EXPECTED_DATE_FORMAT = 'DD-MM-YYYY';
+        const HISTORY_DIV_CLASS = '.orderwidget-existing-order-section';
+        const CURRENT_DIV_CLASS = '.orderwidget-new-order-section';
+        const ORDER_DIV_CLASS = '.orderwidget-orderable-section';
+        const ERROR = 'error';
+        const ERROR_FIELD_CLASS = '.' + ERROR + '.field-error';
+        const ORDER_DIV_ID = '#orderwidget-orderable-section-';
+        const SAVE_PROGRAM_SPINNER_ID = '#save-program-spinner';
+        const ACTIVE_VISIBLE_INPUTS = '.medication-content .order-field-widget input:visible:not(:disabled)';
+        const ACTIVE_VISIBLE_SELECTS = '.medication-content .order-field-widget select:visible';
+        const fieldsValidation = {};
+        const getFormattedDate = (date, actualDateFormat) => moment(date, actualDateFormat).format(EXPECTED_DATE_FORMAT);
+        const initialEncounterDate = $('#encounterDate input[type=hidden]').attr('value');
+
+        jQuery(document).ready(function() {
+        const regimens = window.regimens;
+        const currentRegimen = "$currentRegimenName";
+        const currentRegimenDetails = regimens?.filter(reg => reg.name === currentRegimen);
+        const historyVisitDate = $(HISTORY_DIV_CLASS).find('div.order-field-widget.order-dateActivated').html();
+        const formattedHistoryVisitDate = historyVisitDate ? getFormattedDate(historyVisitDate, 'DD/MM/YYYY') : '';
+        const refillVisitNote = $('#refillVisitNote');
+        const noRegimen = $('#noRegimen');
+        const drugCount = $(ORDER_DIV_CLASS).length;
+        let existingRegimen = '';
+        let rowsToDelete = 0;
+
+        $('#patientsRegimenSpanId').text(currentRegimen);
+
+        if (currentRegimen) {
+        refillVisitNote.show();
+        noRegimen.hide();
+        } else {
+        refillVisitNote.hide();
+        noRegimen.show();
+        $('#buttons .confirm').hide();
+        }
+
+        if (!!$('.orderwidget-history-section .order-field-widget.order-orderReasonNonCoded').size()) {
+        existingRegimen = $('.orderwidget-history-section .order-field-widget.order-orderReasonNonCoded')[0].innerText;
+        }
+
+        if (existingRegimen === currentRegimen) {
+        $(HISTORY_DIV_CLASS).find('div[id^="order-action-button-RENEW_"]').click();
+        $(CURRENT_DIV_CLASS).find('div[id^="order-action-button-REVISE_"]').click();
+        } else {
+        $('div[id^="order-action-button-DISCONTINUE_"]').click();
+        rowsToDelete = $('div[id^="order-action-button-DISCONTINUE_"]').length;
+        $('.orderwidget-orderable-section').hide();
+        }
+
+        const currentRegimenDrugs = currentRegimenDetails[0]?.regimenDrugs;
+        currentRegimenDrugs.forEach((item, index) => {
+        let medicineIndex = index;
+        const medicineListOrder = $('.order-action-forms .order-field-widget.order-drug select :selected').map((idx, element) => $(element).text()).get();
+
+        if (medicineListOrder.length) {
+        medicineIndex =  medicineListOrder.findIndex(medicine => item.drug.display.includes(medicine));
+        }
+
+        if (currentRegimenDrugs.length > drugCount - rowsToDelete) {
+        populateNewForm(item, index + rowsToDelete, currentRegimen);
+        }
+
+        populateHeadline(item, medicineIndex + rowsToDelete);
+        });
+
+        hideFields();
+        showHiddenFields();
+        convertActualVisitDateDatePickerToProperFormat();
+        setPillsMissedAndAdherenceScoreValues();
+
+        if (historyVisitDate) {
+        if (existingRegimen === currentRegimen) {
+        $('.adherence').show();
+        $('.last-refill-date-input').prop('value', formattedHistoryVisitDate);
+        $('.order-field-widget.order-pillleft input').prop({'disabled': false, 'type': 'number', 'value': '', 'min': '0'});
+        populateOldPillCount();
+        }
+        } else {
+        $('.order-field-widget.order-pillleft input').prop({'disabled': true, 'value': '-'});
+        $('.order-field-widget.order-pillsmissed input').prop({'disabled': true, 'value': '-'});
+        }
+
+        changeInputsTypeToNumber();
+        changeStartDateFormat();
+        setEncounterDateOnChangeListener();
+        setFieldsValidationOnBlurListener();
+        handlePillsLeftAndMissedOnChange();
+        applyReadOnlyLogic();
+        });
+
+        const handlePillsLeftAndMissedOnChange = () => {
+        $('.adherenceTriggerField').on('change', function () {
+        const inputElement = $(this);
+        const parentElement = inputElement.parentsUntil('.orderwidget-order-form:visible').last();
+        const pillLeftJsonInputValue = $(parentElement).find('.pillLeftJsonInputValueSpan').text();
+        const drugName = $(parentElement).find('.drugNameSpan').text();
+        const obj = pillLeftJsonInputValue ? pillLeftJsonInputValue.split(';') : [];
+        const visitDate = new Date($('#encounterDate input:hidden').val());
+        const lastVisitDate = new Date(moment($(HISTORY_DIV_CLASS).find('div.order-field-widget.order-dateActivated').html(), 'DD/MM/YYYY').format());
+        const millisecondsBetween = visitDate.getTime() - lastVisitDate.getTime();
+        const daysGone = Math.round(millisecondsBetween / (1000 * 3600 * 24));
+        const dose = $(parentElement).find('.medication-headline .ddose').html();
+        const frequency = frequencyPerDay($(parentElement).parent().find('.order-frequency select').val());
+        const dailyDose = dose * frequency;
+        const pillsShouldBeTaken = daysGone ? dailyDose * daysGone : dailyDose;
+        const oldPillsCount = $(parentElement).find('.oldPillsCount').html();
+        const index = $(parentElement).find('.blockIndex').html();
+        const regimenName = parentElement.find('.dname').text();
+
+        let adherenceScore = '';
+        // when pills missed input changed
+        if (inputElement.hasClass('pillsMissedInput')) {
+        // use pills missed value
+        const pillsMissedValue = inputElement.val();
+        const pillsMissedSpanId = regimenName.slice(0, -1).replaceAll(' ', '_');
+        setValue(pillsMissedSpanId + '.value', pillsMissedValue);
+
+        if (pillsMissedValue !== '') {
+        adherenceScore = ((pillsShouldBeTaken - pillsMissedValue) / pillsShouldBeTaken) * 100;
+        } else {
+        // use pills left value
+        const pillsLeftValue = $(this).parent().parent().prev().find('input.pillsLeftInput').val();
+        if (pillsLeftValue !== '') {
+        adherenceScore = ((oldPillsCount - pillsLeftValue) / pillsShouldBeTaken) * 100;
+        }
+        }
+        }
+
+        // //when pills left input changed
+        if (inputElement.hasClass('pillsLeftInput')) {
+        obj[index] = drugName.concat('_').concat(inputElement.val());
+        const pillsLeftValue = inputElement.val();
+        const pillsLeftSpanId = regimenName.slice(0, -1).replaceAll(' ', '_') + '-pillsLeftObs';
+        setValue(pillsLeftSpanId + '.value', pillsLeftValue);
+        // use pills missed value first
+        const pillsMissedInputField = $(this).parent().parent().next().find('input.pillsMissedInput');
+        const pillsMissedValue = pillsMissedInputField.val();
+        if (pillsMissedValue !== '') {
+        adherenceScore = ((pillsShouldBeTaken - pillsMissedValue) / pillsShouldBeTaken) * 100;
+        } else {
+        if (inputElement.val() !== '') {
+        // use pills left value
+        const pillsLeftValue = inputElement.val();
+        adherenceScore = ((oldPillsCount - pillsLeftValue) / pillsShouldBeTaken) * 100;
+        }
+        }
+        }
+
+        const convertedRegimenName = regimenName.slice(0, -1).replaceAll(' ', '_');
+        const adherenceValueElement = parentElement.find('.adherence-value');
+        if (adherenceScore !== '') {
+        setValue(convertedRegimenName + '-adherenceScore.value', adherenceScore.toFixed(2));
+        adherenceValueElement.html(adherenceScore.toFixed(2) + '%');
+        } else {
+        setValue(convertedRegimenName + '-adherenceScore.value', adherenceScore);
+        adherenceValueElement.html(adherenceScore + '-');
+        }
+
+        setValue('pillLeftJson.value', obj.join(';'));
+        });
+        }
+
+        const setPillsMissedAndAdherenceScoreValues = () => {
+        $('.pillsMissedObs').each(function(index) {
+        const spanId = $(this).attr('id');
+        const pillsMissedValue = getValue(spanId + '.value');
+
+        $('.orderwidget-order-form:visible').each(function(index) {
+        const drugName = $(this).find('.dname').text();
+        const convertedDrugName = drugName.slice(0, -1).replaceAll(' ', '_');
+        if (spanId === convertedDrugName) {
+        const searchedPillsMissedInput = $(this).find('.pillsMissedInput');
+        searchedPillsMissedInput.val(pillsMissedValue);
+
+        let adherenceScoreObsValue = getValue(convertedDrugName + '-adherenceScore.value');
+        if (adherenceScoreObsValue.includes('.')) {
+        adherenceScoreObsValue = adherenceScoreObsValue.substring(0, adherenceScoreObsValue.indexOf('.') + 3);
+        }
+        const adherenceScoreLabel = $(this).find('.adherence-value');
+        if (adherenceScoreObsValue !== '') {
+        adherenceScoreLabel.html(adherenceScoreObsValue + '%');
+        } else {
+        adherenceScoreLabel.html(adherenceScoreObsValue + '-');
+        }
+        }
+        });
+        });
+        }
+
+        const convertActualVisitDateDatePickerToProperFormat = () => {
+        const dateFormat = 'dd-mm-yy';
+        const yearsRange = '110,20';
+        const locale = 'en-GB';
+        const displaySelector = '#' + $('#encounterDate input[type=text]').attr('id');
+        const valueSelector = '#' + $('#encounterDate input[type=hidden]').attr('id');
+
+        $('#encounterDate')[0].innerHTML = $('#encounterDate')[0].innerHTML.replace('(' + dateFormat + ')','');
+        $(displaySelector).removeClass('hasDatepicker');
+        setupDatePicker(
+        dateFormat,
+        yearsRange,
+        locale,
+        displaySelector,
+        valueSelector,
+        initialEncounterDate
+        );
+        };
+
+        const hideFields = () => {
+        $('.orderwidget-section-header').hide();
+        $('.orderwidget-section-no-orders').hide();
+        $('#order-action-button-NEW').hide();
+        $('.order-cancel-action-section').hide();
+        $('.orderwidget-history-section').hide();
+        $('.order-action-buttons').hide();
+        $('.order-cancel-action-section').hide();
+        $('.order-action-warnings').hide();
+        $('.order-concept').hide();
+        $('.order-field.order-dateActivated span.value').hide();
+        $('.order-field.order-numRefills').hide();
+        $('.adherence').hide();
+        }
+
+        const showHiddenFields = () => {
+        $('.order-field.order-dateActivated .order-field-widget').show();
+        $('.order-field.order-drug').show();
+        $('.order-drug').show();
+        $('.order-route').show();
+        $('.order-pillleft').show();
+        $('.order-pillsmissed').show();
+        }
+
+        const changeInputsTypeToNumber = () => {
+        $('.order-field-widget.order-duration input').prop({'type': 'number', 'min': '0'});
+        $('.order-field-widget.order-quantity input').prop({'type': 'number', 'min': '0'});
+        $('.order-field-widget.order-pillsmissed input').prop({'type': 'number', 'min': '0'});
+        }
+
+        const changeStartDateFormat = () => {
+        $('.administration .order-dateActivated input:visible').each(function() {
+        $(this).prop({ 'disabled': true , 'value': getFormattedDate(initialEncounterDate, DEFAULT_DATE_FORMAT) });
+        });
+        }
+
+        const setEncounterDateOnChangeListener = () => {
+        $('#encounterDate input:hidden').on('change', function() {
+        const DATEPICKER_INPUT_CLASS = 'input.hasDatepicker';
+        const datepickerInput = $(this).siblings(DATEPICKER_INPUT_CLASS);
+        const errorField = $(this).siblings(ERROR_FIELD_CLASS);
+        const encounterDate = $(this).val();
+        const formattedEncounterDate = getFormattedDate(encounterDate, DEFAULT_DATE_FORMAT);
+        const isEncounterDateAfterToday = moment(encounterDate).isAfter(moment());
+
+        if (isEncounterDateAfterToday) {
+        datepickerInput.addClass(ERROR);
+        errorField.text('Encounter cannot be in the future').show();
+        fieldsValidation['encounterDate'] = false;
+        } else {
+        datepickerInput.removeClass(ERROR);
+        errorField.hide();
+        fieldsValidation['encounterDate'] = true;
+        }
+
+        $('.administration .order-dateActivated input:visible').each(function() {
+        $(this).prop('value', formattedEncounterDate)
+        });
+
+        $('.quantity .order-field-widget.order-pillleft input:visible:not(:disabled)').each(function() {
+        const pillLeftValue = $(this).val();
+        if (pillLeftValue) {
+        $(this).blur();
+        }
+        });
+        });
+        };
+
+        const fieldValidation = (index, element) => {
+        const field = element ? $(element) : $(event.currentTarget);
+        const optionalValidationClasses = '.pillsLeftInput, .pillsMissedInput'
+        if (!field.is(optionalValidationClasses)) {
+        const fieldValue = field.val();
+        const fieldId = $(field).attr('id');
+        const fieldMaxValue = Number(field.attr('max'));
+        const fieldMinValue = Number(field.attr('min'));
+        const errorField = field.siblings(ERROR_FIELD_CLASS);
+
+        if (fieldId) {
+        if (!fieldValue) {
+        field.addClass(ERROR);
+        errorField.text('Required').show();
+        fieldsValidation[fieldId] = false;
+        } else if (Number(fieldValue) > fieldMaxValue) {
+        field.addClass(ERROR);
+        errorField.text('Cannot be greater than ' + fieldMaxValue).show();
+        fieldsValidation[fieldId] = false;
+        } else if ((Number(fieldValue) &lt; 0)) {
+        field.addClass(ERROR);
+        errorField.text('Cannot be less than 0').show();
+        fieldsValidation[fieldId] = false;
+        } else {
+        field.removeClass(ERROR);
+        errorField.hide();
+        fieldsValidation[fieldId] = true;
+        }
+        }
+        }
+        };
+
+        const confirmModalHandler = () => {
+        $(ACTIVE_VISIBLE_INPUTS).each(fieldValidation);
+        $(ACTIVE_VISIBLE_SELECTS).each(fieldValidation);
+
+        const isFormValid = Object.values(fieldsValidation).every(field => field);
+
+        if (isFormValid) {
+        $(SAVE_PROGRAM_SPINNER_ID).show();
+        submitHtmlForm();
+        }
+        }
+
+        const setFieldsValidationOnBlurListener = () => {
+        $(ACTIVE_VISIBLE_INPUTS).on('blur', fieldValidation);
+        $(ACTIVE_VISIBLE_SELECTS).on('blur', fieldValidation);
+        };
+
+        const populateOldPillCount = () => {
+        $(ORDER_DIV_CLASS).each(function(index) {
+        const field = ORDER_DIV_ID + index;
+        const oldPillsCount = $(this).find('.order-view-different-encounter .order-field-widget.order-quantity').html();
+        const errorSpanId = $(field).find('.order-field-widget.order-pillleft span');
+        const refillsNumber = $(this).find('.order-view-different-encounter .order-field-widget.order-numRefills').text();
+        const incrementedRefillsNumber = parseInt(refillsNumber) + 1;
+        const pillLeftJsonInput = $('span#pillLeftJson input');
+        const pillLeftInput = $(field).find('.order-field-widget.order-pillleft input:visible');
+        const drugName = $(field).find('.order-field-widget.order-drug select option:selected').text();
+        $(field).find('.drugNameSpan').text(drugName);
+        $(field).find('.pillLeftJsonInputValueSpan').text(pillLeftJsonInput.val());
+        $(field).find('.oldPillsCount').text(oldPillsCount);
+        $(field).find('.blockIndex').text(index);
+
+        /*
+        * At the next visit, select route of administration should be disabled so that it is not possible to change during treatment.
+        * The workaround works as follows:
+        * Hiding the select and passing the selected value to the hidden input, which will be displayed as disabled.
+        * This workaround was caused by issues with disabled select route of administration validation after form submission.
+        */
+        const orderRoute = $(field).find('.order-field.order-route');
+        const orderRouteSelectedOption = $(orderRoute).find('select:visible :selected').text();
+        const disabledRouteOfAdministration = $(field).find('.route-of-administration');
+        const disabledRouteOfAdministrationInput = $(disabledRouteOfAdministration).find('input');
+
+        $(orderRoute).hide();
+        $(disabledRouteOfAdministrationInput).prop({ 'value': orderRouteSelectedOption, 'disabled': true});
+        $(disabledRouteOfAdministration).show();
+
+        $(this).find('.pill-count-input').prop({'value': oldPillsCount});
+        $(this).find('.order-numRefills input').val(incrementedRefillsNumber);
+        $(pillLeftInput).prop({'max': oldPillsCount, 'id': 'order-pillleft-' + index});
+
+        if ($('.modeSelector').text().trim() === 'enter') {
+        $(this).find('.order-quantity input').val('');
+        } else {
+        const convertedDrugName = drugName.replaceAll(' ', '_');
+        const pillLeftObsValue = getValue(convertedDrugName + '-pillsLeftObs.value');
+        pillLeftInput.val(pillLeftObsValue);
+        }
+        });
+        };
+
+        const populateNewForm = (item, index, currentRegimen) => {
+        const field = ORDER_DIV_ID + index;
+        const ORAL_OPTION_VALUE = 160240;
+        const DAYS_OPTION_VALUE = 1072;
+
+        $('#order-action-button-NEW').click();
+        $(field).find('.order-route select').val(ORAL_OPTION_VALUE);
+        $(field).find('.order-durationUnits select').val(DAYS_OPTION_VALUE);
+        $(field).find('.order-numRefills input').val(1);
+        $(field).find('.order-orderReasonNonCoded input').val(currentRegimen);
+        $(field).find('.order-field-widget.order-drug select option').each(function() {
+        if ($(this).text() === item.drug.display) {
+        $(this).parent().val($(this).val());
+        }
+        });
+        $(field).find('.order-doseUnits select option').each(function() {
+        if ($(this).text() === item.doseUnits.display) {
+        $(this).parent().val($(this).val());
+        }
+        });
+        $(field).find('.order-quantityUnits select option').each(function() {
+        if ($(this).text() === item.doseUnits.display) {
+        $(this).parent().val($(this).val());
+        }
+        });
+        $(field).find('.order-dose input').val(item.dose);
+        $(field).find('.order-frequency select option').each(function() {
+        if ($(this).text() === item.frequency.display) {
+        $(this).parent().val($(this).val());
+        }
+        });
+        };
+
+        const populateHeadline = (item, index) => {
+        const field = ORDER_DIV_ID + index;
+
+        $(field).find('.dname').html(item.drug.display + ':');
+        $(field).find('.dunit').html(item.doseUnits.display + ',');
+        $(field).find('.ddose').html(item.dose);
+        $(field).find('.dfrequency').html(item.frequency.display);
+        };
+
+        const applyReadOnlyLogic = () => {
+        if(!window.isEncounterDateModificationAllowed) {
+        $('#encounterDate').find("input[type|='text']").prop({'disabled': true});
+        }
+
+        if(!window.isModificationAllowed) {
+        $('#buttons').find('.confirm').prop({'hidden': true});
+
+        const orderDiv = $(ORDER_DIV_CLASS);
+        orderDiv.find('.order-durationUnits select').prop({'disabled': true});
+        orderDiv.find('.order-duration input').prop({'disabled': true});
+        orderDiv.find('.order-route select').prop({'disabled': true});
+        orderDiv.find('.order-quantity input').prop({'disabled': true});
+        orderDiv.find('.order-pillleft input').prop({'disabled': true});
+        orderDiv.find('.order-pillsmissed input').prop({'disabled': true});
+        }
+        };
+
+        /*
+        * function is responsible for taking a constant id related to frequency, e.g. twice daily has id = 11,
+        * and returning the appropriate number related to the amount of drug to be taken during the day,
+        * which in this example is 2 per day
+        */
+        const frequencyPerDay = id => {
+        switch (id) {
+        case '2':
+        return 48;
+        case '3':
+        return 24;
+        case '4':
+        return 12;
+        case '5':
+        return 8;
+        case '6':
+        return 6;
+        case '7':
+        return 4.8;
+        case '8':
+        case '24':
+        case '25':
+        case '26':
+        return 4;
+        case '9':
+        case '20':
+        case '21':
+        case '22':
+        case '23':
+        return 3;
+        case '10':
+        case '11':
+        case '12':
+        case '13':
+        case '14':
+        return 2;
+        case '27':
+        return 0.5;
+        case '28':
+        return 0.67;
+        case '29':
+        return 0.3;
+        case '30':
+        return 0.43;
+        default:
+        return 1;
+        }
+        };
+    </script>
+</htmlform>

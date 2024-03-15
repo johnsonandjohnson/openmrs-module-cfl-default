@@ -1,0 +1,52 @@
+<htmlform formUuid="8c0e7e1a-64e1-456f-bd60-4d007db802d3" formName="Migrated Medical History"
+          description="Form for Fields migrated from motech" formVersion="1.0">
+
+    <style>
+		.section {
+			border: 1px solid #009d8e;
+			padding: 2px;
+			text-align: left;
+			margin-bottom: 1em;
+		}
+		.sectionHeader {
+			background-color: $headerColor;
+			color: white;
+			display: block;
+			padding: 2px;
+			font-weight: bold;
+		}
+		table.baseline-aligned td {
+			vertical-align: baseline;
+			cursor: default !important;
+		}
+		table thead{
+            font-weight: bold;
+            font-size: 20px !important;
+        }
+	</style>
+
+    <h2>Migrated Medical History</h2>
+
+    <section headerLabel="Medical History">
+        <table class="baseline-aligned">
+            <thead>
+            <tr>
+                <td>Group</td>
+                <td>Name</td>
+                <td>Value</td>
+                <td>Additional info</td>
+            </tr>
+            </thead>
+            <tbody>
+                <lookup complexExpression="#foreach($obs in $fn.allObs('62f00afd-e23f-458d-b7d4-049ed567c008'))
+                    &lt;tr&gt;
+                        &lt;td&gt;#if($obs.accessionNumber.split('##').size() &gt; 1) $obs.accessionNumber.split('##').get(0)#end&lt;/td&gt;
+                        &lt;td&gt;#if($obs.accessionNumber.split('##').size() == 1) $obs.accessionNumber.split('##').get(0) #else $obs.accessionNumber.split('##').get(1) #end&lt;/td&gt;
+                        &lt;td&gt;&lt;span class='value'&gt;#if($obs.valueText.split('##').size() == 1) $obs.valueText.split('##').get(0)#end&lt;/span&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;span class='value'&gt;#if($obs.valueText.split('##').size() &gt; 1) $obs.valueText.split('##').get(1)#end&lt;/span&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                #end"/>
+            </tbody>
+        </table>
+    </section>
+</htmlform>

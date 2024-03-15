@@ -1,0 +1,769 @@
+<htmlform formUuid="916ed8bb-69f3-400a-a171-720730183544" formName="CFL HIV Intake Form" 
+    description="CFL HIV Intake Form" formEncounterType="6932803d-f0a3-44e5-90cd-e08d86f98d70" formVersion="1.0">
+
+    <macros>
+        <macro key="htmlFormIdKey" value="14" />
+        <macro key="transferInConceptId" value="166012" />
+        <macro key="positiveConceptId" value="166055" />
+        <macro key="otherConceptId" value="5622" />
+        <macro key="yesConceptId" value="1065" />
+        <macro key="maxNumOfCaregiver" value="10" />
+        <macro key="maxNumOfVaccine" value="10" />
+    </macros>
+
+    <style type="text/css">
+        .single-line {
+            display: flex;
+            align-items: baseline;
+        }
+        .single-line-fixed-width {
+            display: flex;
+            align-items: baseline;
+            width: 150px;
+        }
+        .error {
+            color: red;
+            padding: 5px;
+        }
+        div.left-align {
+            display: flex;
+        }
+        #dateTransferInId, #transferredId, #dateFirstEnrolledId, #dateStartedArtId, #datePatientConfirmedHivId {
+            display: table;
+        }
+    </style>
+
+    <style type="text/css">
+        /** HTML Forms default styles **/
+        #htmlform {
+            font-family: CircularStd;
+            display: flex;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        #htmlform htmlform {
+            width: 100%;
+        }
+
+        #htmlform htmlform h2 {
+            color: #333333;
+        }
+
+        #htmlform htmlform h1, h3, h4, h5, h6 {
+            color: inherit !important;
+        }
+
+        #htmlform htmlform input,
+        #htmlform htmlform label {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        #htmlform htmlform table {
+            margin: 10px 0;
+        }
+
+        #htmlform htmlform table tr {
+            padding: 5px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.15) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
+        }
+
+        #htmlform htmlform table td {
+            background-color: white !important;
+            cursor: default;
+            padding: 20px 0;
+        }
+
+        #htmlform htmlform table td[style*="display: none;"] {
+            display: table-cell !important;
+        }
+
+        #htmlform htmlform table td[style*="display: none;"] * {
+            display: none;
+        }
+
+        #htmlform htmlform .section {
+            border: none;
+        }
+
+        #htmlform htmlform input,
+        #htmlform htmlform select,
+        #htmlform htmlform textarea,
+        #htmlform htmlform ul.select {
+            background-color: white;
+        }
+
+        #htmlform htmlform button,
+        #htmlform htmlform input[type='button'] {
+            font-family: CircularStd;
+            font-size: 11px !important;
+            color: white;
+            text-transform: uppercase;
+            border: 1px solid #6c757d !important;
+            padding: 0.5rem 1.25rem !important;
+            margin-right: 0.75rem !important;
+            border-radius: 4px !important;
+            line-height: 1.5;
+        }
+
+        #htmlform htmlform button.confirm,
+        #htmlform htmlform input.confirm {
+            background: #00455c;
+            border: 1px solid #6c757d !important;
+            font-size: 11px !important;
+            color: white !important;
+        }
+
+        #htmlform htmlform button.cancel,
+        #htmlform htmlform input.cancel {
+            background: none !important;
+            border: 1px solid #00455c !important;
+            color: #00455c !important;
+        }
+
+        ul.ui-autocomplete {
+            border-radius: 0;
+        }
+
+        ul.ui-autocomplete li.ui-menu-item a {
+            border-radius: 0;
+            border: none;
+            margin: -1px;
+        }
+
+        ul.ui-autocomplete li.ui-menu-item a.ui-state-focus,
+        ul.ui-autocomplete li.ui-menu-item a.ui-state-hover {
+            background: #e4e7e7 !important;
+        }
+
+        #htmlform htmlform input,
+        #htmlform htmlform select {
+            color: inherit !important;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075) !important;
+        }
+
+        #htmlform htmlform input:focus,
+        #htmlform htmlform select:focus {
+            outline: none !important;
+            border: 1px solid #AEC2D5 !important;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6) !important;
+        }
+
+        #ui-datepicker-div {
+            color: #2B3640;
+        }
+
+        #ui-datepicker-div .ui-datepicker-header {
+            background: none;
+            border: none;
+        }
+
+        #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
+        #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next {
+            background: none;
+            border: none;
+        }
+
+        #ui-datepicker-div .ui-datepicker-calendar tr td {
+            background: inherit !important;
+        }
+
+        #ui-datepicker-div .ui-datepicker-calendar tr td:hover {
+            background: inherit !important;
+        }
+
+        #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-default {
+            background: white !important;
+        }
+
+        #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-hover {
+            background: #e4e7e7 !important;
+        }
+
+        #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-active {
+            background: #00455c !important;
+            color: white;
+        }
+
+        #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-highlight {
+            border-color: #d3d3d3;
+        }
+
+        #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-highlight.ui-state-hover {
+            border-color: #999;
+        }
+
+        .patient-header .value {
+            color: inherit;
+            font-weight: inherit;
+        }
+    </style>
+
+    <h2>HIV Intake Form</h2>
+
+    <ifMode mode="EDIT" include="false">
+        <lookup complexExpression="
+            #set( $encounter = 0 )
+            #set( $encounter = $fn.latestEncounter('6932803d-f0a3-44e5-90cd-e08d86f98d70') )
+            #if( $encounter != 0 )
+                &lt;script type=&quot;text/javascript&quot;&gt;
+                    var hostServer = window.location.protocol + &quot;//&quot; + window.location.host;
+                    var htmlManageFormLink = hostServer + &quot;/openmrs/module/htmlformentry/htmlForm.form?id=&quot; + $htmlFormIdKey;
+                    var editHtmlFormLink = hostServer + &quot;/openmrs/htmlformentryui/htmlform/editHtmlFormWithStandardUi.page?patientId=$patient.patientId&amp;encounterId=$encounter.encounterId&amp;returnUrl=/openmrs/coreapps/clinicianfacing/patient.page?patientId=$patient.patientId&quot;;
+
+                    if (window.location.href != htmlManageFormLink ) {
+                        window.location = editHtmlFormLink;
+                    }
+                &lt;/script&gt;
+            #end
+        "/>
+    </ifMode>
+
+    <section>
+        <encounterDate default="now" widget="hidden" />
+        <table class="baseline-aligned">
+            <tr>
+                <td> <div class="left-align">Patient type <span style="color:red">*</span> </div>
+                    <obs id="patientTypeId" conceptId="3160440c-e829-4b35-967c-345d7e1fa874" style="radio" class="single-line">
+                        <controls>
+                            <when value="e6fc6890-fa5e-466d-9308-e43ca5b0f9bd" thenDisplay=".transferIn-section" />
+                        </controls>
+                    </obs>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td> <div class="left-align">Entry point <span style="color:red">*</span> </div>
+                    <obs id="entryPointId" conceptId="9d954d8f-f23c-49f6-bcb5-e695c6fca867" class="single-line"
+                         answerConceptIds="c3c12649-0b4c-4978-ba3e-5db45b65ed92,44e06f66-549b-4361-9579-89407587a8d5,7e3300ea-4a2e-489b-9cd2-1d2f23a4467d,
+                            262ae87c-6f7e-4e7a-bc17-e52cef0eef1a,91b349d2-17b2-4bb1-a923-09847718e0c3,769d924e-13c3-4a2d-b99f-3df85de7871a,
+                            112992AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,b8ffd79e-a2f2-4904-8aae-f750ff4c4187,6a7af61d-054f-4d54-b84f-2f181cd37efd,
+                            a16b6fc8-f9d3-472c-a759-701de071e36e,67d52a8a-fa5a-45bc-b95e-0772244d6ad5,f553605a-68f2-40e0-9f25-dc4d390736ff,
+                            5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                         answerLabels="VCT,TB,Outpatient,Inpatient,Paediatric,PMTCT,STI,Private,NGO,Self referred,IDU outreach,CSW outreach,Other">
+                        <controls>
+                            <when value="5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" thenDisplay="#otherEntryPointDivId" />
+                        </controls>
+                    </obs>
+                    <div id="otherEntryPointDivId" class="single-line" style="padding-top: 5px;">
+                        Specify: <obs id="otherEntryPointSpecifyId" conceptId="72f1c062-1a9c-4c72-a9c8-860ace888775" />
+                    </div>
+                </td>
+                <td> <div class="left-align">Reason for testing </div>
+                    <obs id="reasonForTestingId" conceptId="164126AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+                        <controls>
+                            <when value="5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" thenDisplay="#otherReasonDivId" />
+                            <when value="f090f046-cadf-4ff6-a123-2733f98a4170" thenDisplay="#riskyBehaviourReasonDivId" />
+                        </controls>
+                    </obs>
+                    <div id="otherReasonDivId" class="single-line" style="padding-top: 5px;">
+                        Specify: <obs id="otherReasonSpecify" conceptId="2f68e0b0-6a82-46e0-ad45-749d5860f1be" />
+                    </div>
+                    <div id="riskyBehaviourReasonDivId" class="single-line" style="padding-top: 5px;">
+                        Specify: <obs id="riskyBehaviourReasonSpecify" conceptId="7ab676cd-5570-4191-9426-d0db6519a467" />
+                    </div>
+                </td>
+            </tr>
+            <tr><td colspan="2">
+                <div class="container"><div class="row">
+                    <div class="col-md-6">Vaccine History<br />
+                        <repeat with="['vacInfluenzaId','e90c7eda-e2a7-4ce3-86b1-bf1a3742bb19','Influenza','70fdbba0-578a-42b4-9670-04c2210b895c','f556a32c-5fc2-4257-aaf9-9c276934286e','bd91eba8-3a59-4fc8-96f9-6e7f257d8877'],
+                                ['vacPcvId','d8581c7d-a283-4ff5-a602-4f055352fcfa','PCV-13','57477d5f-eaca-4a02-b6e9-f229e523684c','1048e1e7-6128-4f8e-b684-d6d6d777577e','add9112a-87d9-4d74-a0ec-667452feaa78'],
+                                ['vacHavId','660af2e3-96db-4cb4-ac91-13644121a751','HAV','d2abdab2-99a0-4ce9-9709-f173264eea22','a206df6d-6f0d-4fe6-bdf2-323815cfdf22','730949a8-9714-431c-888d-f6ac9154dc26'],
+                                ['vacCovidId','165621AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','COVID-19','a975c90b-51af-4a42-b1ac-af110bc0500c','c56659e4-6923-4659-8273-ecd88e5e3014','64f5f909-e83a-4e84-9e8f-45a301b0adb5'],
+                                ['vacMenacwyId','acf76645-0ba4-4eca-a5ef-f951b40063e3','MenACWY','ffadb22d-aea6-44e1-8cbc-f46a955e2f73','5913ac92-d388-4ff8-8a56-b6fac88eadb1','1e0c9845-c7bd-40f4-8b0f-b6b41c3512f7'],
+                                ['vacVaricellaId','892AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Varicella','6f926421-1d9b-443e-a691-7dff1ea882dd','a1380041-2195-4338-8d42-2eb9289a7742','80b03c49-8578-4bcb-bcc8-a7494fb6ecae']">
+                            <div class="single-line">
+                                <obs id="{0}" conceptId="abbdfb23-ba87-482c-b370-62dd1e1ecfaf" style="checkbox" class="single-line-fixed-width"
+                                     answerConceptId="{1}" answerLabel="{2}" toggle="{0}-dateAndLotDivId" />
+                                <div id="{0}-dateAndLotDivId" class="single-line">
+                                    <div>Date<span style="color:red;">*</span><obs id="{0}-dateId" conceptId="{3}" />
+                                        <obs conceptId="{4}" style="checkbox" /> Estimated
+                                    </div>
+                                    <obs id="{0}-lotId" conceptId="{5}" labelText="Lot number" />
+                                </div></div> <br/>
+                        </repeat>
+                    </div>
+                    <div class="col-md-6"><br />
+                        <repeat with="['vacPpsvId','9d3b4c50-f325-4236-bc5b-972ba1bc2192','PPSV-23','6a9edd84-8591-478b-9641-085b4de8c6b7','222e61d4-3569-4b73-874f-c7472ada8699','2d77205a-20f1-493a-91a4-432085fa4730'],
+                                ['vacHbvId','d7f9402c-1c44-4ad2-ad5c-9f71164b0d3e','HBV','9b61ba17-3665-469f-8f22-236ed16b0d9c','90cbfacb-80ae-46d9-a9d1-de27f0aaaa40','a0098f5d-52a0-47b0-9622-2e4b74b8e99b'],
+                                ['vacHpvId','adf82ff9-64c5-47c1-9397-7e5676c58e54','HPV','202100ce-3b7b-455c-bf72-912a62c8887e','0be02051-b459-4e74-8a33-cc4e6e358fbd','0c83afde-9655-4552-a6de-03a5540fba11'],
+                                ['vacTdapId','56d002fe-dddb-4a73-8807-ff51d9d602a8','TDAp','6d39af4b-c1ac-4439-b5c5-534a30d6e758','3e7e519e-6c17-446e-9877-eab429857a85','84b6f9ad-e361-4c82-a8cd-928527264eaf'],
+                                ['vacMmrId','6dd8c2eb-1470-4a46-9ea1-142ff2c415c2','MMR','4c89b40b-70e1-49fc-b4d9-6fd10bf2c6a1','2fb70f93-7916-4f75-b4a4-1ea4a5f6c071','6997d943-7555-4bb7-b41d-89f996167d6c']">
+                            <div class="single-line">
+                                <obs id="{0}" conceptId="abbdfb23-ba87-482c-b370-62dd1e1ecfaf" style="checkbox" class="single-line-fixed-width"
+                                     answerConceptId="{1}" answerLabel="{2}" toggle="{0}-dateAndLotDivId" />
+                                <div id="{0}-dateAndLotDivId" class="single-line">
+                                    <div>Date<span style="color:red;">*</span><obs id="{0}-dateId" conceptId="{3}" />
+                                        <obs conceptId="{4}" style="checkbox" /> Estimated
+                                    </div>
+                                    <obs id="{0}-lotId" conceptId="{5}" labelText="Lot number" />
+                                </div></div> <br/>
+                        </repeat>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <repeat>
+                                <template>
+                                    <div id="{n}-toggleVacContainer" style="display:none;">
+                                        <obsgroup groupingConceptId="04132de3-9352-4926-8bfd-076fe50413ca">
+                                            <table><tr>
+                                                <td><div style="display:none;"><obs id="{n}-vacOrderId" conceptId="946c5822-fa83-4e7b-ae37-3131f8aad377" /></div></td>
+                                                <td>Vaccine name <obs id="{n}-vacNameId" conceptId="1c4a661c-c101-454d-8158-cb7eaee5de12" /></td>
+                                                <td>
+                                                    <div class="single-line">
+                                                        <div>Date<span style="color:red;">*</span><obs id="{n}-vacDateId" conceptId="4f5362dc-912f-45a9-993c-deaaa7505510" /></div>
+                                                        <div style="margin-top: auto;"><obs id="{n}-vacDateEstId" conceptId="b9573a05-6f47-4789-8181-fc6875a54f33" style="checkbox" labelText="Estimated" class="single-line" /></div>
+                                                    </div>
+                                                </td>
+                                                <td>Lot number <obs id="{n}-vacLotNumId" conceptId="d6cd8afe-0ad6-4dc7-9252-467a8787dece" /> </td>
+                                                <td><button id="{n}-removeVaccine" class="removeVaccine" style="margin-left: auto;">Remove</button></td>
+                                            </tr></table>
+                                            <button id="{n}-addVaccine" class="addVaccine">Add Vaccine</button>
+                                        </obsgroup>
+                                    </div>
+                                </template>
+                                <render n="1" />
+                                <render n="2" />
+                                <render n="3" />
+                                <render n="4" />
+                                <render n="5" />
+                                <render n="6" />
+                                <render n="7" />
+                                <render n="8" />
+                                <render n="9" />
+                                <render n="10" />
+                            </repeat>
+                        </div>
+                    </div>
+                </div>
+            </td></tr>
+            <tr class="transferIn-section">
+                <td> <div class="left-align">Date transfer in <span style="color:red">*</span> </div>
+                    <obs id="dateTransferInId" conceptId="2beaef61-e3cc-4725-af65-233d003a03d9" />
+                </td>
+                <td> <div class="left-align">Transferred from facility <span style="color:red">*</span> </div>
+                    <obs id="transferredId" conceptId="cd06633a-f022-4983-90aa-a1601e6600b6" />
+                </td>
+            </tr>
+            <tr class="transferIn-section">
+                <td> <div class="left-align">Date first enrolled in HIV care </div>
+                    <obs id="dateFirstEnrolledId" conceptId="00e78e3f-56d8-46ef-9337-e2ccb0965f2c" />
+                </td>
+                <td> <div class="left-align">Date started ART at transferring facility </div>
+                    <obs id="dateStartedArtId" conceptId="daba7f4f-2fb4-4eed-905a-7a6d589d0af6" />
+                </td>
+            </tr>
+            <tr>
+                <td> <div class="left-align">Date patient was first confirmed HIV+ </div>
+                    <div class="single-line">
+                        <obs id="datePatientConfirmedHivId" conceptId="fdb2a17c-88ef-4836-8049-30376fd56101" />
+                        <obs conceptId="ee25f61e-d55d-43d3-a7de-c37c1bda2d80" style="radio" class="single-line" />
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td> <div class="left-align">WHO Stage </div>
+                    <obs conceptId="bc376077-0d7a-476d-acef-94d48f7332bc" />
+                </td>
+                <td> <div class="left-align">Facility where confirmation done </div>
+                    <obs conceptId="6cd3b65c-ecd8-4487-8aff-e91385ae830b" />
+                </td>
+            </tr>
+            <tr>
+                <td> <div class="left-align">In a relationship? </div>
+                    <obs id="inARelationshipId" conceptId="669599f1-93ec-4bee-b871-0eb43150b45d" style="radio" class="single-line"
+                         answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+                        <controls>
+                            <when value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" thenDisplay=".inARelationshipId-section" />
+                        </controls>
+                    </obs>
+                </td>
+                <td></td>
+            </tr>
+            <tr class="inARelationshipId-section">
+                <td> <div class="left-align">Disclosure status </div>
+                    <obs id="disclosureStatusId" conceptId="7b41176b-9f3e-46f7-90f2-cef20294135b" style="radio" class="single-line" />
+                </td>
+                <td> <div class="left-align">Serodiscordance </div>
+                    <obs id="serodiscordanceId" conceptId="11ac337b-e0ca-4ec8-b44c-8130eab307d0" style="radio" class="single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td> <div class="left-align">Any caregiver support available? </div>
+                    <obs id="caregiverSupportId" conceptId="09001217-b26f-444b-87c4-d05908e59223" style="radio" class="single-line"
+                         answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+                        <controls>
+                            <when value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" thenDisplay=".caregiverSupportId-section" />
+                        </controls>
+                    </obs>
+                </td>
+                <td></td>
+            </tr>
+            <tr class="caregiverSupportId-section">
+                <td colspan="2">
+                    <repeat>
+                        <template>
+                            <div id="{n}-toggleContainer" style="display:none;">
+                                <table>
+                                    <obsgroup groupingConceptId="81471493-e991-4e1d-b10d-acdf18bdb36a">
+                                        <tr class="caregiverSupportId-section">
+                                            <td><div style="display:none;"><obs id="{n}-orderId" conceptId="deb43a7a-8da5-4426-91a7-a7c89a870ec0" /></div>
+                                                <div class="left-align">Name </div>
+                                                <obs id="{n}-caregiverNameId" conceptId="426a4884-e165-4c6f-9320-41b145bcf290"/>
+                                            </td>
+                                            <td> <div class="left-align">Relationship </div>
+                                                <obs id="{n}-relationshipId" conceptId="734920eb-efe9-4555-8a95-8370af3332a4" style="radio" class="single-line"
+                                                     answerConceptIds="6b60316a-8c5c-450f-9841-b9a69f5782cd,4ca7f1be-1eaf-46cc-a289-494cce2bfe5e,5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+                                                    <controls>
+                                                        <when value="5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" thenDisplay="#{n}-relationshipTextFieldDivId"/>
+                                                    </controls>
+                                                </obs>
+                                                <div id="{n}-relationshipTextFieldDivId" class="single-line">
+                                                    Specify: <obs id="{n}-relationshipTextFieldId" conceptId="8cb60ce2-1ca7-49e8-9051-d0ea5d7dc56f" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="caregiverSupportId-section">
+                                            <td> <div class="left-align">HIV Status </div>
+                                                <obs id="{n}-hivStatusId" conceptId="9704b34b-f29d-47bb-bd31-def5e0f6840d" style="radio" class="single-line"
+                                                     answerConceptIds="d356436c-e782-40b1-b270-1498bd9bc861,3ab7d9e5-45da-4654-bba7-dba23b866b87,1067AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+                                                    <controls>
+                                                        <when value="d356436c-e782-40b1-b270-1498bd9bc861" thenDisplay="#{n}-hivCareStatusDivId" />
+                                                    </controls>
+                                                </obs>
+                                            </td>
+                                            <td>
+                                                <div class="single-line">
+                                                    <div id="{n}-hivCareStatusDivId">
+                                                        <div class="left-align">HIV Care status </div>
+                                                        <obs id="{n}-hivCareStatusId" conceptId="7f2ea633-450d-4b93-895a-ec6c02bdd8b5" style="radio" class="single-line" />
+                                                    </div>
+                                                    <button id="{n}-removeEntry" class="removeEntry" style="margin-left: auto;">Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </obsgroup>
+                                </table>
+                                <div class="left-align"><button id="{n}-addEntry" class="addEntry">Add Caregiver</button></div>
+                            </div>
+                        </template>
+
+                        <render n="1" />
+                        <render n="2" />
+                        <render n="3" />
+                        <render n="4" />
+                        <render n="5" />
+                        <render n="6" />
+                        <render n="7" />
+                        <render n="8" />
+                        <render n="9" />
+                        <render n="10" />
+
+                    </repeat>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </section>
+
+    <div id="buttons">
+        <submit id="submitId" submitClass="confirm right" submitCode="general.save" />
+        <button type="button" class="cancel"><uimessage code="general.cancel" /></button>
+    </div>
+
+    <script type="text/javascript">
+        var caregiverList = [], vaccineList = [], isVaccineDataEmpty = true;
+
+        beforeSubmit.push(function() {
+            let patientTypeValue = getValue('patientTypeId.value');
+            let entryPointValue = getValue('entryPointId.value');
+            let dateTransferInValue = getValue('dateTransferInId.value');
+            let transferredValue = getValue('transferredId.value');
+
+            if (patientTypeValue == null || patientTypeValue == '') {
+                getField('patientTypeId.error').html("Required").show();
+                alert('Patient type field is required. Please enter the appropriate value.');
+                return false;
+            }
+            if (entryPointValue == null || entryPointValue == '') {
+                getField('entryPointId.error').html("Required").show();
+                alert('Entry point field is required. Please enter the appropriate value.');
+                return false;
+            }
+            if (entryPointValue == $otherConceptId) {
+                if (!getValue('otherEntryPointSpecifyId.value')) {
+                    getField('otherEntryPointSpecifyId.error').html("Required").show();
+                    alert('Input for Specify field for Entry Point is required. Please enter the appropriate value.');
+                    return false;
+                }
+            }
+            if (dateTransferInValue == null || dateTransferInValue == '') {
+                if (patientTypeValue == $transferInConceptId) {
+                    getField('dateTransferInId.error').html("Required").show();
+                    alert('Date transfer in field is required. Please enter the appropriate value.');
+                    return false;
+                }
+            }
+            if (transferredValue == null || transferredValue == '') {
+                if (patientTypeValue == $transferInConceptId) {
+                    getField('transferredId.error').html("Required").show();
+                    alert('Transferred from facility field is required. Please enter the appropriate value.');
+                    return false;
+                }
+            }
+
+            // Vaccine Name changes
+            if(!validateVaccines('vacInfluenzaId','Influenza')) { return false; }
+            if(!validateVaccines('vacPcvId','PCV-13')) { return false; }
+            if(!validateVaccines('vacHavId','HAV')) { return false; }
+            if(!validateVaccines('vacCovidId','COVID-19')) { return false; }
+            if(!validateVaccines('vacMenacwyId','MenACWY')) { return false; }
+            if(!validateVaccines('vacVaricellaId','Varicella')) { return false; }
+            if(!validateVaccines('vacPpsvId','PPSV-23')) { return false; }
+            if(!validateVaccines('vacHbvId','HBV')) { return false; }
+            if(!validateVaccines('vacHpvId','HPV')) { return false; }
+            if(!validateVaccines('vacTdapId','TDAp')) { return false; }
+            if(!validateVaccines('vacMmrId','MMR')) { return false; }
+            for (let i=1; getValue(i+'-vacNameId.value') &amp;&amp; i &lt; $maxNumOfVaccine+1; i++) {
+                if(!getValue(i+'-vacDateId.value')) {
+                    getField(i+'-vacDateId.error').html("Required").show();
+                    alert(getValue(i+'-vacNameId.value')+' vaccination date field is required');
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        function validateVaccines(id,message) {
+            if(getField(id+'.value').prop('checked') &amp;&amp; !getValue(id+'-dateId.value')) {
+                getField(id+'-dateId.error').html("Required").show();
+                alert(message+' vaccination date field is required');
+                return false;
+            }
+            return true;
+        }
+
+        jQuery(document).ready(function() {
+            // Entry point other option specify text field size set
+            jQuery("#otherEntryPointSpecifyId,#otherReasonSpecify,#riskyBehaviourReasonSpecify").attr('size','20');
+
+            // order of caregiver - start
+            function concatenateCaregiverDetails(i) {
+                return getValue(i+'-orderId.value') + '|' + getValue(i+'-caregiverNameId.value') + '|' +
+                        getValue(i+'-relationshipId.value') + '|' + getValue(i+'-relationshipTextFieldId.value') +'|'+
+                        getValue(i+'-hivStatusId.value') + '|' + getValue(i+'-hivCareStatusId.value');
+            }
+            function removeCaregiver(arr, item) { return arr.filter(f => f !== item); }
+
+            for (i=1; getValue(i+'-orderId.value') &amp;&amp; i &lt; $maxNumOfCaregiver+1; i++) {
+                caregiverList.push(concatenateCaregiverDetails(i));
+            }
+            // sort the caregiverArray to display in order
+            caregiverList.sort(function(a, b) { return (a.split('|')[0] - b.split('|')[0]); });
+            // order of caregiver - end
+
+            // Showing the container in edit mode if caregiver details available
+            for (i=1; getValue(i+'-orderId.value') &amp;&amp; i &lt; $maxNumOfCaregiver+1; i++) {
+
+                // order of caregiver - start
+                var caregiverArray = caregiverList[i-1].split('|');
+
+                // set wIds
+                var wRelationshipId = 30 + (12 * i);
+                var wHivStatusId = 34 + (12 * i);
+                var wHivCareStatusId = 36 + (12 * i);
+
+                if (null != caregiverArray[0]) {
+                    setValue(i+'-orderId.value', caregiverArray[0]);
+                }
+                if (null != caregiverArray[1]) {
+                    setValue(i+'-caregiverNameId.value', caregiverArray[1]);
+                }
+                if (caregiverArray[2]) {
+                    jQuery('input[name=w'+wRelationshipId+'][value='+caregiverArray[2]+']').prop('checked',true);
+                }
+                if (caregiverArray[2] == $otherConceptId) {
+                    if (null != caregiverArray[3]) {
+                        setValue(i+'-relationshipTextFieldId.value', caregiverArray[3]);
+                    }
+                }
+                if (caregiverArray[4]) {
+                    jQuery('input[name=w'+wHivStatusId+'][value='+caregiverArray[4]+']').prop('checked',true);
+                }
+                if (caregiverArray[4] == $positiveConceptId) {
+                    if (caregiverArray[5]) {
+                        jQuery('input[name=w'+wHivCareStatusId+'][value='+caregiverArray[5]+']').prop('checked',true);
+                    }
+                }
+                caregiverArray = "";
+                // order of caregiver - end
+
+                jQuery('#'+i+'-toggleContainer').show();
+
+                // show current Add Caregiver button
+                if (i == 1) {
+                    jQuery('#'+i+'-addEntry').show();
+                } else if (i > 1) {
+                    var tempId = i - 1;
+                    // hide the previous Add Caregiver button
+                    jQuery('#'+tempId+'-addEntry').hide();
+                }
+                // hide the last Add Caregiver button
+                if (i == $maxNumOfCaregiver) {
+                    jQuery('#'+i+'-addEntry').hide();
+                }
+            }
+
+            jQuery('#caregiverSupportId').click(function() {
+                if (getValue('caregiverSupportId.value') == $yesConceptId) {
+                    jQuery('#1-toggleContainer').show();
+                    setValue('1-orderId.value', 1);
+                }
+            });
+
+            jQuery('button.addEntry').click(function() {
+                var currentId = parseFloat(this.id);
+                var nextId = currentId + 1;
+
+                var tempOrderId = nextId + '-orderId.value';
+                setValue(tempOrderId, nextId);
+
+                var tempAddEntryId = "#" + currentId + "-addEntry";
+                jQuery(tempAddEntryId).hide();
+
+                var tempToggleContainerId = "#" + nextId + "-toggleContainer";
+                jQuery(tempToggleContainerId).show();
+
+                if (currentId == ($maxNumOfCaregiver - 1)) {
+                    var lastAddEntryId = '#' + $maxNumOfCaregiver + '-addEntry';
+                    jQuery(lastAddEntryId).hide();
+                }
+
+                return false;
+            });
+
+            jQuery('button.removeEntry').click(function() {
+                var currentId = parseFloat(this.id);
+
+                // remove element from caregiverList
+                caregiverList = removeCaregiver(caregiverList, concatenateCaregiverDetails(currentId));
+
+                var currentToggleContainerId = "#" + currentId + "-toggleContainer";
+                jQuery(currentToggleContainerId).hide();
+                jQuery(':input:not(:button)', currentToggleContainerId).val([]);
+
+                // Reassign the orderId of caregiver
+                var j = 1;
+                for (c of caregiverList) {
+                    setValue(c[0]+'-orderId.value', j);
+                    j++;
+                }
+
+                // set caregiverSupport to 'No' if all caregivers deleted
+                if (caregiverList.length == 0 &amp;&amp; currentId == 1) {
+                    jQuery('input[name=w36][value=1066]').prop('checked',true);
+                }
+
+                return false;
+            });
+
+            // Vaccine Name changes
+            // set size of lot input box
+            jQuery("span[id$='-lotId']").each(function() {
+                jQuery(this).css('margin-left','10px');
+                jQuery(this).children().attr('size','15');
+            });
+            // Add/Remove Vaccines - start
+            function concatenateVaccine(i) {
+                return getValue(i+'-vacOrderId.value') + '|' + getValue(i+'-vacNameId.value') + '|' +
+                        getValue(i+'-vacDateId.value') + '|' + getValue(i+'-vacDateEstId.value') + '|' +
+                        getValue(i+'-vacLotNumId.value');
+            }
+            function removeVaccine(arr,item) { return arr.filter(f => f !== item); }
+            for (let i=1; getValue(i+'-vacOrderId.value') &amp;&amp; i &lt; $maxNumOfVaccine+1; i++) {
+                vaccineList.push(concatenateVaccine(i));
+            }
+            // Sort the vaccine list to display in order
+            vaccineList.sort(function(a,b) { return (a.split('|')[0] - b.split('|')[0]); });
+            // Showing the container in edit mode if data is present
+
+            for (let i=1; getValue(i+'-vacOrderId.value') &amp;&amp; i &lt; $maxNumOfVaccine+1; i++) {
+                // order of vaccine - start
+                let vaccineArray = vaccineList[i-1].split('|');
+
+                if (null != vaccineArray[0]) { setValue(i+'-vacOrderId.value', vaccineArray[0]); }
+                if (null != vaccineArray[1]) { setValue(i+'-vacNameId.value', vaccineArray[1]); }
+                if (null != vaccineArray[2]) { setValue(i+'-vacDateId.value', vaccineArray[2]); }
+                if (null != vaccineArray[3]) { setValue(i+'-vacDateEstId.value', vaccineArray[3]); }
+                if (null != vaccineArray[4]) { setValue(i+'-vacLotNumId.value', vaccineArray[4]); }
+                vaccineArray = "";
+                // order of vaccine - end
+
+                jQuery('#'+i+'-toggleVacContainer').show();
+
+                // show current Add vaccine button
+                if (i == 1) { jQuery('#1-addVaccine').show(); }
+                else if (i > 1) {
+                    let tempId = i - 1;
+                    // hide the previous Add vaccine button
+                    jQuery('#'+tempId+'-addVaccine').hide();
+                }
+                // hide the last Add vaccine button
+                if (i == $maxNumOfVaccine) { jQuery('#'+i+'-addVaccine').hide(); }
+
+                isVaccineDataEmpty = false;
+            }
+            if (isVaccineDataEmpty) { jQuery('#1-toggleVacContainer').show(); setValue('1-vacOrderId.value',1); }
+            jQuery('button.addVaccine').click(function() {
+                let currentId = parseFloat(this.id);
+                let nextId = currentId + 1;
+
+                let tempOrderId = nextId + '-vacOrderId.value';
+                setValue(tempOrderId, nextId);
+
+                let tempAddEntryId = "#" + currentId + "-addVaccine";
+                jQuery(tempAddEntryId).hide();
+
+                let tempToggleContainerId = "#" + nextId + "-toggleVacContainer";
+                jQuery(tempToggleContainerId).show();
+
+                if (currentId == ($maxNumOfVaccine - 1)) {
+                    let lastAddEntryId = '#' + $maxNumOfVaccine + '-addVaccine';
+                    jQuery(lastAddEntryId).hide();
+                }
+
+                return false;
+            });
+            jQuery('button.removeVaccine').click(function() {
+                let currentId = parseFloat(this.id);
+                let previousId = currentId - 1;
+
+                // remove element from vaccineList
+                vaccineList = removeVaccine(vaccineList, concatenateVaccine(currentId));
+
+                let currentToggleContainerId = "#" + currentId + "-toggleVacContainer";
+                jQuery(currentToggleContainerId).hide();
+                jQuery(':input:not(:button)', currentToggleContainerId).val([]);
+
+                // show previous add entry button if we remove current vaccine
+                let tempAddEntryId = "#" + currentId + "-addVaccine";
+                if (jQuery(tempAddEntryId).css('display') != 'none') {
+                    let previousAddEntryId = "#" + previousId + "-addVaccine";
+                    jQuery(previousAddEntryId).show();
+                }
+
+                return false;
+            });
+            // Add/Remove Vaccines - end
+
+        });
+    </script>
+
+</htmlform>

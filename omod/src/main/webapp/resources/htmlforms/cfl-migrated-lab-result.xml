@@ -1,0 +1,57 @@
+<htmlform formUuid="42a3bc5f-e77c-41cf-8712-d466effae565" formName="CfL Migrated Lab Result Form"
+          description="CfL Migrated Lab Result" formVersion="1.0">
+
+    <style>
+		.section {
+			border: 1px solid #009d8e;
+			padding: 2px;
+			text-align: left;
+			margin-bottom: 1em;
+		}
+		.sectionHeader {
+			background-color: $headerColor;
+			color: white;
+			display: block;
+			padding: 2px;
+			font-weight: bold;
+		}
+		table.baseline-aligned td {
+			vertical-align: baseline;
+			cursor: default !important;
+		}
+		table thead{
+            font-weight: bold;
+            font-size: 20px !important;
+        }
+		button.cancel {
+            background: none !important;
+            border: 1px solid #00455c !important;
+            color: #00455c !important;
+            margin-bottom: 10px;
+        }
+	</style>
+
+    <h2>Migrated Lab Results</h2>
+    <button type="button" class="cancel">Return</button>
+    <section headerLabel="Lab Results">
+        <table class="baseline-aligned">
+            <thead>
+            <tr>
+                <td>Date<span style="font-size: 15px">(DD/MM/YYYY)</span></td>
+                <td>Name</td>
+                <td>Value</td>
+            </tr>
+            </thead>
+            <tbody>
+                <lookup complexExpression="#foreach($obsLabRes in $fn.allObs('bf8f4037-55f7-461f-8c26-4ecdff788796'))
+                    &lt;tr&gt;
+                        &lt;td&gt;#set($strDateTime = $obsLabRes.obsDatetime + '') #set($strDate = $strDateTime.substring(0,$strDateTime.indexOf(' '))) $strDate.substring(8,10)/$strDate.substring(5,7)/$strDate.substring(0,4)&lt;/td&gt;
+                        &lt;td&gt;$!obsLabRes.accessionNumber&lt;/td&gt;
+                        &lt;td&gt;&lt;span class='value'&gt;$!obsLabRes.valueText&lt;/span&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                #end"/>
+            </tbody>
+        </table>
+    </section>
+    <button type="button" class="cancel">Return</button>
+</htmlform>

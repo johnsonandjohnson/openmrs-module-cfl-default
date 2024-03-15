@@ -1,0 +1,9 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "REST API for CfL Default Module.",
+    "version" : "v1",
+    "title" : "CfL Default Module REST API"
+  },
+  "basePath" : "/openmrs/ws"
+}

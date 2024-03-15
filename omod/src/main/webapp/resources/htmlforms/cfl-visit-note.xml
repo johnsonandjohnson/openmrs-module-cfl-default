@@ -1,0 +1,3252 @@
+<htmlform formName="Medical Visit Note" formUuid="k65f120a-04ec-11e3-8780-2b40bef9a44b" formEncounterType="968789ca-e9c4-492f-b1dc-101fd1aa2026" formVersion="1.0">
+  <uiInclude provider="cfl" css="htmlForm.css"/>
+  <!--Constants used in the form-->
+
+  <macros>
+    <macro key="htmlFormIdKey" value="16" />
+    <macro key="notDoneConceptId" value="166658" />
+    <macro key="maxNumOfMedicationEntry" value="10" />
+    <macro key="maxNumOfDetailsEntry" value="5" />
+  </macros>
+
+  <!--Post export need to verify below concepts
+          1)In amtOfMedicationRefSpanId span - Encounter type(Visit Note)/Amount of medication provided concept uuid
+          2)In ifMode mode="EDIT" - $fn.latestEncounter('<Encounter type>')
+      -->
+
+  <head>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+  </head>
+
+  <style type="text/css">
+    /** HTML Forms default styles **/
+    #htmlform {
+      font-family: CircularStd;
+      display: flex;
+      padding: 20px;
+      background-color: white;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    #htmlform htmlform {
+      width: 100%;
+    }
+
+    #htmlform htmlform h2 {
+      color: #333333;
+    }
+
+    #htmlform htmlform h1,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: inherit !important;
+    }
+
+    #htmlform htmlform input,
+    #htmlform htmlform label {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    #htmlform htmlform table {
+      margin: 10px 0;
+    }
+
+    #htmlform htmlform table tr {
+      padding: 5px 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.15) !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
+    }
+
+    #htmlform htmlform table td {
+      background-color: white !important;
+      cursor: default;
+      padding: 20px 0;
+    }
+
+    #htmlform htmlform table td[style*="display: none;"] {
+      display: table-cell !important;
+    }
+
+    #htmlform htmlform table td[style*="display: none;"] * {
+      display: none;
+    }
+
+    #htmlform htmlform .section {
+      border: none;
+      padding: 0;
+    }
+
+    #htmlform htmlform input,
+    #htmlform htmlform select,
+    #htmlform htmlform textarea,
+    #htmlform htmlform ul.select {
+      background-color: white;
+    }
+
+    #htmlform htmlform button,
+    #htmlform htmlform input[type="button"] {
+      font-family: CircularStd;
+      font-size: 11px !important;
+      color: white;
+      text-transform: uppercase;
+      border: 1px solid #6c757d !important;
+      padding: 0.5rem 1.25rem !important;
+      margin-right: 0.75rem !important;
+      border-radius: 4px !important;
+      line-height: 1.5;
+    }
+
+    #htmlform htmlform button.confirm,
+    #htmlform htmlform input.confirm {
+      background: #00455c;
+      border: 1px solid #6c757d !important;
+      font-size: 11px !important;
+      color: white !important;
+      display: flex;
+    }
+
+    #htmlform htmlform button.cancel,
+    #htmlform htmlform input.cancel {
+      background: none !important;
+      border: 1px solid #00455c !important;
+      color: #00455c !important;
+    }
+
+    ul.ui-autocomplete {
+      border-radius: 0;
+      max-height: 300px;
+      max-width: calc(50% - 100px);
+      overflow: auto;
+    }
+
+    ul.ui-autocomplete li.ui-menu-item a {
+      border-radius: 0;
+      border: none;
+      margin: -1px;
+    }
+
+    ul.ui-autocomplete li.ui-menu-item a.ui-state-focus,
+    ul.ui-autocomplete li.ui-menu-item a.ui-state-hover {
+      background: #e4e7e7 !important;
+    }
+
+    #htmlform htmlform input,
+    #htmlform htmlform select {
+      color: inherit !important;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075) !important;
+    }
+
+    #htmlform htmlform input:focus,
+    #htmlform htmlform select:focus {
+      outline: none !important;
+      border: 1px solid #aec2d5 !important;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+        0 0 8px rgba(102, 175, 233, 0.6) !important;
+    }
+
+    #htmlform htmlform #viralSymbolId {
+        margin-left: 0.7rem;
+      }
+
+    #htmlform htmlform #viralSymbolId.custom-select-style select {
+      min-width: 173px !important;
+      min-height: 31px !important;
+      border: 1px solid #aec2d5 !important;
+      padding: 6.4px 10px !important;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+        0 0 8px rgba(102, 175, 233, 0.6) !important;
+      align-items: baseline;
+    }
+
+    #ui-datepicker-div {
+      color: #2b3640;
+    }
+
+    #ui-datepicker-div .ui-datepicker-header {
+      background: none;
+      border: none;
+    }
+
+    #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
+    #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next {
+      background: none;
+      border: none;
+    }
+
+    #ui-datepicker-div .ui-datepicker-calendar tr td {
+      background: inherit !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-calendar tr td:hover {
+      background: inherit !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-default {
+      background: white !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-hover {
+      background: #e4e7e7 !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-active {
+      background: #00455c !important;
+      color: white;
+    }
+
+    #ui-datepicker-div .ui-datepicker-calendar tr td a.ui-state-highlight {
+      border-color: #d3d3d3;
+    }
+
+    #ui-datepicker-div
+      .ui-datepicker-calendar
+      tr
+      td
+      a.ui-state-highlight.ui-state-hover {
+      border-color: #999;
+    }
+
+    .patient-header .value {
+      color: inherit;
+      font-weight: inherit;
+    }
+
+    .mentalHealthYesEvalSection select {
+      min-width: 80%;
+    }
+
+    .sectionHeader {
+      color: #00455c;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .single-line {
+      display: flex;
+      align-items: baseline;
+    }
+
+    .single-line-fixed-width {
+      display: flex;
+      align-items: baseline;
+      width: 150px;
+    }
+
+    .single-line-fixed-width-pe {
+      display: flex;
+      align-items: baseline;
+      width: 180px;
+    }
+
+    .append-to-value {
+      margin: 0px 5px;
+    }
+
+    .separator {
+      padding: 10px;
+    }
+
+    hr {
+      display: block;
+      clear: both;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    div.left-align {
+      display: flex;
+    }
+
+    #buttons {
+      padding-top: 20px;
+    }
+
+    .error {
+      color: red;
+      padding: 5px;
+    }
+
+    select {
+      width: 100px;
+    }
+
+    .vaccination-details-section, .mental-health-details-section {
+      margin-bottom: 20px;
+    }
+
+    .vaccination-whole-section {
+      margin-top: 10px;
+    }
+
+    .vaccination-buttons, .medication-buttons {
+      margin-left: 1rem;
+      top: 25px;
+    }
+
+    .mental-health-buttons {
+      margin-top: auto;
+      margin-left: 1rem;
+    }
+
+    .relative {
+      position: relative;
+    }
+
+    .vaccination-date-received, .mental-health-specify {
+      margin-right: 10px;
+    }
+
+    .single-health-section {
+      margin-bottom: 15px;
+    }
+
+    .mental-health-specify select{
+      width: 300px
+    }
+
+    .mental-health-medical-history input {
+      width: 300px
+    }
+
+    .display-none {
+      display: none;
+    }
+
+    .modal-body {
+      width: 1000px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      /* width: 100%;
+      height: 100%; */
+      width: 1100px;
+      height: 600px;
+      border: 3px solid black;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      /* padding: 20px; */
+    }
+
+    .popup-content {
+      background-color: #fff;
+      padding: 10px;
+      /* position: relative; */
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .xIcon {
+      float: right;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .titleDiv {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      color: #00455c;
+      font-size: 20px;
+    }
+
+    .sectionSeparator {
+      height: 20px;
+      background-color: #F8F8F8;
+    }
+
+    .showHistoryButton {
+      float: right;
+      background: white !important;
+      color: #00455c !important;
+    }
+
+    .medication-input input {
+      margin-right: 20px;
+      width: 400px;
+    }
+
+    .dateInput input {
+      width: 150px;
+    }
+
+    .medication-buttons {
+      margin-left: 1rem;
+      top: 25px;
+    }
+
+    .estimatedCheckboxSpan {
+      margin-right: 20px;
+      margin-top: auto;
+    }
+
+    .infectionsSubTitle {
+      color: #00455c;
+      font-size: 15px;
+    }
+
+    .adherenceInfoIcon {
+      margin-left: 10px;
+    }
+
+    .historyTable td {
+      padding-left: 10px !important;
+    }
+
+    #htmlform htmlform table.historyTable tr:nth-child(odd) td {
+      background: #F4F4F4 !important;
+    }
+
+    #htmlform htmlform table.historyTable th {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .dataTables_paginate {
+      cursor: pointer;
+      padding-bottom: 10px;
+    }
+
+    .paginate_button  {
+      padding: 5px;
+    }
+
+    .paginate_button.current {
+      font-weight: bold;
+      font-size: 18px;
+      border: 1px solid #007FFF
+    }
+
+    .artStatusReasonDiv {
+      margin-left: 20px;
+    }
+
+    #htmlform htmlform button.plusMinus {
+      border: none !important;
+      padding: 0 !important;
+      width: 30px;
+      height: 30px;
+      background-color: #00455C;
+      color: #fff;
+      font-size: 20px !important;
+      cursor: pointer;
+    }
+
+  </style>
+
+  <span id="notDetectedConcept" style="display: none">
+      <lookup
+      complexExpression="#set($notDetectedConcept = $fn.getConcept('1302AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'))
+          ${notDetectedConcept.conceptId}
+      "
+      />
+  </span>
+
+  <span id="equalsSignConceptId" style="display: none">
+      <lookup
+      complexExpression="#set($equalsSignConceptId = $fn.getConcept('17ac6790-3b1d-4770-81bb-c8eed68ba3a8'))
+          ${equalsSignConceptId.conceptId}
+      "
+      />
+  </span>
+
+  <!--Fetch last visit details, Encounter type(Medical Visit Note)/Support System -->
+  <ifMode mode="ENTER">
+    <span id="previousVisitSpanId" style="display: none">
+      <lookup
+        complexExpression="
+              #set( $prevEnc = $fn.latestEncounter('5f0391be-e46f-446d-8e2e-d548fc264214') )
+
+              #set( $ssCodedList = $fn.allObs($prevEnc, 'a10a1465-c91d-4e10-9580-2fb8958c6471') )
+              #set( $ssSize = $ssCodedList.size() )
+              #if( $ssSize >= 1) #set( $checkedValue0 = $ssCodedList.get(0).valueCoded.name ) #end
+              #if( $ssSize >= 2) #set( $checkedValue1 = $ssCodedList.get(1).valueCoded.name ) #end
+              #if( $ssSize >= 3) #set( $checkedValue2 = $ssCodedList.get(2).valueCoded.name ) #end
+              #if( $ssSize >= 4) #set( $checkedValue3 = $ssCodedList.get(3).valueCoded.name ) #end
+              #if( $ssSize >= 5) #set( $checkedValue4 = $ssCodedList.get(4).valueCoded.name ) #end
+              #set( $prevEncDateTime = $prevEnc.encounterDatetime )
+
+              $!{ssSize}|$!{checkedValue0}|$!{checkedValue1}|$!{checkedValue2}|$!{checkedValue3}|$!{checkedValue4}|$!{prevEncDateTime}|$!{prevEnc}"
+      />
+    </span>
+    <script type="text/javascript">
+      jQuery(document).ready(function() {
+        const equalsSignConceptId = jQuery('#equalsSignConceptId').text().trim();
+        jQuery('#viralSymbolId select').val(equalsSignConceptId);
+      });
+    </script>
+  </ifMode>
+
+  <span id="dateOfPreviousConsultationSpan" style="display: none">
+    <lookup
+    complexExpression="
+      #set($previousConsultationDate = $medicalVisitNoteFunctions.getPreviousConsultationDate($encounter, $patient))
+
+      |$!{previousConsultationDate}
+    "
+  />
+  </span>
+
+  <span>
+    <lookup complexExpression = "
+        &lt;script type=&quot;text/javascript&quot;>
+            try {
+                window.pastMedicalVisitNoteAllData = $medicalVisitNoteFunctions.getPastEncounterData($encounter, $patient);
+            } catch (e) {
+                window.pastMedicalVisitNoteAllData = [];
+            }
+        &lt;/script>
+    "/>
+  </span>
+
+  <span id="adherenceAssessmentScoreSpan" style="display: none">
+    <lookup
+    complexExpression="
+      #set( $allPatientRefillVisitEncounters = $fn.allEncounters('bce100cf-db7f-496a-968f-e0f686397912') )
+
+      #if($encounter)
+        #set($currentEncounterDatetime = $encounter.encounterDatetime)
+      #else
+        #set($currentEncounterDatetime = $visit.startDatetime)
+      #end
+
+      #set($listSize = $allPatientRefillVisitEncounters.size())
+
+      #set ($previousRefillEncounter = '')
+      #set ($previousRefillEncounterDate = '')
+      #foreach($enc in $allPatientRefillVisitEncounters)
+        #set ($encDate = $enc.encounterDatetime)
+        #if ( $enc.encounterId != $encounter.encounterId
+              &amp;&amp; $enc.encounterType.uuid == 'bce100cf-db7f-496a-968f-e0f686397912'
+              &amp;&amp; $currentEncounterDatetime.toString().compareTo($enc.encounterDatetime.toString()) > 0
+              &amp;&amp; $encDate.toString().compareTo($previousRefillEncounterDate.toString() ) > 0 )
+          #set ($previousRefillEncounterDate = $encDate)
+          #set ($previousRefillEncounter = $enc)
+        #end
+      #end
+
+      #set ($adherenceScoreObs = $fn.getObs($previousRefillEncounter, 'ff16180b-db7e-4423-a925-b29c1b1f2c0f'))
+      #set ($adherenceValue = $adherenceScoreObs.valueNumeric)
+
+      $!{adherenceValue}
+    "
+  />
+  </span>
+
+  <!--Encounter type(Visit Note)/Amount of medication provided concept uuid from CFL Medicine Refill Visit Note form-->
+  <span id="amtOfMedicationRefSpanId" style="display: none">
+    <lookup
+      complexExpression="
+              #set( $refillVisitEnc = $fn.latestEncounter('d7151f82-c1f3-4152-a605-2f9ea7414a79') )
+              #set( $encDateTime = $refillVisitEnc.encounterDatetime )
+              #set( $obs = $fn.getObs($refillVisitEnc, 'fe3e977e-a904-4899-b8ea-f7d40afc196f') )
+              #if( $obs )
+                  #set( $amtOfMedication = $obs.valueText )
+              #end
+              $!{amtOfMedication}|$!{encDateTime}"
+    />
+  </span>
+
+  <!--Encounter type(Medical Visit Note)-->
+  <ifMode mode="EDIT" include="false">
+    <lookup
+      complexExpression='
+              #set( $encounter = 0 )
+              #set( $encounter = $fn.latestEncounter(&apos;5f0391be-e46f-446d-8e2e-d548fc264214&apos;) )
+              #if( $encounter != 0 )
+                  &lt;script type="text/javascript"&gt;
+                      var hostServer = window.location.protocol + "//" + window.location.host;
+                      var htmlManageFormLink = hostServer + "/openmrs/module/htmlformentry/htmlForm.form?id=" + $htmlFormIdKey;
+                      var editHtmlFormLink = hostServer + "/openmrs/htmlformentryui/htmlform/editHtmlFormWithStandardUi.page?patientId=$patient.patientId&amp;encounterId=$encounter.encounterId;
+
+                      if (window.location.href != htmlManageFormLink ) {
+                          window.location = editHtmlFormLink;
+                      }
+                  &lt;/script&gt;
+              #end
+          '
+    />
+  </ifMode>
+
+  <ifMode mode="VIEW">
+    <script type="text/javascript">
+      // handle displaying the bmi when in VIEW mode
+      jQuery(function() {
+          // we have to iterate through in case there are multiple vitals forms
+          // displayed on a single page
+          jQuery('htmlform').each(function(index, form) {
+              jQuery(form).find('#calculated-bmi-continue').hide();
+              jQuery(form).find('#no-calculated-bmi').hide();
+
+              let wt = jQuery(form).find('#weight').find('.value').text();
+              let ht = jQuery(form).find('#height').find('.value').text();
+
+              let bmi = calculateBmi(wt, ht);
+
+              if (bmi != null &amp;&amp; !isNaN(bmi)) {
+                  jQuery(form).find('#calculated-bmi-wrapper').show();
+                  jQuery(form).find('#calculated-bmi').html(bmi.toFixed(1));
+              }
+          });
+      });
+    </script>
+  </ifMode>
+
+  <div>
+    <p class="display-none">
+      <label>
+        <uimessage code="coreapps.patientDashBoard.provider"/>
+      </label>
+      <span>
+        <encounterProvider default="currentUser" required="true"/>
+      </span>
+    </p>
+    <p class="display-none">
+      <label>
+        <uimessage code="coreapps.patientDashBoard.location"/>
+      </label>
+      <span>
+        <encounterLocation default="SessionAttribute:emrContext.sessionLocationId"/>
+      </span>
+    </p>
+  </div>
+
+  <br />
+  <section headerLabel="Capture Vitals">
+  <button id="vitals_showHistoryButton" class="showHistoryButton">View history</button>
+  <hr />
+  <div class="row">
+    <div class="col-md-3">
+      Height<obs
+        id="height"
+        conceptId="CIEL:5090"
+        showUnits="uicommons.units.centimeters"
+        unitsCssClass="append-to-value"
+        class="single-line"
+      />
+    </div>
+    <div class="col-md-3">
+      Weight<obs
+        id="weight"
+        conceptId="CIEL:5089"
+        showUnits="uicommons.units.kilograms"
+        unitsCssClass="append-to-value"
+        class="single-line"
+      />
+    </div>
+    <div class="col-md-3">
+      Temperature<obs
+        id="temperature"
+        conceptId="CIEL:5088"
+        showUnits="uicommons.units.degreesCelsius"
+        unitsCssClass="append-to-value"
+        class="single-line"
+      />
+    </div>
+    <div id="calculated-bmi-wrapper" class="col-md-3">
+      Calculated BMI <br />
+      <span id="no-calculated-bmi">
+        <i>BMI is calculated based on input from Height and Weight</i>
+      </span>
+      <span id="calculated-bmi" />
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-3">
+      Pulse<obs
+        id="heart_rate"
+        conceptId="CIEL:5087"
+        showUnits="uicommons.units.perMinute"
+        unitsCssClass="append-to-value"
+        class="single-line"
+      />
+    </div>
+    <div class="col-md-3">
+      Respiratory rate<obs
+        id="respiratory_rate"
+        conceptId="CIEL:5242"
+        showUnits="uicommons.units.perMinute"
+        unitsCssClass="append-to-value"
+        class="single-line"
+      />
+    </div>
+    <div class="col-md-3">
+      Blood Pressure
+      <div class="single-line">
+        <obs id="bp_systolic" conceptId="CIEL:5085" />
+        <p class="separator">/</p>
+        <obs id="bp_diastolic" conceptId="CIEL:5086" />
+      </div>
+    </div>
+    <div class="col-md-3">
+      Blood oxygen saturation<obs
+        id="o2_sat"
+        conceptId="CIEL:5092"
+        showUnits="uicommons.units.percent"
+        unitsCssClass="append-to-value"
+        class="single-line"
+      />
+    </div>
+  </div>
+  </section>
+  <hr class="sectionSeparator"/>
+     <!--If patient is female START-->
+     <includeIf velocityTest="$patient.gender == 'F'">
+      <section headerLabel="Pregnancy Details">
+        <hr />
+        <div class="row">
+          <div class="col-md-4">
+            <obs
+              id="pregnancyStatusId"
+              conceptId="5272AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              labelText="Pregnancy Status"
+              style="yes_no"
+              class="single-line"
+            >
+              <controls>
+                <when value="true" thenDisplay="#pregnancyDetailsYesSection" />
+                <when value="false" thenDisplay="#pregnancyDetailsNoSection" />
+              </controls>
+            </obs>
+          </div>
+        </div>
+        <!--If Yes then -->
+        <div id="pregnancyDetailsYesSection" class="row">
+          <div class="col-md-3">
+            <obs
+              conceptId="5624AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              labelText="Gravida"
+            />
+          </div>
+          <div class="col-md-3">
+            <obs
+              conceptId="1053AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              labelText="Parity"
+            />
+          </div>
+          <div class="col-md-3">
+            <obs
+              conceptId="ef8c1e00-bb69-46d8-8b13-219f8336f490"
+              labelText="Last menstrual period (LMP)"
+            />
+          </div>
+          <div class="col-md-3">
+            <obs
+              conceptId="211dbcfb-56aa-4625-8a8c-0bdd2d2694f7"
+              labelText="Estimated date of delivery (EDD)"
+            />
+          </div>
+        </div>
+        <!--If No then -->
+        <div id="pregnancyDetailsNoSection" class="row">
+          <div class="col-md-4">
+            Family planning status <br />
+            <obs
+              id="familyPlanningId"
+              conceptId="160653AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              style="radio"
+              class="single-line"
+              answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,73ca994b-c072-4e00-b474-3729b5447cb8"
+            >
+              <controls>
+                <when
+                  value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  thenDisplay="#familyPlanningYesSection"
+                />
+                <when
+                  value="1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  thenDisplay="#familyPlanningNoSection"
+                />
+                <when
+                  value="73ca994b-c072-4e00-b474-3729b5447cb8"
+                  thenDisplay="#familyPlanningWantsToSection"
+                />
+              </controls>
+            </obs>
+          </div>
+          <!--If Family planning status, Yes or wants to then-->
+          <div id="familyPlanningYesSection" class="col-md-4">
+            Family planning method <br />
+            <repeat
+              with="['160570AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Emergency contraceptive pills'],
+                                      ['738f9cac-ad32-4431-969c-6bc1f2e4ddd2','Oral contraceptive pills'],
+                                      ['dcd05fb4-5c86-4c0a-9b33-ba5c1fb6fbfb','Injectable'],
+                                      ['162422AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Implant'],
+                                      ['a359475a-9093-4931-9eec-d2fba3fc8931','Intrauterine device (IUD)'],
+                                      ['22c453b2-0b7f-470d-a569-f76fecb82cfd','Lactation amenorrhea method'],
+                                      ['5278AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Diaphragm'],
+                                      ['4dbc44e6-4a02-4d04-a0ea-e1f422b5612e','Fertility awareness'],
+                                      ['dd4138e3-1680-4ff9-8c13-94ef3cea3bfa','Tubal ligation'],
+                                      ['190AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Condoms'],
+                                      ['fb62d506-1776-4eb4-a692-6127d69bcf11','Partner Vasectomy'],
+                                      ['b7216e81-e44a-4539-b9bc-7415fcd50621','Undecided']"
+            >
+              <obs
+                conceptId="6955e303-4f6e-4df4-9497-bf518ad83a35"
+                answerConceptId="{0}"
+                style="checkbox"
+              />
+            </repeat>
+          </div>
+          <!--If Family planning status, Wants to then-->
+          <div id="familyPlanningWantsToSection" class="col-md-4">
+            Family planning method <br />
+            <repeat
+              with="['160570AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Emergency contraceptive pills'],
+                                      ['738f9cac-ad32-4431-969c-6bc1f2e4ddd2','Oral contraceptive pills'],
+                                      ['dcd05fb4-5c86-4c0a-9b33-ba5c1fb6fbfb','Injectable'],
+                                      ['162422AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Implant'],
+                                      ['a359475a-9093-4931-9eec-d2fba3fc8931','Intrauterine device (IUD)'],
+                                      ['22c453b2-0b7f-470d-a569-f76fecb82cfd','Lactation amenorrhea method'],
+                                      ['5278AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Diaphragm'],
+                                      ['4dbc44e6-4a02-4d04-a0ea-e1f422b5612e','Fertility awareness'],
+                                      ['dd4138e3-1680-4ff9-8c13-94ef3cea3bfa','Tubal ligation'],
+                                      ['190AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Condoms'],
+                                      ['fb62d506-1776-4eb4-a692-6127d69bcf11','Partner Vasectomy'],
+                                      ['b7216e81-e44a-4539-b9bc-7415fcd50621','Undecided']"
+            >
+              <obs
+                conceptId="6955e303-4f6e-4df4-9497-bf518ad83a35"
+                answerConceptId="{0}"
+                style="checkbox"
+              />
+            </repeat>
+          </div>
+          <!--If Family planning status, No then-->
+          <div id="familyPlanningNoSection" class="col-md-4">
+            Reason <br />
+            <obs
+              id="pregReasonOtherId"
+              conceptId="c67787b9-9e35-4d6f-ac82-f60883a9fd1f"
+              style="radio"
+              answerConceptIds="0be9e1ee-bab6-4e4c-9c9f-1dd36ded9a30,2c091774-a03c-49b3-a94d-4db7a50a0108,159524AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,88e88e55-ea7a-4075-8447-ea2898d33da6"
+              answerLabels="Wants to get pregnant,Thinks cannot get pregnant,Not Sexually active,Other"
+              answerSeparator=""
+            >
+              <controls>
+                <when
+                  value="88e88e55-ea7a-4075-8447-ea2898d33da6"
+                  thenDisplay="#pregReasonOtherSpecifyDiv"
+                />
+              </controls>
+            </obs>
+            <!--If Reason = other then-->
+            <div id="pregReasonOtherSpecifyDiv" class="single-line">
+              Specify <obs conceptId="b2ed5f21-e244-477f-b4f7-12f5db8f3636" />
+            </div>
+          </div>
+        </div>
+      </section>
+      <hr class="sectionSeparator "/>
+    </includeIf>
+    <!--If patient is female END-->
+
+
+  <section headerLabel="Medical Assessment">
+    <hr />
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <obs
+            id="dateOfPreviousConsultationDiv"
+            conceptId="78e4ddc6-8fbc-43d6-a988-17b92bb5972e"
+            labelText="Date of previous consultation"
+          />
+        </div>
+        <div class="col-md-4">
+          Date today <encounterDate id="encounterDate" default="now" />
+        </div>
+      </div>
+      <hr />
+
+      <div class="row">
+        <div class="col-md-4">
+          <obs
+            id="admissionId"
+            conceptId="153fa356-cc9f-4f3c-96bf-c15854711a77"
+            labelText="Admission"
+            style="yes_no"
+            class="single-line"
+          >
+            <controls
+              ><when value="true" thenDisplay="#detailsSection1"
+            /></controls>
+          </obs>
+          <div id="detailsSection1">
+            <repeat>
+              <template>
+                <div id="{n}-toggleDetailsSection1" style="display: none">
+                  <obsgroup
+                    groupingConceptId="a8da5a79-f57c-4b43-8bde-0b2ad8429dd6"
+                  >
+                    <table>
+                      <tr>
+                        <td>
+                          <div style="display: none">
+                            <obs
+                              id="{n}-section1OrderId"
+                              conceptId="2d77291b-c6dc-44ce-8aa0-db6809f785f2"
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <obs
+                            id="{n}-section1DetailsId"
+                            conceptId="84f4a73b-a294-4f63-81eb-37664f8d1725"
+                            placeholder="Details"
+                          />
+                        </td>
+                        <td>
+                          <button id="{n}-section1DetailsRemoveId" class="removeDetailsSection1 plusMinus">-</button>
+                          <button id="{n}-section1DetailsAddId" class="addDetailsSection1 plusMinus">+</button>
+                        </td>
+                      </tr>
+                    </table>
+                  </obsgroup>
+                </div>
+              </template>
+              <render n="1" />
+              <render n="2" />
+              <render n="3" />
+              <render n="4" />
+              <render n="5" />
+            </repeat>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <obs
+            id="erTemporaryStayId"
+            conceptId="13b3a6a0-6af6-4151-8657-540e672b2bd6"
+            labelText="ER Temporary Stay"
+            style="yes_no"
+            class="single-line"
+          >
+            <controls
+              ><when value="true" thenDisplay="#detailsSection2"
+            /></controls>
+          </obs>
+          <div id="detailsSection2">
+            <repeat>
+              <template>
+                <div id="{n}-toggleDetailsSection2" style="display: none">
+                  <obsgroup
+                    groupingConceptId="43ae2233-50b2-4cf6-a069-047a4fa63496"
+                  >
+                    <table>
+                      <tr>
+                        <td>
+                          <div style="display: none">
+                            <obs
+                              id="{n}-section2OrderId"
+                              conceptId="2d77291b-c6dc-44ce-8aa0-db6809f785f2"
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <obs
+                            id="{n}-section2DetailsId"
+                            conceptId="8a179acc-106d-4ea7-aec6-937d90064dfa"
+                            placeholder="Details"
+                          />
+                        </td>
+                        <td>
+                          <button id="{n}-section2DetailsRemoveId" class="removeDetailsSection2 plusMinus">-</button>
+                          <button id="{n}-section2DetailsAddId" class="addDetailsSection2 plusMinus">+</button>
+                        </td>
+                      </tr>
+                    </table>
+                  </obsgroup>
+                </div>
+              </template>
+              <render n="1" />
+              <render n="2" />
+              <render n="3" />
+              <render n="4" />
+              <render n="5" />
+            </repeat>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <obs
+            id="outpatientVisitId"
+            conceptId="064a4134-85f2-408c-9110-1e1017c68749"
+            labelText="Outpatient Visit"
+            style="yes_no"
+            class="single-line"
+          >
+            <controls
+              ><when value="true" thenDisplay="#detailsSection3"
+            /></controls>
+          </obs>
+          <div id="detailsSection3">
+            <repeat>
+              <template>
+                <div id="{n}-toggleDetailsSection3" style="display: none">
+                  <obsgroup
+                    groupingConceptId="4b686752-fb49-4702-9e04-dc701aa11474"
+                  >
+                    <table>
+                      <tr>
+                        <td>
+                          <div style="display: none">
+                            <obs
+                              id="{n}-section3OrderId"
+                              conceptId="2d77291b-c6dc-44ce-8aa0-db6809f785f2"
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <obs
+                            id="{n}-section3DetailsId"
+                            conceptId="9a077286-d769-486e-8997-d6110a149bbe"
+                            placeholder="Details"
+                          />
+                        </td>
+                        <td>
+                          <button id="{n}-section3DetailsRemoveId" class="removeDetailsSection3 plusMinus">-</button>
+                          <button id="{n}-section3DetailsAddId" class="addDetailsSection3 plusMinus">+</button>
+                        </td>
+                      </tr>
+                    </table>
+                  </obsgroup>
+                </div>
+              </template>
+              <render n="1" />
+              <render n="2" />
+              <render n="3" />
+              <render n="4" />
+              <render n="5" />
+            </repeat>
+          </div>
+        </div>
+      </div>
+      <hr class="sectionSeparator "/>
+
+      <section headerLabel="Review of Medication">
+        <button id="medications_showHistoryButton" class="showHistoryButton">View history</button>
+        <hr />
+        <div class="row">
+          <div class="col-md">
+            <repeat>
+              <template>
+                <div id="{n}-toggleContainer" style="display: none">
+                  <obsgroup groupingConceptId="6a79d2b2-94e8-4a02-95de-9a201a513d53">
+                    <div id="computedAdherenceDiv" class="single-line">
+                      <obs
+                        id="{n}-reviewOfMedicationId"
+                        conceptId="b2afe66d-b5bd-42db-8813-86e514548326"
+                        answerClasses="Drug"
+                        style="autocomplete"
+                        labelText="Medication"
+                        class="relative medication-input"
+                      />
+                      <obs
+                        id="{n}-medicationStartDateId"
+                        conceptId="98f980c8-b352-4e5e-9a37-b5b0227317f4"
+                        labelText="Start date"
+                        class="relative dateInput"
+                      />
+                      <obs
+                        id="{n}-medicationStartDateEstId"
+                        conceptId="2467ac17-da8d-4e5f-b34f-f27b2b609b9f"
+                        style="checkbox"
+                        labelText="Estimated"
+                        class="single-line estimatedCheckboxSpan"
+                      />
+                      <obs
+                        id="{n}-medicationEndDateId"
+                        conceptId="529f345e-d80d-4038-80b4-1fc585afda33"
+                        allowFutureDates="true"
+                        labelText="End date"
+                        class="relative dateInput"
+                      />
+                      <span class="relative medication-buttons">
+                        <button id="{n}-removeEntry" class="removeEntry plusMinus">-</button>
+                        <button id="{n}-addEntry" class="addEntry plusMinus">+</button>
+                      </span>
+                    </div>
+                    <div style="display: none">
+                      <obs
+                        id="{n}-orderId"
+                        conceptId="2d77291b-c6dc-44ce-8aa0-db6809f785f2"
+                      />
+                    </div>
+                  </obsgroup>
+                </div>
+              </template>
+
+              <render n="1" />
+              <render n="2" />
+              <render n="3" />
+              <render n="4" />
+              <render n="5" />
+              <render n="6" />
+              <render n="7" />
+              <render n="8" />
+              <render n="9" />
+              <render n="10" />
+            </repeat>
+          </div>
+        </div>
+      </section>
+      <hr />
+
+    <section headerLabel="Self reported ART Compliance">
+    <hr />
+
+      <div class="row">
+        <div class="col-md single-line">
+          <span style="margin-right: 15px;">Select compliance: </span>
+          <obs
+            id="artComplianceId"
+            conceptId="79160eb6-69b4-4042-a8c9-19f55c049146"
+            style="radio"
+            class="single-line"
+            answers="0,25,50,75,95,100"
+            answerLabels="0%,25%,50%,75%,95%,100%"
+          />
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-md single-line">
+          <span style="margin-right: 15px;">Computed adherence (%): </span>
+          <obs
+            id="adherenceAssessmentId"
+            conceptId="ff16180b-db7e-4423-a925-b29c1b1f2c0f"
+          />
+          <div id="adherenceTooltipIconDiv" title="Computed adherence is calculated based on information from the last refill visit note. If 'Pills left' is entered, the formula is: (Pills provided last visit - Pills Left) divided by Pills that should have been taken. If 'Pills left is not filled out but 'Pills missed' is, then the formula is (Pills that should have been taken - Pills Missed) divided by Pills that should have been taken.">
+            <span class="fas fa-info-circle adherenceInfoIcon"></span>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <div class="row">
+        <div class="col-md single-line">
+          <div class="artStatusOptionsDiv single-line">
+            <span style="margin-right: 15px;">ART status: </span>
+            <obs
+              conceptId="9b859f2f-dea7-4776-961f-1787f46cbe52"
+              style="radio"
+
+            />
+         </div>
+          <div class="artStatusReasonDiv">
+            <obs
+              conceptId="10a32ab0-9e0f-4a50-8503-96d9f85136ed"
+              labelText="Reason:"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+    <hr class="sectionSeparator"/>
+
+    <section headerLabel="Infections report">
+    <hr />
+      <span class="infectionsSubTitle">TB Symptoms:</span>
+      <div class="row">
+        <div class="col-md-3">
+          <repeat
+            with="['91fd7ca2-3bec-4320-8ceb-f0d57939ae08', 'No Cough'],
+                      ['1488AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Non-Productive Cough'],
+                      ['5957AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Productive Cough']"
+          >
+            <obs
+              conceptId="03993d98-6235-44fe-938b-a154abf02cf2"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              style="checkbox"
+            />
+          </repeat>
+        </div>
+        <div class="col-md-3">
+          <repeat
+            with="['44390d16-98ff-43e4-907b-110c1929966f', 'Other Cough'],
+                      ['133027AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Night Sweats'],
+                      ['138905AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Hemoptysis']"
+          >
+            <obs
+              conceptId="03993d98-6235-44fe-938b-a154abf02cf2"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              style="checkbox"
+            />
+          </repeat>
+        </div>
+        <div class="col-md-3">
+          <repeat
+            with="['120749AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Chest Pain'],
+                      ['148035AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Back Pain'],
+                      ['5226AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Weakness']"
+          >
+            <obs
+              conceptId="03993d98-6235-44fe-938b-a154abf02cf2"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              style="checkbox"
+            />
+          </repeat>
+        </div>
+        <div class="col-md-3">
+          <repeat
+            with="['135595AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Loss of Appetite'],
+                      ['d757491b-f816-408f-897e-47d708297dc9', 'Difficulty Breathing']"
+          >
+            <obs
+              conceptId="03993d98-6235-44fe-938b-a154abf02cf2"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              style="checkbox"
+            />
+          </repeat>
+        </div>
+      </div>
+      <hr />
+      <span class="infectionsSubTitle">TB Screening:</span>
+      <div class="row">
+        <div class="col-md-4">
+          <obs
+            conceptId="b6b16457-d298-45fd-bf97-e25422887e3c"
+            style="radio"
+            answerSeparator=""
+            answerConceptIds="3194a6b9-5324-42f5-9981-d9bff25490d9,850367c7-44df-4f68-9647-8a682507a5f6,5acd1732-b6fc-4594-b2c9-c80a80d4be81"
+          />
+        </div>
+        <div class="col-md-3">
+          <obs
+            conceptId="b6b16457-d298-45fd-bf97-e25422887e3c"
+            style="radio"
+            answerSeparator=""
+            answerConceptIds="fff5fcfb-e438-4ec1-9bf0-91de6828f0b8,f0651f31-4651-44bf-8a20-655a31fd2c75"
+          />
+        </div>
+      </div>
+      <hr />
+
+      <span class="infectionsSubTitle">Opportunistic infections:</span>
+
+      <div class="row">
+        <div class="col-md-3">
+          <repeat
+            with="['112493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Syphilis'],
+                      ['116986AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Hepatitis C']"
+          >
+            <obs
+              conceptId="c35bdab3-0d0d-4538-90ea-a95349120362"
+              style="checkbox"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              class="single-line"
+            />
+          </repeat>
+        </div>
+        <div class="col-md-3">
+          <repeat
+            with="['114100AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Pneumonia'],
+                      ['120939AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Oropharyngeal candidiasis']"
+          >
+            <obs
+              conceptId="c35bdab3-0d0d-4538-90ea-a95349120362"
+              style="checkbox"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              class="single-line"
+            />
+          </repeat>
+        </div>
+        <div class="col-md-3">
+          <repeat
+            with="['111759AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Hepatitis B'],
+                      ['130022AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Pneumocystis']"
+          >
+            <obs
+              conceptId="c35bdab3-0d0d-4538-90ea-a95349120362"
+              style="checkbox"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              class="single-line"
+            />
+          </repeat>
+        </div>
+        <div class="col-md-3">
+          <repeat
+            with="['3fc4971f-5747-4c11-9222-ff2e4db329f7','CMV retinitis']"
+          >
+            <obs
+              conceptId="c35bdab3-0d0d-4538-90ea-a95349120362"
+              style="checkbox"
+              answerConceptId="{0}"
+              answerLabel="{1}"
+              class="single-line"
+            />
+          </repeat>
+          <div class="row">
+            <div class="col-md-6">
+              <obs
+                id="oppInfectOthersId"
+                conceptId="c35bdab3-0d0d-4538-90ea-a95349120362"
+                style="checkbox"
+                class="single-line"
+                answerConceptId="5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                answerLabel="Others"
+                commentFieldLabel=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  </section>
+
+  <hr class="sectionSeparator"/>
+  <section headerLabel="PE">
+    <button id="pe_showHistoryButton" class="showHistoryButton">View history</button>
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <repeat
+          with="['peGeneralId','7861918c-48c7-4702-b927-7dc1a0beceea','General','7d13f632-d94c-4114-ba94-b4ba51e25f20','c6f81c09-c915-4f6b-9d38-da1adae93848'],
+                                ['peCardiovascularId','eb19e008-e352-4f54-8567-8f57bbc3d164','Cardiovascular','74f3db8e-c71e-4f3e-ad99-2124241e09d3','51cb2255-88d9-4fbd-8913-7e138680007e'],
+                                ['peGastrointestinalId','085082da-f3e4-4b95-a4fd-501f712d3433','Gastrointestinal','166663AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','da538586-4138-4273-ac3e-f7eb08713e6b'],
+                                ['peReproductiveId','ed1dd86f-f4d1-4835-b156-6cd4c5c0e0b9','Reproductive','166665AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','c3ae6f8b-e759-4b4f-a36c-50a065ee763e'],
+                                ['peNeurologyId','165023AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Neurology','d88e8674-d5c9-4d54-bad4-fc65d654f6a2','85246a3b-9073-4d1f-a455-24792cf85e01'],
+                                ['peHematologyId','1a4b6127-25bc-4b12-adc2-509b61f8f670','Hematology-Oncology','cf319524-4f91-443c-a5fb-d11217132ee3','2791ff41-651f-41ea-98a7-5ec1621871b4']"
+        >
+          <div class="single-line">
+            <obs
+              id="{0}"
+              conceptId="ac799537-524e-4236-9acd-72a33e3b22a5"
+              style="checkbox"
+              class="single-line-fixed-width-pe"
+              answerConceptId="{1}"
+              answerLabel="{2}"
+              toggle="{0}-OptDivId"
+            />
+            <div id="{0}-OptDivId">
+              <obs
+                id="{0}-OptId"
+                conceptId="{3}"
+                style="radio"
+                class="single-line"
+                answerConceptIds="1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1116AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1118AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              >
+                <controls
+                  ><when
+                    value="1116AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    thenDisplay="#{0}-DetailsId"
+                  ></when
+                ></controls>
+              </obs>
+              <obs
+                id="{0}-DetailsId"
+                conceptId="{4}"
+                labelText="Details"
+                class="single-line"
+              />
+            </div>
+          </div>
+          <br />
+        </repeat>
+      </div>
+      <div class="col-md-6">
+        <br />
+        <repeat
+          with="['peHeentId','91325071-c770-49d7-a6e1-26a2f4455cc2','HEENT','7d8e04e6-f194-4ebe-8c68-edeb74277149','61759abc-e476-4508-8422-fb7a2f4f8cc3'],
+                                ['peRespiratoryId','0af312b8-2806-4252-bca4-7968f64de28c','Respiratory','166662AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','88128239-e71e-450f-bb63-050f9c1a54dd'],
+                                ['peGenitourinaryId','78e5daa6-0393-4e5f-a047-83f7c6581300','Genitourinary','e21034c3-3fa7-4d87-82da-b730bfc0156c','e2947a46-ce83-41ac-8fb5-498f1c88c76d'],
+                                ['peMusculoskeletalId','5297AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Musculoskeletal','3fdda0a1-8c50-43d2-99ed-7dadca8cd40b','94dbc638-433d-4fa2-9170-d3f58b51ab78'],
+                                ['peDermatologyId','165003AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Dermatology','43def4aa-f541-4e42-94e8-e3ab78f93e8e','a3339fb1-e0a7-45b4-90f9-bf320446dae5']"
+        >
+          <div class="single-line">
+            <obs
+              id="{0}"
+              conceptId="ac799537-524e-4236-9acd-72a33e3b22a5"
+              style="checkbox"
+              class="single-line-fixed-width-pe"
+              answerConceptId="{1}"
+              answerLabel="{2}"
+              toggle="{0}-OptDivId"
+            />
+            <div id="{0}-OptDivId">
+              <obs
+                id="{0}-OptId"
+                conceptId="{3}"
+                style="radio"
+                class="single-line"
+                answerConceptIds="1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1116AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1118AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              >
+                <controls
+                  ><when
+                    value="1116AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    thenDisplay="#{0}-DetailsId"
+                  ></when
+                ></controls>
+              </obs>
+              <obs
+                id="{0}-DetailsId"
+                conceptId="{4}"
+                labelText="Details"
+                class="single-line"
+              />
+            </div>
+          </div>
+          <br />
+        </repeat>
+      </div>
+    </div>
+  </section>
+  <hr class="sectionSeparator"/>
+
+  <section headerLabel="Behavioral Risk Assessment">
+    <hr />
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          Mental Health Evaluation <br />
+          <obs
+            id="mentalHealthYesEvalId"
+            conceptId="da67a5c2-39e2-4cfd-92a2-a407e064cd0e"
+            style="yes_no"
+            class="single-line"
+            yesLabel="Done"
+            noLabel="Not done"
+          >
+          </obs>
+        </div>
+
+        <div class="mental-health-details-section">
+          <repeat>
+            <template>
+              <obsgroup groupingConceptId="d88ecc57-dc35-46c0-bcf4-0a1aefa803f6">
+                <div id="{n}-singleHealthSection" class="single-line single-health-section">
+                    <obs id="{n}-mentalHealthSpecify" conceptId="1638aad5-4fd3-4b5c-ac68-6588c6c586a3" labelText="Specify" answerConceptSetIds="160177AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" class="relative mental-health-specify"/>
+                    <obs id="{n}-mentalHealthMedicalHistory" conceptId="62f00afd-e23f-458d-b7d4-049ed567c008" labelText="Medical History" class="relative mental-health-medical-history" />
+                    <span class="mental-health-buttons relative">
+                      <button id="{n}-addNewHealthIssue" class="add-new-mental-health-issue-button plusMinus">+</button>
+                      <button id="{n}-removeHealthIssue" class="remove-mental-health-issue-button plusMinus">-</button>
+                    </span>
+              </div>
+              </obsgroup>
+            </template>
+
+            <render n="0"/>
+            <render n="1"/>
+            <render n="2"/>
+            <render n="3"/>
+            <render n="4"/>
+          </repeat>
+        </div>
+
+      </div>
+	  <hr />
+
+	  <div class="row">
+        <div class="col-md">
+          Which of the following support systems are in status disclosure?
+          <div class="single-line">
+            <repeat
+              with="['626001eb-bb5c-45f5-a6c3-b7e84bcde4fe', 'Partner', 'ssPartnerId'],
+                                      ['7af9ea5f-15f3-4088-a721-0ebe2de72174', 'Friend(s)', 'ssFriendId'],
+                                      ['1560AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Family', 'ssFamilyId'],
+                                      ['164406AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Workplace', 'ssWorkplaceId'],
+                                      ['5b1f6469-5683-4cc2-8cc2-f141c0f2d2bf', 'Public', 'ssPublicId']"
+            >
+              <obs
+                id="{2}"
+                conceptId="a10a1465-c91d-4e10-9580-2fb8958c6471"
+                answerConceptId="{0}"
+                answerLabel="{1}"
+                style="checkbox"
+                class="single-line"
+              />
+            </repeat>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+	  <div class="row">
+        <div class="col-md-4">
+          In a relationship?
+          <obs
+            id="inARelationshipId"
+            conceptId="0433c2c3-bdf5-4ce0-81fb-0e91173bb509"
+            style="radio"
+            class="single-line"
+            answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          >
+            <controls
+              ><when
+                value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                thenDisplay=".inARelDetailsSection"
+            /></controls>
+          </obs>
+        </div>
+        <div class="col-md-4">
+          <div class="inARelDetailsSection">
+            Disclosed?
+            <obs
+              id="disclosureStatusId"
+              conceptId="4c6099f1-37c5-4005-8b31-a121d5eeb391"
+              style="radio"
+              class="single-line"
+              answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1067AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="inARelDetailsSection">
+            Serodiscordance
+            <obs
+              id="serodiscordanceId"
+              conceptId="e2f98a67-6c3d-49ef-9db4-4f3d7b45542b"
+              style="radio"
+              class="single-line"
+            />
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col-md-4">
+          Sexual Risk Assessment <br />
+          <obs
+            id="sexualRiskAssessmentId"
+            conceptId="eb2883d9-210f-486e-9b10-957f899e1051"
+            style="yes_no"
+            class="single-line"
+          >
+            <controls>
+              <when value="true" thenDisplay=".sexualRiskAssessmentSection" />
+            </controls>
+          </obs>
+        </div>
+        <div class="col-md-4">
+          <div class="sexualRiskAssessmentSection">
+            % Condom use with Partner <br />
+            <obs
+              conceptId="c72e0782-4c2e-43ed-921e-3e2db2653776"
+              style="radio"
+              class="single-line"
+              answers="0,25,50,75,100"
+              answerLabels="0%,25%,50%,75%,100%"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="sexualRiskAssessmentSection">
+            % Condom use with Casual Sex <br />
+            <obs
+              conceptId="e68f3c48-d0ee-4017-b7d3-6c4398f48624"
+              style="radio"
+              class="single-line"
+              answers="0,25,50,75,100"
+              answerLabels="0%,25%,50%,75%,100%"
+            />
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col-md-4">
+          Smoking history <br />
+          <obs
+            id="smokingHistoryId"
+            conceptId="e1c8f6da-e46a-4943-87fb-ab0117c64bee"
+            style="radio"
+            class="single-line"
+            answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,4b9b00df-e662-49ee-b3cb-07b37536f9bd"
+          >
+            <controls>
+              <when
+                value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                thenDisplay=".smokingHistoryYesSection"
+              />
+              <when
+                value="4b9b00df-e662-49ee-b3cb-07b37536f9bd"
+                thenDisplay="#smokingHistoryPreviousSection"
+              />
+            </controls>
+          </obs>
+        </div>
+        <div class="col-md-4">
+          <div class="smokingHistoryYesSection">
+            Quantify pack years
+            <obs conceptId="c978f248-9895-4aea-8a6b-03ecbfec40be" />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="smokingHistoryYesSection">
+            Addiction
+            <obs
+              conceptId="6bbabdb2-2e3b-48df-869b-067724f231d3"
+              style="yes_no"
+              class="single-line"
+            />
+          </div>
+        </div>
+      </div>
+      <div id="smokingHistoryPreviousSection" class="row">
+        <div class="col-md-3">
+          Year Quit <obs conceptId="eb0e4036-ad20-4d9d-966a-364468ed3cc8" />
+        </div>
+      </div>
+      <div class="smokingHistoryYesSection">
+        <div class="row">
+          <div class="col-md-9">
+            Stage of Change
+            <obs
+              conceptId="54f72f1e-4c7e-42c9-9f21-36c4f7bb7ae4"
+              style="radio"
+              class="single-line"
+            />
+          </div>
+          <div class="col-md-3">
+            Current Management
+            <obs conceptId="e82621b3-13d5-4aa1-94b3-67117846a464" />
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col-md-3">
+          Alcohol History <br />
+          <obs
+            id="alcoholHistoryId"
+            conceptId="f4b31e2b-ef3f-47c0-96d1-989d1036c393"
+            style="radio"
+            class="single-line"
+            answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,4b9b00df-e662-49ee-b3cb-07b37536f9bd"
+          >
+            <controls>
+              <when
+                value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                thenDisplay=".alcoholHistoryYesSection"
+              />
+              <when
+                value="4b9b00df-e662-49ee-b3cb-07b37536f9bd"
+                thenDisplay="#alcoholHistoryPreviousSection"
+              />
+            </controls>
+          </obs>
+        </div>
+        <div class="col-md-9">
+          <div class="alcoholHistoryYesSection">
+            Quantify drinking <br />
+            <obs
+              conceptId="8504264d-5cb7-42a2-9586-4c4fc9424327"
+              style="radio"
+              class="single-line"
+              answerConceptIds="1090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1098AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,7945ecce-4a40-4f87-928c-d92ca1cdfa4d,917c5652-db17-4c81-b97f-bbec2f1e1312,562ff0eb-1aa8-4ea9-ac60-2fafd3f91b49,f8afe60f-0c61-45b9-9daa-f770ec40a676,160862AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              answerLabels="Never, Once a month,2 or 3 times a month,Once or twice a week,3 or 4 times a week,Nearly everyday,Daily"
+            />
+          </div>
+        </div>
+      </div>
+      <div id="alcoholHistoryPreviousSection" class="row">
+        <div class="col-md-3">
+          Year quit<obs conceptId="f0bc6d84-bca2-47a2-abc2-fedf85057b08" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          Universal Screening ≥ 5(M)/4(F) drinks per day?
+          <obs
+            id="universalScreeningId"
+            conceptId="44c71625-a81b-40cd-9345-f702f804c901"
+            style="yes_no"
+            class="single-line"
+          >
+            <controls>
+              <when value="true" thenDisplay="#universalScreeningYesSection" />
+            </controls>
+          </obs>
+        </div>
+        <div class="col-md-3">
+          <div id="universalScreeningYesSection">
+            Addiction
+            <obs
+              id="alcoholAddictionId"
+              conceptId="9f9e84d3-b726-4975-a973-aff037c545e4"
+              style="yes_no"
+              class="single-line"
+            >
+              <controls>
+                <when value="true" thenDisplay=".alcoholAddictionYesSection" />
+              </controls>
+            </obs>
+          </div>
+        </div>
+      </div>
+      <div class="alcoholAddictionYesSection">
+        <div class="row">
+          <div class="col-md-9">
+            Stage of Change<obs
+              conceptId="8a0083b2-a45c-48da-b00b-7903d45c9938"
+              style="radio"
+              class="single-line"
+            />
+          </div>
+          <div class="col-md-3">
+            Current management
+            <obs conceptId="a2a203f0-e050-4541-a9aa-6604ca4a15b8" />
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col-sm">
+          Drug history <br />
+          <obs
+            id="drugHistoryId"
+            conceptId="92086a6c-0efd-48e2-a229-84f0710c8799"
+            style="radio"
+            class="single-line"
+            answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,4b9b00df-e662-49ee-b3cb-07b37536f9bd"
+          >
+            <controls>
+              <when
+                value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                thenDisplay=".drugHistoryYesSection"
+              />
+              <when
+                value="4b9b00df-e662-49ee-b3cb-07b37536f9bd"
+                thenDisplay="#drugHistoryPreviousSection"
+              />
+            </controls>
+          </obs>
+        </div>
+      </div>
+      <div id="drugHistoryPreviousSection" class="row">
+        <br />
+        <div class="col-md-3">
+          Year quit <obs conceptId="39456c40-b255-4372-8ad1-385b3049439f" />
+        </div>
+      </div>
+      <div class="drugHistoryYesSection">
+        <div class="row">
+          <div class="col-md">
+            <br />
+            Specify<span style="color: red">*</span> <br />
+            <repeat
+              with="['mapSmokeId','02e93e84-37c0-4dca-b8d9-edcedcef9599','MAP smoke','1c8fd770-cfde-4efd-8a42-71bf3ea3c695','72c6f1b5-f541-42af-a574-75aeb85b5d1d','5dedbab8-b136-4b21-9998-b58269e0a150','5c86d2c7-7b34-48e3-86cf-e6423af9f8a0'],
+                                  ['mapInjectedId','e250093b-336f-47b3-9176-914847730341','MAP injected','d651ee6e-195a-439d-b587-5ade95542acd','4e21f181-0095-4594-97fc-edc75bfdb502','ab06c90c-fae8-4854-af01-c9f0bbf60a84','1209adfd-3b05-4a88-8ec1-e021170f3044'],
+                                  ['mapMucosalId','7f30715d-9b01-4374-aee0-46878f5a3cdf','MAP mucosal','56f1f048-b381-4062-b1e8-10e155a01a91','8fa9937f-64c4-437b-ade1-fe4c8e5d288c','28b4103d-25e2-4c31-9125-04e2c9a29466','540b6b58-dca9-4f59-93e1-13583895c13f'],
+                                  ['ecstasyId','f9ba43f6-f47d-4970-9e11-39fe2833e1a8','Ecstasy','830cea08-4ca1-4ca6-8870-1f506c008d22','ee50ff85-e33d-43ee-b866-0ee9a628fa28','7d2db508-a1b1-41d4-89ed-3e50c2e5e6ba','255227db-f8a5-461d-ae6f-6dac015d5782'],
+                                  ['ghbId','f374ca04-1bf6-4147-8c1a-afbf4c73bb04','GHB','40198aa0-f577-49af-8c1a-635a688a9ed2','145624a2-c571-4ea9-9c45-c9b11cc66e3b','ed867e00-60d9-4dae-ab05-918ad5790f2c','0392fb48-aa04-47bf-9f6d-90f855b9e3ca'],
+                                  ['cocaineId','73650AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Cocaine','f3ee38b2-f9df-421e-93b5-9119b78542d7','9c4396c8-77f4-423e-b1ed-d8938a6d8ad0','44526bd2-5af7-4b46-adc9-af6f42bb9130','c7339dea-60c1-4e52-8e4b-e6ecf7f33fbe'],
+                                  ['marijuanaId','a9fe442c-1d6e-4757-8ecd-7342e1449977','Marijuana','4dc7df46-d0c2-4357-bea3-46c263cd746e','1d12de8f-7968-4253-8fee-ce428864f763','96e5233c-3dcc-4e5c-8481-e2a4d7686ada','6861d196-33c2-45eb-915f-0ebfb66ac93e'],
+                                  ['poppersId','05ab52b5-ccf2-4320-85b5-d592440a7312','Poppers','b0f9e6cb-f6ba-4b88-8b18-39125c1d8eb3','9fffcca3-bc5e-45c5-a60e-31555ed16455','4a4e83b5-2bb5-42e6-a0db-2c8572218583','66e072e3-302e-499b-a6ee-9c508dc91b5c'],
+                                  ['ketamineId','78467AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Ketamine','200e839b-14fa-47c9-9d77-b99f18b0c3fb','3af21f30-9b6b-4918-b75a-41b0477df2e7','5cda35a3-753f-4fc0-b2e9-a4fb62aa22df','e3158b26-05ed-493c-9a08-0fe513177175'],
+                                  ['acidId','486c166f-4d58-4fc2-8797-dcdee400ff23','Acid','926baddb-0266-4ff1-9a8d-958dee6a0090','71528fdb-6c87-4e92-b227-964cb2a4b237','6c92f713-c2f9-41c8-93bd-b0b84aa3023f','65faa493-db06-449b-b507-9a45557fbaf4'],
+                                  ['valiumId','74745AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Valium','1c1c616f-3319-4603-9c2d-2d31008c58fc','5b4ed134-0196-4ed7-a4cc-5c83b8c6beb0','38a8c800-25ea-4c45-8d75-cd7300cdfccf','351468e8-5558-4f31-8ea3-262fd6a52499'],
+                                  ['opioidsId','fac7607b-633d-40b5-ad39-109d68728511','Opioids','b953db11-dcba-4c66-89ed-4cfe0a2f6424','22ebd58e-bbd7-4c1d-aaa0-7cca363ec0e6','824bb257-06e7-42a1-b55d-a3c0d96dcb49','6ff1fb92-6c7a-4cb7-9701-dc3de4bd7db3'],
+                                  ['heroinId','77443AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Heroin','cc0dd091-9017-4c3a-bcd6-4ec623a78cb8','24589d33-022b-47a8-8b1e-5eecda435325','9d5f9d75-a553-4d4b-8b21-82a5f19c7eb1','233f8ff6-3e5b-4fb9-8a62-bd86ffc9604f']"
+            >
+              <obs
+                id="{0}"
+                conceptId="bdcd97c3-a8f7-4ecf-9871-9933aa775fb1"
+                style="checkbox"
+                answerConceptId="{1}"
+                answerLabel="{2}"
+                toggle="{0}Div"
+              />
+              <div id="{0}Div">
+                <div class="row">
+                  <div class="col-md-10">
+                    Frequency <span style="color: red">*</span
+                    ><span id="{0}FreqSpan" style="color: red; display: none">
+                      Required</span
+                    >
+                    <obs
+                      id="{0}Freq"
+                      conceptId="{3}"
+                      style="radio"
+                      class="single-line"
+                      answerConceptIds="1090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1098AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,7945ecce-4a40-4f87-928c-d92ca1cdfa4d,917c5652-db17-4c81-b97f-bbec2f1e1312,562ff0eb-1aa8-4ea9-ac60-2fafd3f91b49,f8afe60f-0c61-45b9-9daa-f770ec40a676,160862AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                      answerLabels="Never,Once a month,2 or 3 times a month,Once or twice a week,3 or 4 times a week,Nearly everyday,Daily"
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    {2} Addiction <span style="color: red">*</span
+                    ><span
+                      id="{0}AddictionSpan"
+                      style="color: red; display: none"
+                    >
+                      Required</span
+                    >
+                    <obs
+                      id="{0}Addiction"
+                      conceptId="{4}"
+                      style="yes_no"
+                      class="single-line"
+                    >
+                      <controls
+                        ><when
+                          value="true"
+                          thenDisplay=".{0}AddictionYesSection"
+                      /></controls>
+                    </obs>
+                  </div>
+                </div>
+                <div class="{0}AddictionYesSection">
+                  <div class="row">
+                    <div class="col-md-9">
+                      Stage of Change
+                      <obs conceptId="{5}" style="radio" class="single-line" />
+                    </div>
+                    <div class="col-md-3">
+                      Current management <obs conceptId="{6}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+            </repeat>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <obs
+              id="otherDrugId"
+              conceptId="bdcd97c3-a8f7-4ecf-9871-9933aa775fb1"
+              style="checkbox"
+              class="single-line"
+              answerConceptId="5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              answerLabel="Others(Specify)"
+              toggle="otherDrugIdDiv"
+              commentFieldLabel=""
+            />
+          </div>
+        </div>
+        <div id="otherDrugIdDiv">
+          <div class="row">
+            <div class="col-md-10">
+              Frequency <span style="color: red">*</span
+              ><span id="otherDrugIdFreqSpan" style="color: red; display: none">
+                Required</span
+              >
+              <obs
+                id="otherDrugIdFreq"
+                conceptId="0f5092bb-7769-4ef6-a379-ef4863e549ce"
+                style="radio"
+                class="single-line"
+                answerConceptIds="1090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1098AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,7945ecce-4a40-4f87-928c-d92ca1cdfa4d,917c5652-db17-4c81-b97f-bbec2f1e1312,562ff0eb-1aa8-4ea9-ac60-2fafd3f91b49,f8afe60f-0c61-45b9-9daa-f770ec40a676,160862AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                answerLabels="Never,Once a month,2 or 3 times a month,Once or twice a week,3 or 4 times a week,Nearly everyday,Daily"
+              />
+            </div>
+            <div class="col-md-2">
+              Other Drug Addiction <span style="color: red">*</span
+              ><span
+                id="otherDrugIdAddictionSpan"
+                style="color: red; display: none"
+              >
+                Required</span
+              >
+              <obs
+                id="otherDrugIdAddiction"
+                conceptId="79c51d5b-4127-43ea-90dc-3973018a508a"
+                style="yes_no"
+                class="single-line"
+              >
+                <controls
+                  ><when
+                    value="true"
+                    thenDisplay=".otherDrugIdAddictionYesSection"
+                /></controls>
+              </obs>
+            </div>
+          </div>
+          <div class="otherDrugIdAddictionYesSection">
+            <div class="row">
+              <div class="col-md-9">
+                Stage of Change
+                <obs
+                  conceptId="03cf15b9-23d8-4407-97ca-a06b6ebdeba1"
+                  style="radio"
+                  class="single-line"
+                />
+              </div>
+              <div class="col-md-3">
+                Current management
+                <obs conceptId="80d41895-95e3-44dd-8fb9-25ffe2f1c6b1" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <hr class="sectionSeparator"/>
+
+  <section headerLabel="Progress Note">
+    <button id="progressNotes_showHistoryButton" class="showHistoryButton">View history</button>
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <obs
+          conceptId="26a10d02-c557-4488-b2f0-9550bc8454ab"
+          style="textarea"
+          rows="3"
+          cols="100"
+        />
+      </div>
+    </div>
+  </section>
+  <hr class="sectionSeparator"/>
+
+  <section headerLabel="Vaccination">
+    <button id="vaccinations_showHistoryButton" class="showHistoryButton">View history</button>
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <repeat
+          with="['0','116958AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Influenza','70fdbba0-578a-42b4-9670-04c2210b895c','bd91eba8-3a59-4fc8-96f9-6e7f257d8877', '2a973b4f-e744-42de-ae5a-1852f97f27d0'],
+                                ['1','165575AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','PCV-13','57477d5f-eaca-4a02-b6e9-f229e523684c','add9112a-87d9-4d74-a0ec-667452feaa78', '51960052-4adc-4e01-9c38-c25d8559924d'],
+                                ['2','660af2e3-96db-4cb4-ac91-13644121a751','HAV','d2abdab2-99a0-4ce9-9709-f173264eea22','730949a8-9714-431c-888d-f6ac9154dc26', 'c551da20-7435-45a5-8774-3c1e8fcf74f4'],
+                                ['3','acf76645-0ba4-4eca-a5ef-f951b40063e3','MenACWY','ffadb22d-aea6-44e1-8cbc-f46a955e2f73','1e0c9845-c7bd-40f4-8b0f-b6b41c3512f7', '05b112e1-29ec-4106-8b2d-d83b9d4ed63b'],
+                                ['4','892AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Varicella','6f926421-1d9b-443e-a691-7dff1ea882dd','80b03c49-8578-4bcb-bcc8-a7494fb6ecae', '9f2e0bb5-6a19-430c-905d-b885bfa40aa7'],
+                                ['5','165621AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','Covid19','be3bd67e-2527-45b5-9c0a-902e4577094d','1e781715-1a99-4438-82a0-b38667341a27', '59d489bc-7686-47dd-a6e9-51f76193a194']"
+        >
+          <div class="vaccination-whole-section">
+            <obs
+              id="{0}"
+              conceptId="abbdfb23-ba87-482c-b370-62dd1e1ecfaf"
+              style="checkbox"
+              class="single-line-fixed-width vaccination-checkbox"
+              answerConceptId="{1}"
+
+            />
+            <div class="vaccination-details-section">
+              <repeat>
+                <template>
+                    <obsgroup groupingConceptId="{5}">
+                      <div id="{0}-{n}_dateAndLotDivId" class="single-line single-vaccination-section">
+                        <obs id="{0}-{n}_dateId" conceptId="{3}" labelText="Date received" class="vaccination-date-received relative"/>
+                        <obs id="{0}-{n}_lotId" conceptId="{4}" labelText="Lot number" class="relative lot-number"/>
+                        <span class="vaccination-buttons relative">
+                          <button id="{0}-{n}_addNewDose" class="add-new-dose-button plusMinus">+</button>
+                          <button id="{0}-{n}_removeDose" class="remove-dose-button plusMinus">-</button>
+                        </span>
+                      </div>
+                    </obsgroup>
+                </template>
+
+                <render n="0"/>
+                <render n="1"/>
+                <render n="2"/>
+                <render n="3"/>
+                <render n="4"/>
+              </repeat>
+            </div>
+          </div>
+        </repeat>
+      </div>
+
+      <div class="col-md-6">
+        <br />
+        <repeat
+          with="['6','9d3b4c50-f325-4236-bc5b-972ba1bc2192','PPSV-23','6a9edd84-8591-478b-9641-085b4de8c6b7','2d77205a-20f1-493a-91a4-432085fa4730', '3c04911a-1815-4eba-98c9-78b47bef1e21'],
+                                ['7','d7f9402c-1c44-4ad2-ad5c-9f71164b0d3e','HBV','9b61ba17-3665-469f-8f22-236ed16b0d9c','a0098f5d-52a0-47b0-9622-2e4b74b8e99b', '548c1f36-b548-4b09-a7b9-d37603473bc1'],
+                                ['8','1213AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','HPV','202100ce-3b7b-455c-bf72-912a62c8887e','0c83afde-9655-4552-a6de-03a5540fba11', 'c089a277-44c9-4536-ab59-9ca4323825d9'],
+                                ['9','56d002fe-dddb-4a73-8807-ff51d9d602a8','TDAp','6d39af4b-c1ac-4439-b5c5-534a30d6e758','84b6f9ad-e361-4c82-a8cd-928527264eaf', '44865e49-18c3-4658-b2e9-73a01225df15'],
+                                ['10','6dd8c2eb-1470-4a46-9ea1-142ff2c415c2','MMR','4c89b40b-70e1-49fc-b4d9-6fd10bf2c6a1','6997d943-7555-4bb7-b41d-89f996167d6c', '4fe99148-e54e-4b7e-a861-e051d5a741fe']"
+        >
+          <div class="vaccination-whole-section">
+            <obs
+              id="{0}"
+              conceptId="abbdfb23-ba87-482c-b370-62dd1e1ecfaf"
+              style="checkbox"
+              class="single-line-fixed-width vaccination-checkbox"
+              answerConceptId="{1}"
+              answerLabel="{2}"
+            />
+
+            <div class="vaccination-details-section">
+              <repeat>
+                <template>
+                  <obsgroup groupingConceptId="{5}">
+                    <div id="{0}-{n}_dateAndLotDivId" class="single-line single-vaccination-section">
+                      <obs id="{0}-{n}_dateId" conceptId="{3}" labelText="Date received" class="vaccination-date-received relative"/>
+                      <obs id="{0}-{n}_lotId" conceptId="{4}" labelText="Lot number" class="relative lot-number"/>
+                      <span class="vaccination-buttons relative">
+                        <button id="{0}-{n}_addNewDose" class="add-new-dose-button plusMinus">+</button>
+                        <button id="{0}-{n}_removeDose" class="remove-dose-button plusMinus">-</button>
+                      </span>
+                    </div>
+                  </obsgroup>
+                </template>
+                <br/>
+                <render n="0"/>
+                <render n="1"/>
+                <render n="2"/>
+                <render n="3"/>
+                <render n="4"/>
+              </repeat>
+            </div>
+          </div>
+        </repeat>
+      </div>
+    </div>
+  </section>
+  <hr class="sectionSeparator"/>
+
+  <section headerLabel="Laboratory">
+    <button id="labData_showHistoryButton" class="showHistoryButton">View history</button>
+    <hr />
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          Hemoglobin
+          <div class="single-line">
+            <obs
+              id="hemoDateId"
+              conceptId="003c56b8-70bb-4ffa-9052-b17ffe0b3ebf"
+              labelText="Date done"
+            />
+            <obs
+              id="hemoResultId"
+              conceptId="21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              labelText="Results (g/dL)"
+            />
+          </div>
+          <br />
+          Viral Load
+          <div class="single-line">
+            <obs
+              id="viralDateId"
+              conceptId="5e1c0359-45dd-4940-8412-9b88db0fdb26"
+              labelText="Date done"
+            />
+            <obs
+              id="viralSymbolId"
+              class="custom-select-style select"
+              labelText="Symbol"
+              conceptId="8d86c0c7-94a6-4058-83d3-e9a487716e86"
+              answerConceptIds="17ac6790-3b1d-4770-81bb-c8eed68ba3a8,1446faf3-42ba-40a7-9cea-06f0ec846015,1302AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            />
+            <obs
+              id="viralResultId"
+              conceptId="9b2b2c6b-bc10-44d8-85ad-30845c2450d4"
+              labelText="Results (copies/mL)"
+            />
+          </div>
+          <br />
+          CD4
+          <div class="single-line">
+            <obs
+              id="cd4DateId"
+              conceptId="4db35ffa-b148-4aea-92fb-5101ee1f8630"
+              labelText="Date done"
+            />
+            <obs
+              id="cd4ResultId"
+              conceptId="5afb5247-d139-486c-a586-6c170a1cfd62"
+              labelText="Results (cells/µL)"
+            />
+          </div>
+          <br />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          Serum creatinine
+          <div class="single-line">
+            <obs
+              id="serumDateId"
+              conceptId="6f0c1647-19f4-4e94-8301-3100c4079223"
+              labelText="Date done"
+            />
+            <obs
+              id="serumResultId"
+              conceptId="165836AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              labelText="Results (mg/dL)"
+            />
+            <obs
+              id="serumClearanceId"
+              conceptId="165839AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              labelText="Clearance (mL/min)"
+            />
+          </div>
+          <br />
+          HBsAg
+          <div class="single-line">
+            <obs
+              id="hbsagDateId"
+              conceptId="7847ec58-4e03-405d-a3f3-6779f739215a"
+              labelText="Date done"
+            />
+            <div id="hbsagReactivityId">
+              <div>Reactivity</div>
+              <obs
+                conceptId="75ccce27-ce44-459f-9717-2267bf7b6cdf"
+                style="radio"
+                class="single-line"
+              />
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          Chest X-Ray
+          <div class="single-line">
+            <obs
+              id="xRayDateId"
+              conceptId="33b72f89-419b-446c-bf7b-f731aba0c144"
+              labelText="Date done"
+            />
+            <obs
+              id="xRayResultId"
+              conceptId="e921cfda-9b62-41b6-a711-f666e2df8d71"
+              labelText="Results"
+            />
+          </div>
+          <br />
+          Gene Xpert
+          <div class="single-line">
+            <obs
+              id="geneDateId"
+              conceptId="9afb75af-384c-4684-ac41-734cd8d1a82a"
+              labelText="Date done"
+            />
+            <obs
+              id="geneResultId"
+              conceptId="2e53265d-0825-435a-b61f-7f39af4f5e47"
+              labelText="Results"
+            />
+          </div>
+          <br />
+          DSSM/DST
+          <div class="single-line">
+            <obs
+              id="dstDateId"
+              conceptId="9c255270-50c4-4186-adb0-ef0696c23347"
+              labelText="Date done"
+            />
+            <obs
+              id="dstResultId"
+              conceptId="e02e5e00-b0d0-40b3-a325-623169932f57"
+              labelText="Results"
+            />
+          </div>
+          <br />
+          HIVDR and Genotype
+          <div class="single-line">
+            <obs
+              id="hivDateId"
+              conceptId="930dfaae-ab10-4a69-92b7-f2e243ee2776"
+              labelText="Date done"
+            />
+            <obs
+              id="hivResultId"
+              conceptId="5ab801aa-d0a5-49cf-8d79-0147d2eb6aeb"
+              labelText="Results"
+            />
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+  </section>
+
+<div id="popup" class="popup">
+  <div class="popup-content">
+      <div id="vitals_historyTableDiv" class="display-none">
+        <div class="titleDiv">
+          <span>Vitals History</span>
+          <span class="xIcon">X</span>
+        </div>
+
+        <table id="historyVitalsTable" class="historyTable">
+          <thead>
+            <tr>
+              <th>DATE DONE</th>
+              <th>HEIGHT</th>
+              <th>WEIGHT</th>
+              <th>TEMP</th>
+              <th>PULSE</th>
+              <th>RESPIRATORY RATE</th>
+              <th>BLOOD PRESSURE</th>
+              <th>BLOOD OXYGEN SATURATION</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="medications_historyTableDiv" class="display-none">
+        <div class="titleDiv">
+          <span>Review of Medication</span>
+          <span class="xIcon">X</span>
+        </div>
+          <table id="reviewOfMedicationHistoryTable" class="historyTable">
+            <thead>
+              <tr>
+                <th>MEDICATION RECORD</th>
+                <th>START DATE</th>
+                <th>END DATE</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+      </div>
+
+      <div id="pe_historyTableDiv" class="display-none">
+        <div class="titleDiv">
+          <span>PE History</span>
+          <span class="xIcon">X</span>
+        </div>
+        <table id="peHistoryTable" class="historyTable">
+          <thead>
+            <tr>
+              <th>VISIT DATE</th>
+              <th>PE</th>
+              <th>RESULT</th>
+              <th>DETAILS</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="progressNotes_historyTableDiv" class="display-none">
+      <div class="titleDiv">
+        <span>Progress Notes History</span>
+        <span class="xIcon">X</span>
+      </div>
+        <table id="progressNotesHistoryTable" class="historyTable">
+          <thead>
+            <tr>
+              <th>VISIT DATE</th>
+              <th>PROGRESS NOTE</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="vaccinations_historyTableDiv" class="display-none">
+        <div class="titleDiv">
+          <span>Vaccination History</span>
+          <span class="xIcon">X</span>
+        </div>
+        <table id="vaccinationHistoryTable" class="historyTable">
+          <thead>
+            <tr>
+              <th>VACCINATION NAME</th>
+              <th>DATE RECEIVED</th>
+              <th>LOT NUMBER</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="labData_historyTableDiv" class="display-none">
+        <div class="titleDiv">
+          <span>Laboratory Records</span>
+          <span class="xIcon">X</span>
+        </div>
+        <table id="laboratoryHistoryTable" class="historyTable">
+          <thead>
+            <tr>
+              <th>DATE DONE</th>
+              <th>TEST</th>
+              <th>RESULT UNIT</th>
+              <th>RESULTS</th>
+              <th>CLEARANCE (mL/min)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+  </div>
+</div>
+
+<div id="buttons">
+  <button type="submit" class="btn btn-primary confirm right" data-toggle="modal" data-target="#confirmationModal">
+    <uimessage code="general.save"/>
+    <div id="save-program-spinner" class="ml-2 display-none">
+        <i class="icon-spinner icon-spin icon-2x"/>
+    </div>
+  </button>
+  <button type="button" class="cancel">
+    <uimessage code="general.cancel" />
+  </button>
+</div>
+
+  <script type="text/javascript">
+    const SAVE_PROGRAM_SPINNER_ID = '#save-program-spinner';
+          var medicationList = [], isMedicationDataEmpty = true,
+              detailsSection1List = [], isDetailsSection1DataEmpty = true,
+              detailsSection2List = [], isDetailsSection2DataEmpty = true,
+              detailsSection3List = [], isDetailsSection3DataEmpty = true;
+
+    jQuery(document).ready(function() {
+
+      var historyPopupOpen = false;
+
+      // Handle closing popup when click is outside of popup
+      jQuery(document).click(function(event) {
+        if (historyPopupOpen == true &amp;&amp; !$(event.target).closest('.popup').length) {
+          $('.popup').fadeOut();
+          historyPopupOpen = false;
+        }
+      });
+
+      $('.popup').click(function(event) {
+        event.stopPropagation();
+      });
+
+      const pastMedicalVisitNoteAllData = window.pastMedicalVisitNoteAllData;
+
+      function getIntegerValueOfNumber(number) {
+        return number ? Math.trunc(number) : '';
+      }
+
+      function convertStringDate(stringDate) {
+        return stringDate ? moment(stringDate, "YYYY-MM-DD").format("DD MMM YYYY") : '';
+      }
+
+      function setEmptyValueIfUndefined(value) {
+        return value ? value : '';
+      }
+
+      jQuery('.medication-input input').attr('placeholder', 'Type to search');
+
+      //Handle showing appropriate history table
+      jQuery('.showHistoryButton').click(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const buttonId = event?.target?.id;
+        const idPrefix = buttonId.split('_')[0];
+        const elementToShow = jQuery('#' + idPrefix + '_historyTableDiv');
+        elementToShow.siblings().hide();
+        elementToShow.show();
+        if (!historyPopupOpen) {
+          jQuery('#popup').fadeIn();
+          historyPopupOpen = true;
+        }
+      });
+
+      jQuery('.xIcon').click(function () {
+        jQuery('#popup').fadeOut();
+        historyPopupOpen = false;
+      });
+
+      //Populate history vitals table
+      var historyVitalsTable = jQuery('#historyVitalsTable');
+      jQuery.each(pastMedicalVisitNoteAllData, function(i, data) {
+        if (data.vitals.length > 0) {
+          var row = "<tr>" +
+                "<td>" + moment(new Date(data.encounterDate)).format('DD MMM YYYY') + "</td>" +
+                "<td>" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "</td>" +
+                "<td>" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "</td>" +
+                "<td>" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "</td>" +
+                "<td>" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "</td>" +
+                "<td>" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "</td>" +
+                "<td>" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "/" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "</td>" +
+                "<td>" + getIntegerValueOfNumber(data.vitals.find(obj => obj.conceptUuid === '5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')?.value) + "</td>" +
+              "</tr>";
+          historyVitalsTable.append(row);
+      }
+      });
+      jQuery('#historyVitalsTable').DataTable({
+        "paging": true,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": false
+      });
+
+      //Populate history medications table
+      var medicationsHistoryTable = jQuery('#reviewOfMedicationHistoryTable');
+      jQuery.each(pastMedicalVisitNoteAllData, function(i, data) {
+        jQuery.each(data.medications, function(j, medication) {
+          var row = "<tr>" +
+              "<td>" + setEmptyValueIfUndefined(medication.medication) + "</td>" +
+              "<td>" + convertStringDate(medication.startDate) + "</td>" +
+              "<td>" + convertStringDate(medication.endDate) + "</td>" +
+            "</tr>";
+          medicationsHistoryTable.append(row);
+        });
+      });
+      jQuery('#reviewOfMedicationHistoryTable').DataTable({
+        "paging": true,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": false
+      });
+
+      //Populate PE history table
+      var peHistoryTable = jQuery('#peHistoryTable');
+      jQuery.each(pastMedicalVisitNoteAllData, function(i, data) {
+        jQuery.each(data.physicalExaminations, function(j, pe) {
+          var row = "<tr>" +
+              "<td>" + moment(new Date(data.encounterDate)).format('DD MMM YYYY') + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(pe.name) + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(pe.result) + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(pe.details) + "</td>" +
+            "</tr>";
+          peHistoryTable.append(row);
+        });
+      });
+      jQuery('#peHistoryTable').DataTable({
+        "paging": true,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": false
+      });
+
+      //Populate progress note history table
+      var progressNotesHistoryTable = jQuery('#progressNotesHistoryTable');
+      jQuery.each(pastMedicalVisitNoteAllData, function(i, data) {
+        jQuery.each(data.progressNotes, function(j, progressNote) {
+          var row = "<tr>" +
+              "<td>" + moment(new Date(data.encounterDate)).format('DD MMM YYYY') + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(progressNote.value) + "</td>" +
+            "</tr>";
+            progressNotesHistoryTable.append(row);
+        });
+      });
+      jQuery('#progressNotesHistoryTable').DataTable({
+        "paging": true,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": false
+      });
+
+      //Populate vaccination history table
+      var vaccinationHistoryTable = jQuery('#vaccinationHistoryTable');
+      jQuery.each(pastMedicalVisitNoteAllData, function(i, data) {
+        jQuery.each(data.vaccinations, function(j, vaccination) {
+          var row = "<tr>" +
+              "<td>" + setEmptyValueIfUndefined(vaccination.name) + "</td>" +
+              "<td>" + convertStringDate(vaccination.dateReceived) + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(vaccination.lotNumber) + "</td>" +
+            "</tr>";
+          vaccinationHistoryTable.append(row);
+        });
+      });
+      jQuery('#vaccinationHistoryTable').DataTable({
+        "paging": true,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": false
+      });
+
+      //Populate laboratory records table
+      var laboratoryHistoryTable = jQuery('#laboratoryHistoryTable');
+      jQuery.each(pastMedicalVisitNoteAllData, function(i, data) {
+        jQuery.each(data.laboratoryData, function(j, lab) {
+          var row = "<tr>" +
+              "<td>" + convertStringDate(lab.dateDone) + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(lab.testName) + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(lab.resultUnit) + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(lab.result) + "</td>" +
+              "<td>" + setEmptyValueIfUndefined(lab.clearance) + "</td>" +
+            "</tr>";
+          laboratoryHistoryTable.append(row);
+        });
+      });
+      jQuery('#laboratoryHistoryTable').DataTable({
+        "paging": true,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": false
+      });
+
+      // Previous Consultation date
+      const dateOfPreviousConsultation = jQuery('#dateOfPreviousConsultationSpan').text().trim().substring(1);
+      if (dateOfPreviousConsultation != null) {
+        setValue('dateOfPreviousConsultationDiv.value', dateOfPreviousConsultation);
+        getField('dateOfPreviousConsultationDiv.value').prop('disabled', true);
+        jQuery('#dateOfPreviousConsultationDiv').children().css('background-color','#f0f0f0');
+      }
+
+      // Hide Viral Load resutl input, when Not Detected is selected
+      const selectedValue = getValue('viralSymbolId.value');
+      const notDetectedConceptId = jQuery('#notDetectedConcept').text().trim();
+      if (selectedValue === notDetectedConceptId || selectedValue === '') {
+        jQuery('#viralResultId').hide();
+      } else {
+        jQuery('#viralResultId').show();
+      }
+
+      // Add/Remove medication - start
+      function concatenateMedicationDetails(i) {
+          return getValue(i+'-orderId.value') + '|' + getValue(i+'-reviewOfMedicationId.value') + '|' +
+                  getValue(i+'-medicationStartDateId.value') + '|' + getValue(i+'-medicationStartDateEstId.value') + '|' +
+                  getValue(i+'-medicationEndDateId.value');
+      }
+
+      function removeMedication(arr,item) {
+          return arr.filter(f => f !== item);
+      }
+
+      for (let i=1; getValue(i+'-orderId.value') &amp;&amp; i &lt; $maxNumOfMedicationEntry+1; i++) {
+          medicationList.push(concatenateMedicationDetails(i));
+      }
+      // Sort the medication list to display in order
+      medicationList.sort(function(a,b) { return (a.split('|')[0] - b.split('|')[0]); });
+      // Showing the container in edit mode if data is present
+      for (let i=1; getValue(i+'-orderId.value') &amp;&amp; i &lt; $maxNumOfMedicationEntry+1; i++) {
+          // order of medication - start
+          var medicationArray = medicationList[i-1].split('|');
+          if (null != medicationArray[0]) { setValue(i+'-orderId.value', medicationArray[0]); }
+          if (null != medicationArray[1]) { setValue(i+'-reviewOfMedicationId.value', medicationArray[1]); }
+          if (null != medicationArray[2]) { setValue(i+'-medicationStartDateId.value', medicationArray[2]); }
+          if (null != medicationArray[3]) { setValue(i+'-medicationStartDateEstId.value', medicationArray[3]); }
+          if (null != medicationArray[4]) { setValue(i+'-medicationEndDateId.value', medicationArray[4]); }
+          medicationArray = "";
+          // order of medication - end
+
+          jQuery('#'+i+'-toggleContainer').show();
+
+          // show current Add Medication button
+          if (i == 1) { jQuery('#1-addEntry').show(); }
+          else if (i > 1) {
+              let tempId = i - 1;
+              // hide the previous Add Medication button
+              jQuery('#'+tempId+'-addEntry').hide();
+          }
+          // hide the last Add Medication button
+          if (i == $maxNumOfMedicationEntry) { jQuery('#'+i+'-addEntry').hide(); }
+
+          isMedicationDataEmpty = false;
+      }
+
+      if (isMedicationDataEmpty) {
+          jQuery('#1-toggleContainer').show();
+          setValue('1-orderId.value',1);
+      }
+
+      jQuery('button.addEntry').click(function() {
+          let currentId = parseFloat(this.id);
+          let nextId = currentId + 1;
+
+          let tempOrderId = nextId + '-orderId.value';
+          setValue(tempOrderId, nextId);
+
+          let tempAddEntryId = "#" + currentId + "-addEntry";
+          jQuery(tempAddEntryId).hide();
+
+          let tempToggleContainerId = "#" + nextId + "-toggleContainer";
+          jQuery(tempToggleContainerId).show();
+
+          if (currentId == ($maxNumOfMedicationEntry - 1)) {
+              let lastAddEntryId = '#' + $maxNumOfMedicationEntry + '-addEntry';
+              jQuery(lastAddEntryId).hide();
+          }
+
+          return false;
+      });
+
+      jQuery('button.removeEntry').click(function() {
+          let currentId = parseFloat(this.id);
+          let previousId = currentId - 1;
+
+          // remove element from medicationList
+          medicationList = removeMedication(medicationList, concatenateMedicationDetails(currentId));
+          let currentToggleContainerId = "#" + currentId + "-toggleContainer";
+          jQuery(currentToggleContainerId).hide();
+          jQuery(':input:not(:button)', currentToggleContainerId).val([]);
+
+          // show previous add entry button if we remove current medication
+          let tempAddEntryId = "#" + currentId + "-addEntry";
+          if (jQuery(tempAddEntryId).css('display') != 'none') {
+              let previousAddEntryId = "#" + previousId + "-addEntry";
+              jQuery(previousAddEntryId).show();
+          }
+
+          return false;
+      });
+      // Add/Remove medication - end
+
+      // Common functions in Admission/ER Temporary stay/Outpatient visit Details section - start
+      function concatenateDetailsSection(i,n) {
+          return getValue(i+'-section'+n+'OrderId.value') + '|' + getValue(i+'-section'+n+'DetailsId.value');
+      }
+
+      function addRemoveDetails(n,detailsSectionList) {
+          // Showing the container in edit mode if data is present
+          for (let i=1; getValue(i+'-section'+n+'OrderId.value') &amp;&amp; i &lt; $maxNumOfDetailsEntry+1; i++) {
+              let detailsSectionArray = detailsSectionList[i-1].split('|');
+              if (null != detailsSectionArray[0]) { setValue(i+'-section'+n+'OrderId.value',detailsSectionArray[0]); }
+              if (null != detailsSectionArray[1]) { setValue(i+'-section'+n+'DetailsId.value',detailsSectionArray[1]); }
+              detailsSectionArray = "";
+
+              jQuery('#'+i+'-toggleDetailsSection'+n).show();
+
+              // show current Add Medication button
+              if (i == 1) { jQuery('#1-section'+n+'DetailsAddId').show(); }
+              else if (i > 1) {
+                  let tempId = i - 1;
+                  // hide the previous Add Medication button
+                  jQuery('#'+tempId+'-section'+n+'DetailsAddId').hide();
+              }
+              // hide the last Add Medication button
+              if (i == $maxNumOfDetailsEntry) { jQuery('#'+i+'-section'+n+'DetailsAddId').hide(); }
+              if (n == 1) { isDetailsSection1DataEmpty = false; }
+              if (n == 2) { isDetailsSection2DataEmpty = false; }
+              if (n == 3) { isDetailsSection3DataEmpty = false; }
+          }
+      }
+      // Common functions in Admission/ER Temporary stay/Outpatient visit Details section - end
+
+      // Add/Remove Admission(section1) Details section - start
+      for (let i=1; getValue(i+'-section1OrderId.value') &amp;&amp; i &lt; $maxNumOfDetailsEntry+1; i++) {
+          detailsSection1List.push(concatenateDetailsSection(i,1));
+      }
+      // Sort the list to display in order
+      detailsSection1List.sort(function(a,b) { return (a.split('|')[0] - b.split('|')[0]); });
+      addRemoveDetails(1, detailsSection1List); // 1 means Admission(section1)
+      jQuery('button.addDetailsSection1').click(function() {
+          let currentId = parseFloat(this.id);
+          let nextId = currentId + 1;
+
+          let tempOrderId = nextId + '-section1OrderId.value';
+          setValue(tempOrderId, nextId);
+
+          let tempAddEntryId = '#' + currentId + '-section1DetailsAddId';
+          jQuery(tempAddEntryId).hide();
+
+          let tempToggleContainerId = '#' + nextId + '-toggleDetailsSection1';
+          jQuery(tempToggleContainerId).show();
+
+          if (currentId == ($maxNumOfDetailsEntry - 1)) {
+              let lastAddEntryId = '#' + $maxNumOfDetailsEntry + '-section1DetailsAddId';
+              jQuery(lastAddEntryId).hide();
+          }
+
+          return false;
+      });
+
+      jQuery('button.removeDetailsSection1').click(function() {
+          let currentId = parseFloat(this.id);
+          let previousId = currentId - 1;
+
+          // remove element from list
+          detailsSection1List = removeMedication(detailsSection1List, concatenateDetailsSection(currentId, 1));
+
+          let currentToggleContainerId = "#" + currentId + "-toggleDetailsSection1";
+          jQuery(currentToggleContainerId).hide();
+          jQuery(':input:not(:button)', currentToggleContainerId).val([]);
+
+          // show previous add entry button if we remove current item
+          let tempAddEntryId = "#" + currentId + "-section1DetailsAddId";
+          if (jQuery(tempAddEntryId).css('display') != 'none') {
+              let previousAddEntryId = "#" + previousId + "-section1DetailsAddId";
+              jQuery(previousAddEntryId).show();
+          }
+
+          return false;
+      });
+      // Add/Remove Admission(section1) Details section - end
+
+      // Add/Remove ER Temporary stay(section2) Details section - start
+      for (let i=1; getValue(i+'-section2OrderId.value') &amp;&amp; i &lt; $maxNumOfDetailsEntry+1; i++) {
+          detailsSection2List.push(concatenateDetailsSection(i,2));
+      }
+      // Sort the list to display in order
+      detailsSection2List.sort(function(a,b) { return (a.split('|')[0] - b.split('|')[0]); });
+      addRemoveDetails(2, detailsSection2List); // 2 means ER Temporary stay(section2)
+      jQuery('button.addDetailsSection2').click(function() {
+          let currentId = parseFloat(this.id);
+          let nextId = currentId + 1;
+
+          let tempOrderId = nextId + '-section2OrderId.value';
+          setValue(tempOrderId, nextId);
+
+          let tempAddEntryId = "#" + currentId + "-section2DetailsAddId";
+          jQuery(tempAddEntryId).hide();
+
+          let tempToggleContainerId = "#" + nextId + "-toggleDetailsSection2";
+          jQuery(tempToggleContainerId).show();
+
+          if (currentId == ($maxNumOfDetailsEntry - 1)) {
+              let lastAddEntryId = '#' + $maxNumOfDetailsEntry + '-section2DetailsAddId';
+              jQuery(lastAddEntryId).hide();
+          }
+
+          return false;
+      });
+
+      jQuery('button.removeDetailsSection2').click(function() {
+          let currentId = parseFloat(this.id);
+          let previousId = currentId - 1;
+
+          // remove element from list
+          detailsSection2List = removeMedication(detailsSection2List, concatenateDetailsSection(currentId, 2));
+
+          let currentToggleContainerId = "#" + currentId + "-toggleDetailsSection2";
+          jQuery(currentToggleContainerId).hide();
+          jQuery(':input:not(:button)', currentToggleContainerId).val([]);
+
+          // show previous add entry button if we remove current item
+          let tempAddEntryId = "#" + currentId + "-section2DetailsAddId";
+          if (jQuery(tempAddEntryId).css('display') != 'none') {
+              let previousAddEntryId = "#" + previousId + "-section2DetailsAddId";
+              jQuery(previousAddEntryId).show();
+          }
+
+          return false;
+      });
+      // Add/Remove ER Temporary stay(section2) Details section - end
+
+      // Add/Remove Outpatient visit(section3) Details section - start
+      for (let i=1; getValue(i+'-section3OrderId.value') &amp;&amp; i &lt; $maxNumOfDetailsEntry+1; i++) {
+          detailsSection3List.push(concatenateDetailsSection(i,3));
+      }
+      // Sort the list to display in order
+      detailsSection3List.sort(function(a, b) { return (a.split('|')[0] - b.split('|')[0]); });
+      addRemoveDetails(3, detailsSection3List); // 3 means Outpatient visit(section3)
+      jQuery('button.addDetailsSection3').click(function() {
+          let currentId = parseFloat(this.id);
+          let nextId = currentId + 1;
+
+          let tempOrderId = nextId + '-section3OrderId.value';
+          setValue(tempOrderId, nextId);
+
+          let tempAddEntryId = "#" + currentId + "-section3DetailsAddId";
+          jQuery(tempAddEntryId).hide();
+
+          let tempToggleContainerId = "#" + nextId + "-toggleDetailsSection3";
+          jQuery(tempToggleContainerId).show();
+
+          if (currentId == ($maxNumOfDetailsEntry - 1)) {
+              let lastAddEntryId = '#' + $maxNumOfDetailsEntry + '-section3DetailsAddId';
+              jQuery(lastAddEntryId).hide();
+          }
+
+          return false;
+      });
+
+      jQuery('button.removeDetailsSection3').click(function() {
+          let currentId = parseFloat(this.id);
+          let previousId = currentId - 1;
+
+          // remove element from list
+          detailsSection3List = removeMedication(detailsSection3List, concatenateDetailsSection(currentId, 3));
+
+          let currentToggleContainerId = "#" + currentId + "-toggleDetailsSection3";
+          jQuery(currentToggleContainerId).hide();
+          jQuery(':input:not(:button)', currentToggleContainerId).val([]);
+
+          // show previous add entry button if we remove current item
+          let tempAddEntryId = "#" + currentId + "-section3DetailsAddId";
+          if (jQuery(tempAddEntryId).css('display') != 'none') {
+              let previousAddEntryId = "#" + previousId + "-section3DetailsAddId";
+              jQuery(previousAddEntryId).show();
+          }
+
+          return false;
+      });
+
+      // Behavioral Risk Assessment section
+
+
+      //Hide mental health details divs which are blank
+      const mentalHealthIssuesSection = $('.mental-health-specify');
+      mentalHealthIssuesSection.each(function() {
+        const selectElement = $(this).children("select:first");
+        const value = selectElement.val();
+        const idPrefix = this.id.substring(0, this.id.indexOf('-'));
+        const medicalHistoryValue = getValue(idPrefix + '-mentalHealthMedicalHistory.value');
+        if (!value &amp;&amp; !medicalHistoryValue) {
+          $(this).parent().hide();
+        }
+      });
+
+      // Hide redundant Add buttons when loading the page
+      const allVisibleSingleHealthSections = $('.single-health-section:visible');
+      const lastSingleHealthSectionElement = allVisibleSingleHealthSections.last();
+      allVisibleSingleHealthSections.each(function() {
+        const currentElementId = jQuery(this).attr('id');
+        if (currentElementId !== lastSingleHealthSectionElement.attr('id')) {
+          $(this).find('.add-new-mental-health-issue-button').hide();
+        }
+      });
+
+      if (allVisibleSingleHealthSections.length === 5) {
+        lastSingleHealthSectionElement.find('.add-new-mental-health-issue-button').hide();
+      }
+
+
+      // Handle Add new mental health button
+      jQuery('.add-new-mental-health-issue-button').click(function (event) {
+        event.preventDefault();
+        const idPrefix = this.id.substring(0, this.id.indexOf('-'));
+        const parentElement = jQuery('#' + idPrefix + '-singleHealthSection');
+        parentElement.next().show();
+        jQuery(this).hide();
+        // Remove 'Add new mental health button' when max number of elements is reached
+        const visibleMentalHealthSections = parentElement.parent().children(':visible');
+        if (visibleMentalHealthSections.length === 5) {
+          const lastElement = visibleMentalHealthSections.last()[0];
+          const lastElementId = lastElement.id;
+          const lastElementIdPrefix = lastElementId.substring(0, lastElementId.indexOf('-'));
+          jQuery('#' + lastElementIdPrefix + '-addNewHealthIssue').hide();
+        }
+      });
+
+      // Handle Remove mental health button
+      jQuery('.remove-mental-health-issue-button').click(function (event) {
+        event.preventDefault();
+        const idPrefix = this.id.substring(0, this.id.indexOf('-'));
+        setValue(idPrefix + '-mentalHealthSpecify.value', '');
+        setValue(idPrefix + '-mentalHealthMedicalHistory.value', '');
+        const elementToRemove = jQuery('#' + idPrefix + '-singleHealthSection');
+        const visibleDivs = elementToRemove.parent().children(':visible');
+        if (visibleDivs.length !== 1) {
+          elementToRemove.parent().append(elementToRemove);
+          jQuery('#' + idPrefix + '-addNewHealthIssue').show();
+          jQuery('#' + idPrefix + '-removeHealthIssue').show();
+          elementToRemove.hide();
+          // Show 'Add new mental health button' always next to last element
+          const visibleDivsAfterHiding = elementToRemove.parent().children(':visible');
+          const lastVisibleDiv = visibleDivsAfterHiding.last()[0];
+          const lastVisibleDivId = lastVisibleDiv.id;
+          const lastVisibleDivAddNewButton = jQuery('#' + lastVisibleDivId.substring(0, lastVisibleDivId.indexOf('-')) + '-addNewHealthIssue');
+          lastVisibleDivAddNewButton.show();
+        }
+      });
+
+      // Handle 'Done' and 'Not done' radio buttons
+      jQuery('#mentalHealthYesEvalId input').click(function(event) {
+        const value = event.target.value;
+        const elementToShowOrHide = jQuery('.mental-health-details-section');
+        if (value === 'true') {
+          elementToShowOrHide.show();
+          if (elementToShowOrHide.children(':visible').length === 0) {
+            elementToShowOrHide.children().first().show();
+          }
+        } else {
+          elementToShowOrHide.children().each(function() {
+            setValue(jQuery(this).find('.mental-health-specify').attr('id') + '.value', '');
+            setValue(jQuery(this).find('.mental-health-medical-history').attr('id') + '.value', '');
+          });
+          elementToShowOrHide.hide();
+        }
+      });
+
+      // Vaccination section
+
+      //Hide vaccination details divs which are blank
+      const vaccinationDateReceivedFields = jQuery('.vaccination-date-received');
+      vaccinationDateReceivedFields.each(function() {
+        const dateValue = jQuery(this).children("input:first").val();
+        const idPrefix = this.id.substring(0, this.id.indexOf('_'));
+        const lotNumberValue = getValue(idPrefix + '_lotId.value');
+        let checboxShouldBeChecked = true;
+        if (!dateValue &amp;&amp; !lotNumberValue) {
+          checboxShouldBeChecked = false;
+          jQuery(this).parent().hide();
+        }
+
+        if (checboxShouldBeChecked) {
+          const checkboxId =  this.id.substring(0, this.id.indexOf('-'));
+          jQuery('#' + checkboxId).find('input[type=checkbox]').first().prop('checked', true);
+        }
+      });
+
+
+      // Hide redundant Add buttons when loading the page
+      const allVisibleSingleVaccinationSections = $('.single-vaccination-section:visible');
+      const lastVaccinationSectionElement = allVisibleSingleVaccinationSections.last();
+      allVisibleSingleVaccinationSections.each(function() {
+        const currentElementId = jQuery(this).attr('id');
+        if (currentElementId !== lastVaccinationSectionElement.attr('id')) {
+          // $(this).find('.add-new-dose-button').hide();
+        }
+      });
+
+      if (allVisibleSingleVaccinationSections.length === 5) {
+        lastVaccinationSectionElement.find('.add-new-dose-button').hide();
+      }
+
+      // Handle Add new dose button
+      jQuery('.add-new-dose-button').click(function (event) {
+        event.preventDefault();
+        const idPrefix = this.id.substring(0, this.id.indexOf('_'));
+        const parentElement = jQuery('#' + idPrefix + '_dateAndLotDivId');
+        parentElement.next().show();
+        jQuery(this).hide();
+        // Remove 'Add new dose button' when max number of elements is reached
+        const allVaccinationDetails = parentElement.parent().children(':visible');
+        if (allVaccinationDetails.length === 5) {
+          const lastElement = allVaccinationDetails.last()[0];
+          const lastElementId = lastElement.id;
+          const lastElementIdPrefix = lastElementId.substring(0, lastElementId.indexOf('_'));
+          jQuery('#' + lastElementIdPrefix + '_addNewDose').hide();
+        }
+      });
+
+      // Handle Remove dose button
+      jQuery('.remove-dose-button').click(function (event) {
+        event.preventDefault();
+        const idPrefix = this.id.substring(0, this.id.indexOf('_'));
+        setValue(idPrefix + '_dateId.value', '');
+        setValue(idPrefix + '_lotId.value', '');
+        const elementToRemove = jQuery('#' + idPrefix + '_dateAndLotDivId');
+        const visibleDivs = elementToRemove.parent().children(':visible');
+        if (visibleDivs.length !== 1) {
+          elementToRemove.parent().append(elementToRemove);
+          jQuery('#' + idPrefix + '_addNewDose').show();
+          jQuery('#' + idPrefix + '_removeDose').show();
+          elementToRemove.hide();
+          // Show 'Add new dose button' always next to last element
+          const visibleDivsAfterHiding = elementToRemove.parent().children(':visible');
+          const lastVisibleDiv = visibleDivsAfterHiding.last()[0];
+          const lastVisibleDivId = lastVisibleDiv.id;
+          const lastVisibleDivAddNewButton = jQuery('#' + lastVisibleDivId.substring(0, lastVisibleDivId.indexOf('_')) + '_addNewDose');
+          lastVisibleDivAddNewButton.show();
+        }
+      });
+
+      // Handle Vaccination checkbox click event
+      jQuery('.vaccination-checkbox').click(function() {
+        const elementToShowOrHide = jQuery('#' + this.id).next();
+        const checkboxElement = jQuery(this).find('input').first();
+        if (checkboxElement.is(':checked')) {
+          elementToShowOrHide.show();
+          if (elementToShowOrHide.children(':visible').length === 0) {
+            elementToShowOrHide.children().first().show();
+          }
+        } else {
+          elementToShowOrHide.hide();
+          elementToShowOrHide.children().each(function() {
+            const dateReceivedField = jQuery(this).find('.vaccination-date-received');
+            setValue(dateReceivedField.attr('id') + '.value', '');
+            const lotNumberField = jQuery(this).find('.lot-number');
+            setValue(lotNumberField.attr('id') + '.value', '');
+          });
+        }
+      });
+
+      //Adherence assessment
+      getField('adherenceAssessmentId.value').prop('disabled', true);
+      jQuery('#adherenceAssessmentId').children().css('background-color','#f0f0f0');
+      const adherenceValue = jQuery('#adherenceAssessmentScoreSpan').text().trim();
+      setValue('adherenceAssessmentId.value', adherenceValue);
+
+      // Viral Load field on change
+      getField('viralSymbolId.value').change(function() {
+        const selectedValue = getValue('viralSymbolId.value');
+        const notDetectedConceptId = jQuery('#notDetectedConcept').text().trim();
+        if (selectedValue === notDetectedConceptId || selectedValue === '') {
+          jQuery('#viralResultId').hide();
+          setValue('viralResultId.value', '');
+        } else {
+          jQuery('#viralResultId').show();
+        }
+      });
+
+      // Add/Remove Outpatient visit(section3) Details section - end
+      if (isDetailsSection1DataEmpty) { jQuery('#1-toggleDetailsSection1').show();setValue('1-section1OrderId.value',1); }
+      if (isDetailsSection2DataEmpty) { jQuery('#1-toggleDetailsSection2').show();setValue('1-section2OrderId.value',1); }
+      if (isDetailsSection3DataEmpty) { jQuery('#1-toggleDetailsSection3').show();setValue('1-section3OrderId.value',1); }
+
+      // Support System changes
+      assignValuesToSupportSystems();
+
+      // Calculate BMI
+      const calculateBmi = function(wt,ht) {
+          let bmi = null;
+          if (wt &amp;&amp; ht) {
+              bmi = wt / ((ht / 100) * (ht / 100));
+          }
+          return bmi;
+      }
+      const updateBmi = function() {
+          const wt = htmlForm.getValueIfLegal('weight.value');
+          const ht = htmlForm.getValueIfLegal('height.value');
+
+          const bmi = calculateBmi(wt,ht);
+
+          if (bmi == null || isNaN(bmi)) {
+              jQuery('#calculated-bmi-wrapper').hide();
+          } else {
+              jQuery('#no-calculated-bmi').hide();
+              jQuery('#calculated-bmi-wrapper').show();
+              jQuery('#calculated-bmi').html(bmi.toFixed(1));
+          }
+      };
+      const attachBmiHandler = function() {
+          jQuery(function() {
+              jQuery('#calculated-bmi-wrapper').hide();
+              getField('weight.value').change(updateBmi);
+              getField('height.value').change(updateBmi);
+              updateBmi();
+          });
+          jQuery(function() {
+              jQuery('#bp_systolic input[type=text]').attr('min', '50');
+          });
+          jQuery(function() {
+              jQuery('#bp_diastolic input[type=text]').attr('min', '30');
+          });
+      }
+
+      attachBmiHandler();
+      // set size
+      jQuery('#height input[type=text],#weight input[type=text],#temperature input[type=text],#heart_rate input[type=text]')
+          .css('z-index','1');
+      jQuery('#respiratory_rate input[type=text],#o2_sat input[type=text]')
+          .css('z-index','1');
+      jQuery('#height .error,#weight .error,#temperature .error,#heart_rate .error')
+          .css('padding-top', '30px').css('position','absolute').css('z-index','0');
+      jQuery('#respiratory_rate .error,#o2_sat .error')
+          .css('padding-top', '30px').css('position','absolute').css('z-index','0');
+
+      // Opportunistic infections changes
+      toggleCommentField('oppInfectOthersId.value');
+
+      // Vaccination changes
+      // set size of VaccineUsed and Provider
+      jQuery("#firstDoseVaccineUsedId,#firstDoseProviderId").css('margin-left','10px');
+      jQuery("#firstDoseVaccineUsedId,#firstDoseProviderId").attr('size','15');
+      jQuery("#secondDoseVaccineUsedId,#secondDoseProviderId").css('margin-left','10px');
+      jQuery("#secondDoseVaccineUsedId,#secondDoseProviderId").attr('size','15');
+      // set size of lot input box
+      jQuery("span[id$='-lotId']").each(function() {
+          jQuery(this).css('margin-left','10px');
+          jQuery(this).children().attr('size','15');
+      });
+
+      // Drug history
+      toggleCommentField('otherDrugId.value');
+
+      // Laboratory changes
+      jQuery("span[id$='ResultId'],span[id='serumClearanceId']").each(function() {
+          jQuery(this).css('margin-left','10px');
+          jQuery(this).children().attr('size','15');
+      });
+      jQuery("#hbsagReactivityId").css('margin-left','10px');
+    });
+
+    jQuery(function() {
+        // Opportunistic infections changes
+        getField('oppInfectOthersId.value').change(function() {toggleCommentField('oppInfectOthersId.value');});
+
+        // Physical Examination changes
+        getField('peGeneralId.value').change(function() {setNotDoneAsDefault('peGeneralId');});
+        getField('peHeentId.value').change(function() {setNotDoneAsDefault('peHeentId');});
+        getField('peCardiovascularId.value').change(function() {setNotDoneAsDefault('peCardiovascularId');});
+        getField('peRespiratoryId.value').change(function() {setNotDoneAsDefault('peRespiratoryId');});
+        getField('peGastrointestinalId.value').change(function() {setNotDoneAsDefault('peGastrointestinalId');});
+        getField('peGenitourinaryId.value').change(function() {setNotDoneAsDefault('peGenitourinaryId');});
+        getField('peReproductiveId.value').change(function() {setNotDoneAsDefault('peReproductiveId');});
+        getField('peMusculoskeletalId.value').change(function() {setNotDoneAsDefault('peMusculoskeletalId');});
+        getField('peNeurologyId.value').change(function() {setNotDoneAsDefault('peNeurologyId');});
+        getField('peDermatologyId.value').change(function() {setNotDoneAsDefault('peDermatologyId');});
+        getField('peHematologyId.value').change(function() {setNotDoneAsDefault('peHematologyId');});
+
+        // Drug history changes
+        getField('otherDrugId.value').change(function() {toggleCommentField('otherDrugId.value');});
+    });
+
+    function setNotDoneAsDefault(id) {
+        let peChecked = getField(id+'.value').prop("checked");
+        if (peChecked == true) {
+            jQuery('span[id='+id+'-OptId] input:radio[value='+$notDoneConceptId+']').prop('checked', true);
+        }
+    }
+
+    function toggleCommentField(id) {
+        let checked = getField(id).prop("checked");
+        if (checked == true) {
+            getField(id + '_2').show();
+        } else {
+            getField(id + '_2').hide();
+        }
+    }
+
+    function assignValuesToPillCountSection() {
+        let medicineRefillValues = jQuery('#amtOfMedicationRefSpanId').text().trim();
+        getField('pillCountLastVisitId.value').prop('disabled', true);
+        jQuery('#pillCountLastVisitId').children().css('background-color','#f0f0f0');
+        getField('pillCountDateOfRefillId.value').prop('disabled', true);
+        jQuery('#pillCountDateOfRefillId').children().css('background-color','#f0f0f0');
+
+        if (medicineRefillValues != '|') {
+            let medicineRefillValuesArray = medicineRefillValues.split('|');
+            let pillCountLastVisit = medicineRefillValuesArray[0],
+                dateOfRefillLastVisit = medicineRefillValuesArray[1];
+            if (pillCountLastVisit) {
+                setValue('pillCountLastVisitId.value', pillCountLastVisit);
+            }
+            if (dateOfRefillLastVisit) {
+                setValue('pillCountDateOfRefillId.value', dateOfRefillLastVisit);
+            }
+            // Calculate current pill count
+            // assuming pillsPerDay=1 (TODO-need to fetch)
+            const today = new Date();
+            const pillsPerDay = 5;
+            const month = today.getMonth() + 1;
+            const formattedDateToday = today.getFullYear() + '-'+month+'-'+today.getDate();
+            const daysInDiff = compareDate(dateOfRefillLastVisit.split(" ")[0], formattedDateToday);
+            setValue('pillCountEstimatedId.value', pillCountLastVisit - (daysInDiff * pillsPerDay));
+        }
+    }
+
+    function compareDate(d1,d2) {
+        const date1 = new Date(d1);
+        const date2 = new Date(d2);
+        const oneDay = 1000 * 60 * 60 * 24;
+        return Math.round((date2.getTime() - date1.getTime()) / oneDay);
+    }
+
+    function assignValuesToSupportSystems() {
+        let ssCheckedValueArray = jQuery('#previousVisitSpanId').text().trim();
+        if (ssCheckedValueArray.includes('Partner')) { getField('ssPartnerId.value').prop('checked', true); }
+        if (ssCheckedValueArray.includes('Friend(s)')) { getField('ssFriendId.value').prop('checked', true); }
+        if (ssCheckedValueArray.includes('Family member')) { getField('ssFamilyId.value').prop('checked', true); }
+        if (ssCheckedValueArray.includes('Workplace')) { getField('ssWorkplaceId.value').prop('checked', true); }
+        if (ssCheckedValueArray.includes('Public')) { getField('ssPublicId.value').prop('checked', true); }
+    }
+
+    beforeSubmit.push(function() {
+        // Reassign the orderId if medication deleted
+        let j=1;
+        for (c of medicationList) {
+            let tempOrderId = c.split('|',1);
+            setValue(tempOrderId+'-orderId.value', j);
+            j++;
+        }
+
+        // Reassign the orderId if details are removed
+        reassignTheOrder(1,detailsSection1List);
+        reassignTheOrder(2,detailsSection2List);
+        reassignTheOrder(3,detailsSection3List);
+
+        return validateFieldsAndSubmit();
+    });
+
+    function reassignTheOrder(n,detailsSectionList) {
+        // Reassign the orderId if details are removed
+        let j1=1;
+        for (d of detailsSectionList) {
+            let tempOrderId = d.split('|',1);
+            setValue(tempOrderId+'-section'+n+'OrderId.value', j1);
+            j1++;
+        }
+    }
+
+    function validateFieldsAndSubmit() {
+        // Review of Medication validations
+        for (let i=1; getValue(i+'-orderId.value') &amp;&amp; i &lt; $maxNumOfMedicationEntry+1; i++) {
+            let reviewOfMedicationValue = getValue(i+'-reviewOfMedicationId.value'),
+                medicationStartDateValue = getValue(i+'-medicationStartDateId.value');
+
+            if (reviewOfMedicationValue == null || reviewOfMedicationValue == '') {
+                if (medicationStartDateValue == null || medicationStartDateValue == '') {
+                $(SAVE_PROGRAM_SPINNER_ID).show();
+                    return true;
+                }
+            }
+            if (reviewOfMedicationValue != null || reviewOfMedicationValue != '') {
+                if (medicationStartDateValue == null || medicationStartDateValue == '') {
+                    getField(i+'-medicationStartDateId.error').html("Required").show();
+                    alert('Medication Start Date field is required');
+                    return false;
+                }
+            }
+            if (medicationStartDateValue != null || medicationStartDateValue != '') {
+                if (reviewOfMedicationValue == null || reviewOfMedicationValue == '') {
+                    getField(i+'-reviewOfMedicationId.error').html("Required").show();
+                    alert('Review of Medication field is required');
+                    return false;
+                }
+            }
+            if (moment(medicationStartDateValue).isAfter(moment())) {
+              getField(i+'-medicationStartDateId.error').html("Cannot be in the future").show();
+              alert('Review of Medication date cannot be in the future');
+              return false;
+            }
+        }
+
+        // Drug history validations
+        // Value of this input is 'concept_id' which could be varies on different servers
+        // therefore we shouldn't use it. Instead we check first input which is 'Yes' and then validation happens
+        if ($('#drugHistoryId input:first').is(':checked')) {
+            if (isDrugHistorySpecifyUncheck()) {
+                alert('Please select at least one durg');
+                return false;
+            }
+            if (!validateFreqAndAddictionFields('mapSmokeId','MAP smoke')) { return false; }
+            if (!validateFreqAndAddictionFields('mapInjectedId','MAP Injected')) { return false; }
+            if (!validateFreqAndAddictionFields('mapMucosalId','MAP Mucosal')) { return false; }
+            if (!validateFreqAndAddictionFields('ecstasyId','Ecstasy')) { return false; }
+            if (!validateFreqAndAddictionFields('ghbId','GHB')) { return false; }
+            if (!validateFreqAndAddictionFields('cocaineId','Cocaine')) { return false; }
+            if (!validateFreqAndAddictionFields('marijuanaId','Marijuana')) { return false; }
+            if (!validateFreqAndAddictionFields('poppersId','Poppers')) { return false; }
+            if (!validateFreqAndAddictionFields('ketamineId','Ketamine')) { return false; }
+            if (!validateFreqAndAddictionFields('acidId','Acid')) { return false; }
+            if (!validateFreqAndAddictionFields('valiumId','Valium')) { return false; }
+            if (!validateFreqAndAddictionFields('opioidsId','Opioids')) { return false; }
+            if (!validateFreqAndAddictionFields('heroinId','Heroin')) { return false; }
+            if (!validateFreqAndAddictionFields('otherDrugId','Other Drug')) { return false; }
+        }
+
+        $(SAVE_PROGRAM_SPINNER_ID).show();
+
+        return true;
+    }
+
+    function validateFreqAndAddictionFields(id,message) {
+        if (getValue(id+'.value')) {
+            if (getValue(id+'Freq.value') == null || getValue(id+'Freq.value') == '') {
+                jQuery('#'+id+'FreqSpan').css('display','contents');
+                alert(message+' frequency field is required');
+                return false;
+            }
+            if (getValue(id+'Addiction.value') == null || getValue(id+'Addiction.value') == '') {
+                jQuery('#'+id+'AddictionSpan').css('display','contents');
+                alert(message+' Addiction field is required');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function isDrugHistorySpecifyUncheck() {
+        return getValue('mapSmokeId.value') == null &amp;&amp; getValue('mapInjectedId.value') == null &amp;&amp;
+                getValue('mapMucosalId.value') == null &amp;&amp; getValue('ecstasyId.value') == null &amp;&amp;
+                getValue('ghbId.value') == null &amp;&amp; getValue('cocaineId.value') == null &amp;&amp;
+                getValue('marijuanaId.value') == null &amp;&amp; getValue('poppersId.value') == null &amp;&amp;
+                getValue('ketamineId.value') == null &amp;&amp; getValue('acidId.value') == null &amp;&amp;
+                getValue('valiumId.value') == null &amp;&amp; getValue('opioidsId.value') == null &amp;&amp;
+                getValue('heroinId.value') == null &amp;&amp; getValue('otherDrugId.value') == null;
+    }
+
+    function renameLabelValuesForSexualRisk() {
+      var yesInputId = jQuery('#sexualRiskAssessmentId > input[type="radio"][value=true]').prop('id');
+      jQuery('label[for="'+yesInputId+'"]').html('Active');
+
+      var noInputId = jQuery('#sexualRiskAssessmentId > input[type="radio"][value=false]').prop('id');
+      jQuery('label[for="'+noInputId+'"]').html('Not Active');
+    }
+
+    renameLabelValuesForSexualRisk();
+  </script>
+  <postSubmissionAction class="org.openmrs.module.cflcore.api.htmlformentry.action.VisitStatusUpdateActionAdapter"/>
+</htmlform>

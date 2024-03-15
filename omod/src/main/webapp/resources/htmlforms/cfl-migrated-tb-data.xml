@@ -1,0 +1,71 @@
+<htmlform formUuid="afda98e2-0ba3-41ed-a7f1-f721c2339f78" formName="CfL Migrated TB Form"
+          description="CfL Migrated TB Form" formVersion="1.0">
+
+    <style>
+		.section {
+			border: 1px solid #009d8e;
+			padding: 2px;
+			text-align: left;
+			margin-bottom: 1em;
+		}
+		.sectionHeader {
+			background-color: $headerColor;
+			color: white;
+			display: block;
+			padding: 2px;
+			font-weight: bold;
+		}
+		table.baseline-aligned td {
+			vertical-align: baseline;
+			cursor: default !important;
+		}
+		table thead {
+            font-weight: bold;
+            font-size: 20px !important;
+        }
+        table thead tr th {
+            text-transform: capitalize;
+        }
+		button.cancel {
+            background: none !important;
+            border: 1px solid #00455c !important;
+            color: #00455c !important;
+            margin-bottom: 10px;
+        }
+	</style>
+
+    <h2>Migrated TB Data</h2>
+    <button type="button" class="cancel">Return</button>
+    <section headerLabel="TB data">
+        <table id="tbFormId" class="baseline-aligned">
+            <thead>
+            <tr>
+                <lookup complexExpression="#foreach($encounter in $fn.allEncounters('d4d4d83b-f505-4f7b-a819-1a77ae2a2451'))
+                    #foreach($obs in $encounter.obs)
+                        &lt;th&gt;$!obs.concept.getName()&lt;/th&gt;
+                    #end
+                    #break;
+                #end"/>
+            </tr>
+            </thead>
+            <tbody>
+                <lookup complexExpression="#foreach($encounter in $fn.allEncounters('d4d4d83b-f505-4f7b-a819-1a77ae2a2451'))
+                    &lt;tr&gt;
+                    #foreach($obs in $encounter.obs)
+                       &lt;td&gt;
+                        #if($obs.concept.uuid == '20fb8dc4-b958-4c88-b9a7-96ea36b4b0ef')
+                            $!obs.valueCoded.getName()
+                        #elseif($obs.concept.uuid == 'c7e17ce8-d832-4349-a326-b20f5ae7f432')
+                            $!obs.valueText
+                        #else
+                            &lt;span class='value'&gt;#if($obs.valueDatetime) #set($strDateTime = $obs.valueDatetime + '') #set($strDate = $strDateTime.substring(0,$strDateTime.indexOf(' '))) $strDate.substring(8,10)/$strDate.substring(5,7)/$strDate.substring(0,4) #end&lt;/span&gt;
+                        #end
+                        &lt;/td&gt;
+                    #end
+                    &lt;/tr&gt;
+                #end"/>
+            </tbody>
+        </table>
+    </section>
+    <button type="button" class="cancel">Return</button>
+</htmlform>

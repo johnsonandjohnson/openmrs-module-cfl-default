@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module configVersion="1.2">
+
+    <id>${project.parent.artifactId}</id>
+    <name>${project.parent.name}</name>
+    <version>${project.parent.version}</version>
+    <package>org.openmrs.module.cfldefault</package>
+    <author>Connect for Life</author>
+    <description>
+        ${project.parent.description}
+    </description>
+
+    <activator>org.openmrs.module.cfldefault.CfLDefaultActivator</activator>
+
+    <require_version>${openmrsPlatformVersion}</require_version>
+
+    <require_modules>
+        <require_module version="${cflCoreVersion}">org.openmrs.module.cflcore</require_module>
+        <require_module version="${cflVersion}">org.openmrs.module.cfl</require_module>
+    </require_modules>
+
+    <aware_of_modules>
+        <aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+        <aware_of_module>org.openmrs.module.locationbasedaccess</aware_of_module>
+    </aware_of_modules>
+
+    <privilege/>
+
+    <messages>
+        <lang>en</lang>
+        <file>messages.properties</file>
+    </messages>
+
+</module>
+
