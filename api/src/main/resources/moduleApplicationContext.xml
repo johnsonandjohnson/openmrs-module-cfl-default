@@ -62,4 +62,14 @@
           class="org.openmrs.module.cfldefault.api.metadata.CommonReportBundle">
         <constructor-arg name="reportManager" ref="cfldefault.patientsCumulativeReport"/>
     </bean>
+    <bean id="abstractUserMetadata" class="org.openmrs.module.cfldefault.api.metadata.AbstractUserMetadata" abstract="true">
+        <property name="userService" ref="userService"/>
+        <property name="personService" ref="personService"/>
+        <property name="locationService" ref="locationService"/>
+        <property name="providerService" ref="providerService"/>
+    </bean>
+    <bean id="cflDoctorUserMetadata" class="org.openmrs.module.cfldefault.api.metadata.DoctorUserMetadata"
+          parent="abstractUserMetadata"/>
+    <bean id="cflAnalystUserMetadata" class="org.openmrs.module.cfldefault.api.metadata.AnalystUserMetadata"
+          parent="abstractUserMetadata"/>
 </beans>

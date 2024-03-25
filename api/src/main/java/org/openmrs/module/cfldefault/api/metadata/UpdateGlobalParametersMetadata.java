@@ -20,7 +20,7 @@ public class UpdateGlobalParametersMetadata extends VersionedMetadataBundle {
 
   @Override
   public int getVersion() {
-    return 9;
+    return 10;
   }
 
   @Override
@@ -78,12 +78,6 @@ public class UpdateGlobalParametersMetadata extends VersionedMetadataBundle {
             "  }\n"
             + //
             "}");
-    updateGlobalPropertyIfExists(
-        GlobalPropertiesConstants.TELEPHONE_NUMBER_PERSON_ATTRIBUTE_TYPE_UUID.getKey(),
-        CfLDefaultConstants.CFL_TELEPHONE_NUMBER_PERSON_ATTRIBUTE_TYPE_UUID);
-    updateGlobalPropertyIfExists(
-        GlobalPropertiesConstants.EMAIL_ADDRESS_PERSON_ATTRIBUTE_TYPE_UUID.getKey(),
-        CfLDefaultConstants.CFL_EMAIL_ADDRESS_PERSON_ATTRIBUTE_TYPE_UUID);
     updateGlobalPropertyIfExists(
         " visits.visit-times",
         "7:00,7:30,8:00,8:30,9:00,9:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00");

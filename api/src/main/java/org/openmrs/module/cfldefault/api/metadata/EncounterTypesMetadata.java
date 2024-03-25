@@ -7,7 +7,7 @@ import org.openmrs.module.metadatadeploy.bundle.VersionedMetadataBundle;
 public class EncounterTypesMetadata extends VersionedMetadataBundle {
   @Override
   public int getVersion() {
-    return 2;
+    return 3;
   }
 
   @Override
@@ -23,6 +23,7 @@ public class EncounterTypesMetadata extends VersionedMetadataBundle {
     install(newEncounterType("CFL HIV Visit", "6932803d-f0a3-44e5-90cd-e08d86f98d70"));
     install(newEncounterType("Symptoms", "43c3630f-abfe-4fe1-8c92-b73b65199a3d"));
     install(newEncounterType("Medical Visit Note", "968789ca-e9c4-492f-b1dc-101fd1aa2026"));
+    install(newEncounterType("CFL Discontinue program", "f1c23f25-20e1-4503-b09e-116aba0a6063"));
   }
 
   private EncounterType newEncounterType(String name, String uuid) {

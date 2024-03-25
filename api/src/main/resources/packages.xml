@@ -38,8 +38,8 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>07_Location_Attribute_Types</filenameBase>
-            <groupUuid>9d5c3faa-17cf-4b0d-92bc-40901b4ccea5</groupUuid>
-            <version>1</version>
+            <groupUuid>4b1a440d-d7c3-46ff-a5ba-1da4dd49a8f7</groupUuid>
+            <version>3</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
@@ -87,13 +87,13 @@
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>15_Person_dashboard_header</filenameBase>
             <groupUuid>5118cfa4-0557-4126-8c37-a1989ed32c22</groupUuid>
-            <version>1</version>
+            <version>2</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>16_Person_dashboard_widgets</filenameBase>
             <groupUuid>52cd2085-b348-4d3e-9071-4fcc39531b41</groupUuid>
-            <version>1</version>
+            <version>2</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
@@ -104,13 +104,20 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>18_CfL_Configure_Metadata_Apps</filenameBase>
-            <groupUuid>ffe39435-70c8-4590-a5eb-d1aed0442eb1</groupUuid>
-            <version>2</version>
+            <groupUuid>30f765ba-7962-41c2-976a-ae980a314123</groupUuid>
+            <version>4</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>19_Patient_dashboard_header</filenameBase>
             <groupUuid>2a1dd23a-8099-4c07-ab82-b638dc966967</groupUuid>
+            <version>2</version>
+            <importMode>PARENT_AND_CHILD</importMode>
+        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+        <!-- This package must be imported before 41_Program_Form package -->
+        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+            <filenameBase>20_Reason_for_ART_answers_conceptSources</filenameBase>
+            <groupUuid>82e7583e-5928-4ab5-a160-7774187c98c5</groupUuid>
             <version>1</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
@@ -121,8 +128,8 @@
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
-            <filenameBase>22_OpenMRS_Base_PersonAttributeTypes</filenameBase>
-            <groupUuid>f591df2a-0e38-467f-bcfe-ee945eca76ca</groupUuid>
+            <filenameBase>23_Adherence_Weekly_Actor_Question</filenameBase>
+            <groupUuid>e2c4f6ba-9bc1-422c-86ed-6e9306c90e14</groupUuid>
             <version>1</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
@@ -140,19 +147,19 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>26_Migrated_Medical_History</filenameBase>
-            <groupUuid>2baf92fa-70f6-48f3-bc3e-7f30ee1ec77b</groupUuid>
-            <version>1</version>
+            <groupUuid>b849d286-d50c-47da-a0c5-82f5efcc713c</groupUuid>
+            <version>2</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>27_Migrated_Lab_Result</filenameBase>
-            <groupUuid>94e92a4d-5147-4153-befe-723e7293c471</groupUuid>
-            <version>1</version>
+            <groupUuid>a6fbcefa-c9b0-43b4-aee7-a3da80a920de</groupUuid>
+            <version>2</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>28_Migrated_TB_Data</filenameBase>
-            <groupUuid>b16592c7-1f77-448c-a8f6-1579a29e2c7c</groupUuid>
+            <groupUuid>c86a1b1b-70ee-4432-ba02-977b0c4182e4</groupUuid>
             <version>1</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
@@ -188,7 +195,7 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>34_Medical_Visit_Note_Viral_Load_New_Concepts</filenameBase>
-            <groupUuid>6a3df41a-f811-47cb-9df0-b21aa3b510a8</groupUuid>
+            <groupUuid>722b9747-a461-4ff0-954e-3b324906ed4c</groupUuid>
             <version>1</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
@@ -226,6 +233,18 @@
             <filenameBase>40_Trigger_Message_App</filenameBase>
             <groupUuid>a59f396d-f5dc-4241-8814-91884d8bcae1</groupUuid>
             <version>1</version>
+            <importMode>PARENT_AND_CHILD</importMode>
+        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+            <filenameBase>41_Program_Form</filenameBase>
+            <groupUuid>8ed2b61b-8829-448b-95a1-b468201846e3</groupUuid>
+            <version>3</version>
+            <importMode>PARENT_AND_CHILD</importMode>
+        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+            <filenameBase>42_CFL_Charts_Apps</filenameBase>
+            <groupUuid>df83c4cc-d216-4466-b030-de479c0dca6f</groupUuid>
+            <version>3</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
     </packages>
