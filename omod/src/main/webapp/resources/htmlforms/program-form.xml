@@ -181,6 +181,17 @@
         const parsedTreatmentDateStarted = Date.parse(treatmentDateStartedValue);
         const parsedTreatmentDateStopped = Date.parse(treatmentDateStoppedValue);
 
+        //validation of Reason for stopping treatment
+        const treatmentDateStopped = getValue(i + '-js-treatment-date-stopped.value');
+        const stopTreatmentReasonValue = getValue(i + '-js-stopping-treatment-reason.value');
+        const stopTreatmentReasonErrorField = getField(i + '-js-stopping-treatment-reason.error');
+        stopTreatmentReasonErrorField.hide();
+
+        if (stopTreatmentReasonValue !== '' &amp;&amp; treatmentDateStopped === '') {
+            stopTreatmentReasonErrorField.html("Treatment date stopped cannot be empty").show();
+            isFormValid = false;
+        }
+
         for (let k = 0; k &lt; MAX_TREATMENTS; k++) {
         if (i !== k &amp;&amp; $('#' + k + '-js-treatment-data').is(':visible')) {
         const otherParsedTreatmentDateStarted = Date.parse(getValue(k + '-js-treatment-date-started.value'));
@@ -304,6 +315,8 @@
         const treatmentDateStopped = new Date(treatment.stopDate);
         setValue(firstEmptyTreatmentId + '-js-treatment-date-stopped.value', treatmentDateStopped.getUTCFullYear() + '-' + (treatmentDateStopped.getUTCMonth() + 1) + '-' + treatmentDateStopped.getUTCDate());
         }
+
+        setValue(firstEmptyTreatmentId + '-js-stopping-treatment-reason.value', treatment.stopTreatmentReason);
 
         //fill in treatment details table
         const selectedRegimenValue = $('#' + firstEmptyTreatmentId + '-js-regimen-name > select').val();
@@ -727,6 +740,12 @@
                                                 <span id="{n}-js-treatment-date-stopped-mandatory-asterisk" class="color-red">*</span>
                                             </span>
                                             <obs id="{n}-js-treatment-date-stopped" conceptId="806195ad-9f5c-42f0-ad9f-736a21a1dac1" allowFutureDates="true" allowTime="false" defaultObsDatetime="now" />
+                                        </div>
+                                        <div>
+                                            <span>
+                                                Reason for stopping treatment
+                                            </span>
+                                            <obs id="{n}-js-stopping-treatment-reason" conceptId="9c65e0a7-8c12-46d4-8ad2-da1aa37b8276"/>
                                         </div>
                                     </div>
                                     <div id="{n}-js-treatment-expandable-data" class="js-treatment-expandable-data" style="display: none">

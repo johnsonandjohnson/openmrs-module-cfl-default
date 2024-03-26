@@ -247,5 +247,11 @@
             <version>3</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+            <filenameBase>43_Program_form_HIV_ART_Reason_Stopped_concept</filenameBase>
+            <groupUuid>4095a5f3-2412-47da-917a-eb21219f96be</groupUuid>
+            <version>1</version>
+            <importMode>PARENT_AND_CHILD</importMode>
+        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
     </packages>
 </org.openmrs.module.emrapi.metadata.MetadataPackagesConfig>
