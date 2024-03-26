@@ -15,7 +15,7 @@ public class HtmlFormsMetadata extends VersionedMetadataBundle {
 
   @Override
   public int getVersion() {
-    return 21;
+    return 22;
   }
 
   @Override
@@ -42,7 +42,9 @@ public class HtmlFormsMetadata extends VersionedMetadataBundle {
             "cfldefault:htmlforms/cfl-hiv-intake.xml",
             "cfldefault:htmlforms/cfl-migrated-lab-result.xml",
             "cfldefault:htmlforms/cfl-migrated-medical-history.xml",
-            "cfldefault:htmlforms/cfl-migrated-tb-data.xml");
+            "cfldefault:htmlforms/cfl-migrated-tb-data.xml",
+            "cfldefault:htmlforms/program-form.xml",
+            "cfldefault:htmlforms/discontinue-program.xml");
 
     for (String htmlform : htmlforms) {
       HtmlFormUtil.getHtmlFormFromUiResource(
