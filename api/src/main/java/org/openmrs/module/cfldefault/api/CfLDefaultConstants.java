@@ -75,11 +75,6 @@ public class CfLDefaultConstants {
                   + "\"configFilters\":[]}"
           + "]";
 
-  public static final String REPORTS_FOR_DATA_VISUALIZATION_CONFIGURATION_UUID_LIST_KEY =
-          "cflui.reportsForDataVisualizationConfiguration.uuid.list";
-  public static final String REPORTS_FOR_DATA_VISUALIZATION_CONFIGURATION_UUID_LIST_DEFAULT_VALUE =
-          "[\"66583f23-244e-46d9-892e-43e96eaefd80\",\"f01cffd6-338a-473b-ac5c-833e59d14288\",\"214005f6-cb77-4ebd-a3ab-c6701d9affcf\"]";
-
   private CfLDefaultConstants() {
   }
 }

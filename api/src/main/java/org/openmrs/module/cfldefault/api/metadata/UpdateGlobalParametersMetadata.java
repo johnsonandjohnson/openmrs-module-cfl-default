@@ -98,9 +98,6 @@ public class UpdateGlobalParametersMetadata extends VersionedMetadataBundle {
             .getKey(),
         Boolean.FALSE.toString());
     updateGlobalPropertyIfExists(
-            CfLDefaultConstants.REPORTS_FOR_DATA_VISUALIZATION_CONFIGURATION_UUID_LIST_KEY,
-            CfLDefaultConstants.REPORTS_FOR_DATA_VISUALIZATION_CONFIGURATION_UUID_LIST_DEFAULT_VALUE);
-    updateGlobalPropertyIfExists(
             CfLDefaultConstants.REPORTS_DATA_VISUALIZATION_CONFIGURATION_KEY,
             CfLDefaultConstants.REPORTS_DATA_VISUALIZATION_CONFIGURATION_DEFAULT_VALUE);
   }
