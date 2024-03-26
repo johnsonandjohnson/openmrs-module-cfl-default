@@ -44,8 +44,8 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>08_Homepage_Apps</filenameBase>
-            <groupUuid>91add529-cc2f-4f15-9053-0047f131afe8</groupUuid>
-            <version>7</version>
+            <groupUuid>9ee9a05a-7cfa-4d93-aa40-edce0efdb6a4</groupUuid>
+            <version>8</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
