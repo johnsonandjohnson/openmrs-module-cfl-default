@@ -473,8 +473,8 @@
     </section>
 
     <div id="buttons">
-        <submit id="submitId" submitClass="confirm right" submitCode="general.save" />
-        <button type="button" class="cancel"><uimessage code="general.cancel" /></button>
+        <submit id="submitId" submitClass="confirm right" submitCode="common.confirm" />
+        <button type="button" class="cancel"><uimessage code="common.cancel" /></button>
     </div>
 
     <script type="text/javascript">

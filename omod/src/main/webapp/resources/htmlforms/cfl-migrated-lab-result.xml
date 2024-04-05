@@ -32,7 +32,7 @@
 	</style>
 
     <h2>Migrated Lab Results</h2>
-    <button type="button" class="cancel">Return</button>
+    <button type="button" class="cancel"><uimessage code="common.cancel"/></button>
     <section headerLabel="Lab Results">
         <table class="baseline-aligned">
             <thead>
@@ -53,5 +53,5 @@
             </tbody>
         </table>
     </section>
-    <button type="button" class="cancel">Return</button>
+    <button type="button" class="cancel"><uimessage code="common.cancel"/></button>
 </htmlform>
