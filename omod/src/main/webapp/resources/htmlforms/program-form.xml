@@ -116,7 +116,7 @@
         </div>
         <!-- Submit Form (Save Program) button - click event is triggered by "Confirm" button in Save Program Modal -->
         <div id="submit-form" class="display-none">
-            <submit submitClass="confirm right" submitCode="general.save"/>
+            <submit submitClass="confirm right" submitCode="common.confirm"/>
         </div>
     </ifMode>
 
@@ -1134,16 +1134,16 @@
     <enrollInProgram programId="06c596e7-53dd-44c1-9609-f1406fd9e76d"/>
 
     <ifMode mode="VIEW" include="false">
-        <!-- Save and Return Buttons -->
+        <!-- Confirm and Cancel Buttons -->
         <div id="buttons">
             <button id="save" type="button" class="confirm right" style="display: flex">
-                <uimessage code="cfl.programForm.button.save"/>
+                <uimessage code="common.confirm"/>
                 <div id="save-program-spinner" class="ml-2 display-none">
                     <i class="icon-spinner icon-spin icon-2x"/>
                 </div>
             </button>
             <button id="return" type="button" class="cancel">
-                <uimessage code="cfl.programForm.button.return"/>
+                <uimessage code="common.cancel"/>
             </button>
         </div>
         <postSubmissionAction class="org.openmrs.module.cflcore.api.htmlformentry.action.OnProgramFormSaveAction"/>

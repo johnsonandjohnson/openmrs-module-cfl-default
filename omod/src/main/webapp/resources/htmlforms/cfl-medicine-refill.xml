@@ -293,7 +293,7 @@
     </style>
     <div id="refillVisitNote">
         <h2 class="refill-visit-note-title">
-            <uimessage code="cfldistributionShip.medicineRefill.title"/>
+            <uimessage code="cfl.medicineRefill.title"/>
         </h2>
         <span class="modeSelector display-none">
             <ifMode mode="ENTER">enter</ifMode>
@@ -331,7 +331,7 @@
         </div>
         <div class="regimen-name">
             <h3>
-                <uimessage code="cfldistributionShip.medicineRefill.regimenName"/>:
+                <uimessage code="cfl.medicineRefill.regimenName"/>:
                 <span id="patientsRegimenSpanId"/>
             </h3>
             <span class="display-none">
@@ -443,29 +443,29 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <h5 class="modal-title">
-                        <uimessage code="cfldistributionShip.medicineRefill.saveProgramConfirmation"/>
+                        <uimessage code="cfl.medicineRefill.saveProgramConfirmation"/>
                     </h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn dismiss" data-dismiss="modal">
-                        <uimessage code="general.cancel"/>
+                        <uimessage code="common.cancel"/>
                     </button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confirmModalHandler()">
-                        <uimessage code="coreapps.confirm"/>
+                        <uimessage code="common.confirm"/>
                     </button>
                 </div>
             </div>
         </div>
     </div>
     <div id="noRegimen" class="display-none">
-        <uimessage code="cfldistributionShip.medicineRefill.noActiveTreatment"/>
+        <uimessage code="cfl.medicineRefill.noActiveTreatment"/>
     </div>
     <div id="buttons">
         <button type="button" class="cancel">
-            <uimessage code="coreapps.return"/>
+            <uimessage code="common.cancel"/>
         </button>
         <button type="button" class="btn btn-primary confirm right" data-toggle="modal" data-target="#confirmationModal">
-            <uimessage code="general.save"/>
+            <uimessage code="common.confirm"/>
             <div id="save-program-spinner" class="ml-2 display-none">
                 <i class="icon-spinner icon-spin icon-2x"/>
             </div>

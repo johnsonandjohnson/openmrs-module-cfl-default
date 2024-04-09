@@ -90,8 +90,8 @@
 
     <ifMode mode="VIEW" include="false">
         <div id="buttons">
-            <submit submitClass="confirm right" submitCode="general.save"/>
-            <button type="button" class="cancel"><uimessage code="general.cancel"/></button>
+            <submit submitClass="confirm right" submitCode="common.confirm"/>
+            <button type="button" class="cancel"><uimessage code="common.cancel"/></button>
         </div>
     </ifMode>
 </htmlform>
