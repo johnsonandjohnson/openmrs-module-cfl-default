@@ -38,8 +38,8 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>07_Location_Attribute_Types</filenameBase>
-            <groupUuid>4b1a440d-d7c3-46ff-a5ba-1da4dd49a8f7</groupUuid>
-            <version>3</version>
+            <groupUuid>7b7ef26f-9c0d-446e-bb06-b90005b08043</groupUuid>
+            <version>4</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
