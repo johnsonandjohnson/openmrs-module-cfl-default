@@ -23,6 +23,6 @@ public class HtmlFormsMetadataTest {
 
     int actual = htmlFormsMetadata.getVersion();
 
-    assertEquals(22, actual);
+    assertEquals(23, actual);
   }
 }
