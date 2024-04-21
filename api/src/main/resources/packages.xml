@@ -207,8 +207,8 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>36_Configurable_Patient_Header_App</filenameBase>
-            <groupUuid>6d78ef59-c6a9-4ce1-9fb7-4fe5ff9842e5</groupUuid>
-            <version>1</version>
+            <groupUuid>0537f2c0-b410-4ed5-ac1e-a1fa4275c16f</groupUuid>
+            <version>2</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
@@ -250,6 +250,12 @@
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>43_Program_form_HIV_ART_Reason_Stopped_concept</filenameBase>
             <groupUuid>4095a5f3-2412-47da-917a-eb21219f96be</groupUuid>
+            <version>1</version>
+            <importMode>PARENT_AND_CHILD</importMode>
+        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+            <filenameBase>44_Update_Status_App</filenameBase>
+            <groupUuid>2a51ffb6-7d54-4ac6-800c-75df18bb514b</groupUuid>
             <version>1</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
