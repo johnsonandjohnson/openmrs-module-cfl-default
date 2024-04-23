@@ -51,7 +51,7 @@
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>09_Visits_Apps</filenameBase>
             <groupUuid>2055ffb5-8336-4bfd-b40c-3a883f1904e0</groupUuid>
-            <version>4</version>
+            <version>5</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
