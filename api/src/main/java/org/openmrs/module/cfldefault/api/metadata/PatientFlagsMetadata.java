@@ -20,7 +20,7 @@ public class PatientFlagsMetadata extends VersionedMetadataBundle {
 
   @Override
   public int getVersion() {
-    return 3;
+    return 4;
   }
 
   @Override
@@ -162,50 +162,33 @@ public class PatientFlagsMetadata extends VersionedMetadataBundle {
         newSQLFlag(
             "Incorrect pincode",
             "Incorrect pincode entered last 3 times",
-            "SELECT\n"
-                + "\tq.patient_id\n"
-                + "FROM\n"
-                + "\t(\n"
-                + "\tSELECT\n"
-                + "\t\tactor_id as patient_id,\n"
-                + "\t\ttext_response,\n"
-                + "\t\tcount(*) rn\n"
-                + "\tFROM\n"
-                + "\t\tmessages_actor_response mar\n"
-                + "\tWHERE\n"
-                + "\t\tmar.messages_actor_response_id IN (\n"
-                + "\t\tSELECT\n"
-                + "\t\t\tm.messages_actor_response_id\n"
-                + "\t\tFROM\n"
-                + "\t\t\t(\n"
-                + "\t\t\tSELECT\n"
-                + "\t\t\t\tm.messages_actor_response_id,\n"
-                + "\t\t\t\tm.actor_id,\n"
-                + "\t\t\t\t@rn := IF(@prev = m.actor_id,\n"
-                + "\t\t\t\t@rn + 1,\n"
-                + "\t\t\t\t1) rn,\n"
-                + "\t\t\t\t@prev := m.actor_id\n"
-                + "\t\t\tFROM\n"
-                + "\t\t\t\tmessages_actor_response m\n"
-                + "\t\t\tJOIN (\n"
-                + "\t\t\t\tSELECT\n"
-                + "\t\t\t\t\t@prev := NULL,\n"
-                + "\t\t\t\t\t@rn := 0 ) AS vars\n"
-                + "\t\t\tWHERE\n"
-                + "\t\t\t\tm.text_question = \"PIN\"\n"
-                + "\t\t\tORDER BY\n"
-                + "\t\t\t\tm.actor_id ,\n"
-                + "\t\t\t\tm.answered_time DESC) m\n"
-                + "\t\tWHERE\n"
-                + "\t\t\tm.actor_id = mar.actor_id\n"
-                + "\t\t\tAND m.rn < 4)\n"
-                + "\tGROUP BY\n"
-                + "\t\tmar.actor_id,\n"
-                + "\t\tmar.text_response) q\n"
-                + "WHERE\n"
-                + "\tq.rn >= 3\n"
-                + "\tAND q.text_response = \"INVALID\"",
-                savedCflPriority));
+            "SELECT DISTINCT p.patient_id\n"
+                + "FROM patient AS p\n"
+                + "INNER JOIN (SELECT \n"
+                + "    cr.actorId,\n"
+                + "    MAX(cr.refKey) as refKey,\n"
+                + "    MAX(cr.playedMessages) as playedMessages,\n"
+                + "    MAX(cr.date_created) as date_created\n"
+                + "FROM (\n"
+                + "    SELECT \n"
+                + "        c1.actorId, \n"
+                + "        c1.direction, \n"
+                + "        c1.status, \n"
+                + "        c1.refKey, \n"
+                + "        c1.playedMessages, \n"
+                + "        c1.date_created\n"
+                + "    FROM cfl_calls c1\n"
+                + "    JOIN (\n"
+                + "        SELECT actorId, MAX(date_created) as max_date_created\n"
+                + "        FROM cfl_calls\n"
+                + "        GROUP BY actorId\n"
+                + "    ) c2 ON c1.actorId = c2.actorId AND c1.date_created = c2.max_date_created\n"
+                + ") cr\n"
+                + "WHERE cr.playedMessages LIKE '%pin_locked%'\n"
+                + "GROUP BY cr.actorId\n"
+                + "ORDER BY cr.actorId DESC) AS subquery \n"
+                + "WHERE subquery.actorId = p.patient_id",
+            savedCflPriority));
   }
 
   private Flag newSQLFlag(String name, String message, String sql, Priority priority) {
