@@ -259,5 +259,11 @@
             <version>1</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+            <filenameBase>45_Health_Tip_Question</filenameBase>
+            <groupUuid>68eb4f5b-6289-421d-9d4d-8ea42269eaae</groupUuid>
+            <version>1</version>
+            <importMode>PARENT_AND_CHILD</importMode>
+        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
     </packages>
 </org.openmrs.module.emrapi.metadata.MetadataPackagesConfig>
