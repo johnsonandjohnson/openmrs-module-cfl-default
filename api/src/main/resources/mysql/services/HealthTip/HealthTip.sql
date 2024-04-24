@@ -53,10 +53,7 @@ from messages_patient_template pmt
                       MAX(CASE WHEN tf.name = 'Frequency of the message' THEN t.value ELSE NULL END)       AS FREQUENCY,
                       MAX(CASE WHEN tf.name = 'Week day of delivering message' THEN t.value ELSE NULL END) AS WEEKDAYS,
                       MAX(CASE WHEN tf.name = 'Start of messages' THEN t.value ELSE NULL END)              AS START_DATE,
-                      MAX(CASE
-                              WHEN tf.name = 'Categories of the message' THEN concat(t.value, ',', t.value)
-                              ELSE NULL
-                          END)                                                                             AS HT_CATEGORY,
+                      MAX(CASE WHEN tf.name = 'Categories of the message' THEN t.value ELSE NULL END)     AS HT_CATEGORY,
                       MAX(CASE
                               WHEN tf.name = 'End of messages' THEN SUBSTRING_INDEX(t.value, '|', 1)
                               ELSE NULL

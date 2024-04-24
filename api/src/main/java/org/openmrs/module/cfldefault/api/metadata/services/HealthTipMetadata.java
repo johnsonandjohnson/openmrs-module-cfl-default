@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HealthTipMetadata extends AbstractMessageServiceMetadata {
-  private static final int VERSION = 6;
+  private static final int VERSION = 7;
 
   public HealthTipMetadata(DbSessionFactory dbSessionFactory) {
     super(dbSessionFactory, VERSION, "9556f9ab-20b2-11ea-ac12-0242c0a82002");
