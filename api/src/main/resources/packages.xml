@@ -135,8 +135,8 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>24_CfL_callflows</filenameBase>
-            <groupUuid>3cf904ed-b9e0-40b2-ac4b-466e92e33d92</groupUuid>
-            <version>4</version>
+            <groupUuid>a487bd13-25f1-481c-9ea3-b82803b16950</groupUuid>
+            <version>5</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
