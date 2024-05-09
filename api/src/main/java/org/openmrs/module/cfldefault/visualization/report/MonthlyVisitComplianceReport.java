@@ -41,7 +41,7 @@ public class MonthlyVisitComplianceReport extends CflBaseReportManager {
 
   @Override
   public String getVersion() {
-    return "1.0";
+    return "2.0";
   }
 }
 
