@@ -20,7 +20,7 @@ public class PatientFlagsMetadata extends VersionedMetadataBundle {
 
   @Override
   public int getVersion() {
-    return 4;
+    return 5;
   }
 
   @Override
@@ -157,7 +157,7 @@ public class PatientFlagsMetadata extends VersionedMetadataBundle {
                 + "\t\t\tpat.name = 'Person status')\n"
                 + "\t\tAND voided = 0\n"
                 + "\t\tAND value = 'NO_CONSENT');",
-                savedCflPriority));
+            savedCflWarningPriority));
     install(
         newSQLFlag(
             "Incorrect pincode",
@@ -184,11 +184,11 @@ public class PatientFlagsMetadata extends VersionedMetadataBundle {
                 + "        GROUP BY actorId\n"
                 + "    ) c2 ON c1.actorId = c2.actorId AND c1.date_created = c2.max_date_created\n"
                 + ") cr\n"
-                + "WHERE cr.playedMessages LIKE '%pin_locked%'\n"
+                + "WHERE cr.playedMessages LIKE '%PinFlow_blocked-pin%'\n"
                 + "GROUP BY cr.actorId\n"
                 + "ORDER BY cr.actorId DESC) AS subquery \n"
                 + "WHERE subquery.actorId = p.patient_id",
-            savedCflPriority));
+            savedCflWarningPriority));
   }
 
   private Flag newSQLFlag(String name, String message, String sql, Priority priority) {
