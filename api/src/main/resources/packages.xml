@@ -265,5 +265,11 @@
             <version>1</version>
             <importMode>PARENT_AND_CHILD</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
+            <filenameBase>46_Refill_Visit_Note_Encounter_Type</filenameBase>
+            <groupUuid>365fbf83-52c9-47e3-84a9-5438580b57f8</groupUuid>
+            <version>1</version>
+            <importMode>PARENT_AND_CHILD</importMode>
+        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
     </packages>
 </org.openmrs.module.emrapi.metadata.MetadataPackagesConfig>
