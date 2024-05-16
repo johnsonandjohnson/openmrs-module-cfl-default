@@ -15,7 +15,6 @@ import static java.util.Collections.singleton;
 @SuppressWarnings("PMD.ExcessiveMethodLength")
 public class PatientFlagsMetadata extends VersionedMetadataBundle {
   private Tag savedCflTag;
-  private Priority savedCflPriority;
   private Priority savedCflWarningPriority;
 
   @Override
@@ -31,7 +30,6 @@ public class PatientFlagsMetadata extends VersionedMetadataBundle {
   @Override
   protected void installNewVersion() throws Exception {
     savedCflTag = install(newCFLTag());
-    savedCflPriority = install(newCFLFlagPriority());
     savedCflWarningPriority = install(newCFLWarningPriority());
     installCFLFlags();
   }
@@ -51,16 +49,6 @@ public class PatientFlagsMetadata extends VersionedMetadataBundle {
             "border: 1px solid #fb8500; color: #fb8500; padding: 1px 2px; border-radius: 4px;");
     cflPriority.setRank(2);
     cflPriority.setUuid("00841430-5f32-4baa-9f65-ba8a829d423f");
-    return cflPriority;
-  }
-
-  private Priority newCFLFlagPriority() {
-    final Priority cflPriority = new Priority();
-    cflPriority.setName("CFL flag priority");
-    cflPriority.setStyle(
-        "border: 1px solid #51a351; color: #51a351; padding: 1px 2px; border-radius: 4px;");
-    cflPriority.setRank(1);
-    cflPriority.setUuid("15d23b9b-1dc1-448c-81ce-8c5d191b0fff");
     return cflPriority;
   }
 
