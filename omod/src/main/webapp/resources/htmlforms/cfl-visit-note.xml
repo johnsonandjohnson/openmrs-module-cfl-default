@@ -441,6 +441,9 @@
       cursor: pointer;
     }
 
+    .red-border {
+      border: 2px solid red;
+    }
   </style>
 
   <span id="notDetectedConcept" style="display: none">
@@ -3137,6 +3140,10 @@
         reassignTheOrder(2,detailsSection2List);
         reassignTheOrder(3,detailsSection3List);
 
+        jQuery('.red-border').each(function(index, element) {
+            jQuery(element).removeClass('red-border');
+        });
+
         return validateFieldsAndSubmit();
     });
 
@@ -3151,65 +3158,91 @@
     }
 
     function validateFieldsAndSubmit() {
-        // Review of Medication validations
-        for (let i=1; getValue(i+'-orderId.value') &amp;&amp; i &lt; $maxNumOfMedicationEntry+1; i++) {
-            let reviewOfMedicationValue = getValue(i+'-reviewOfMedicationId.value'),
-                medicationStartDateValue = getValue(i+'-medicationStartDateId.value');
+      // Review of Medication validations
+      for (let i=1; getValue(i+'-orderId.value') &amp;&amp; i &lt; $maxNumOfMedicationEntry+1; i++) {
+      let reviewOfMedicationValue = getValue(i + '-reviewOfMedicationId.value');
+      let medicationStartDateValue = getValue(i + '-medicationStartDateId.value');
+      let medicationEndDateValue = getValue(i + '-medicationEndDateId.value');
+      let reviewOfMedicationField = jQuery('#' + i + '-reviewOfMedicationId');
+      let medicationStartDateField = jQuery('#' + i + '-medicationStartDateId');
+      let medicationEndDateField = jQuery('#' + i + '-medicationEndDateId');
 
-            if (reviewOfMedicationValue == null || reviewOfMedicationValue == '') {
-                if (medicationStartDateValue == null || medicationStartDateValue == '') {
-                $(SAVE_PROGRAM_SPINNER_ID).show();
-                    return true;
-                }
-            }
-            if (reviewOfMedicationValue != null || reviewOfMedicationValue != '') {
-                if (medicationStartDateValue == null || medicationStartDateValue == '') {
-                    getField(i+'-medicationStartDateId.error').html("Required").show();
-                    alert('Medication Start Date field is required');
-                    return false;
-                }
-            }
-            if (medicationStartDateValue != null || medicationStartDateValue != '') {
-                if (reviewOfMedicationValue == null || reviewOfMedicationValue == '') {
-                    getField(i+'-reviewOfMedicationId.error').html("Required").show();
-                    alert('Review of Medication field is required');
-                    return false;
-                }
-            }
-            if (moment(medicationStartDateValue).isAfter(moment())) {
-              getField(i+'-medicationStartDateId.error').html("Cannot be in the future").show();
-              alert('Review of Medication date cannot be in the future');
+      if (reviewOfMedicationValue == null || reviewOfMedicationValue == '') {
+          if (medicationStartDateValue == null || medicationStartDateValue == '') {
+              $(SAVE_PROGRAM_SPINNER_ID).show();
+              return true;
+          }
+      }
+
+      if (reviewOfMedicationValue != null || reviewOfMedicationValue != '') {
+          if (medicationStartDateValue == null || medicationStartDateValue == '') {
+              jQuery('#' + i + '-medicationStartDateId').addClass('red-border');
+              alert('Medication start date field is required');
+              jQuery('html, body').animate({
+              scrollTop: medicationStartDateField.offset().top - 30
+              }, 'slow');
               return false;
-            }
-        }
+          }
+      }
 
-        // Drug history validations
-        // Value of this input is 'concept_id' which could be varies on different servers
-        // therefore we shouldn't use it. Instead we check first input which is 'Yes' and then validation happens
-        if ($('#drugHistoryId input:first').is(':checked')) {
-            if (isDrugHistorySpecifyUncheck()) {
-                alert('Please select at least one durg');
-                return false;
-            }
-            if (!validateFreqAndAddictionFields('mapSmokeId','MAP smoke')) { return false; }
-            if (!validateFreqAndAddictionFields('mapInjectedId','MAP Injected')) { return false; }
-            if (!validateFreqAndAddictionFields('mapMucosalId','MAP Mucosal')) { return false; }
-            if (!validateFreqAndAddictionFields('ecstasyId','Ecstasy')) { return false; }
-            if (!validateFreqAndAddictionFields('ghbId','GHB')) { return false; }
-            if (!validateFreqAndAddictionFields('cocaineId','Cocaine')) { return false; }
-            if (!validateFreqAndAddictionFields('marijuanaId','Marijuana')) { return false; }
-            if (!validateFreqAndAddictionFields('poppersId','Poppers')) { return false; }
-            if (!validateFreqAndAddictionFields('ketamineId','Ketamine')) { return false; }
-            if (!validateFreqAndAddictionFields('acidId','Acid')) { return false; }
-            if (!validateFreqAndAddictionFields('valiumId','Valium')) { return false; }
-            if (!validateFreqAndAddictionFields('opioidsId','Opioids')) { return false; }
-            if (!validateFreqAndAddictionFields('heroinId','Heroin')) { return false; }
-            if (!validateFreqAndAddictionFields('otherDrugId','Other Drug')) { return false; }
-        }
+      if (medicationStartDateValue != null || medicationStartDateValue != '') {
+          if (reviewOfMedicationValue == null || reviewOfMedicationValue == '') {
+              jQuery('#' + i + '-reviewOfMedicationId').addClass('red-border');
+              alert('Review of Medication field is required');
+              jQuery('html, body').animate({
+                  scrollTop: reviewOfMedicationField.offset().top - 30
+              }, 'slow');
+              return false;
+          }
+      }
 
-        $(SAVE_PROGRAM_SPINNER_ID).show();
+      if (moment(medicationStartDateValue).isAfter(moment())) {
+          jQuery('#' + i + '-medicationStartDateId').addClass('red-border');
+          alert('Medication start date cannot be in the future');
+          jQuery('html, body').animate({
+              scrollTop: medicationStartDateField.offset().top - 30
+          }, 'slow');
+          return false;
+      }
 
-        return true;
+      if (moment(medicationStartDateValue).isAfter(moment(medicationEndDateValue))) {
+          jQuery('#' + i + '-medicationStartDateId').addClass('red-border');
+          alert('Medication start date cannot be after end date');
+          jQuery('html, body').animate({
+              scrollTop: medicationStartDateField.offset().top - 30
+          }, 'slow');
+
+          return false;
+      }
+    }
+
+      // Drug history validations
+      // Value of this input is 'concept_id' which could be varies on different servers
+      // therefore we shouldn't use it. Instead we check first input which is 'Yes' and then validation happens
+      if ($('#drugHistoryId input:first').is(':checked')) {
+          if (isDrugHistorySpecifyUncheck()) {
+              alert('Please select at least one durg');
+              return false;
+          }
+          if (!validateFreqAndAddictionFields('mapSmokeId','MAP smoke')) { return false; }
+          if (!validateFreqAndAddictionFields('mapInjectedId','MAP Injected')) { return false; }
+          if (!validateFreqAndAddictionFields('mapMucosalId','MAP Mucosal')) { return false; }
+          if (!validateFreqAndAddictionFields('ecstasyId','Ecstasy')) { return false; }
+          if (!validateFreqAndAddictionFields('ghbId','GHB')) { return false; }
+          if (!validateFreqAndAddictionFields('cocaineId','Cocaine')) { return false; }
+          if (!validateFreqAndAddictionFields('marijuanaId','Marijuana')) { return false; }
+          if (!validateFreqAndAddictionFields('poppersId','Poppers')) { return false; }
+          if (!validateFreqAndAddictionFields('ketamineId','Ketamine')) { return false; }
+          if (!validateFreqAndAddictionFields('acidId','Acid')) { return false; }
+          if (!validateFreqAndAddictionFields('valiumId','Valium')) { return false; }
+          if (!validateFreqAndAddictionFields('opioidsId','Opioids')) { return false; }
+          if (!validateFreqAndAddictionFields('heroinId','Heroin')) { return false; }
+          if (!validateFreqAndAddictionFields('otherDrugId','Other Drug')) { return false; }
+      }
+
+      $(SAVE_PROGRAM_SPINNER_ID).show();
+
+      return true;
     }
 
     function validateFreqAndAddictionFields(id,message) {
